@@ -1,0 +1,253 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-dark: #08080c;
+  --bg-card: rgba(18, 19, 26, 0.75);
+  --bg-card-hover: rgba(28, 30, 42, 0.85);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(230, 57, 70, 0.4);
+  --primary-red: #e63946;
+  --neon-red: #ff1e42;
+  --neon-cyan: #00f0ff;
+  --neon-purple: #9d4edd;
+  --text-main: #f8f9fa;
+  --text-muted: #8d91a5;
+  --font-heading: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-body: 'Space Grotesk', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  scrollbar-width: thin;
+  scrollbar-color: var(--neon-red) #000;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--bg-dark);
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(230, 57, 70, 0.12) 0%, transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(157, 78, 221, 0.08) 0%, transparent 50%);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--neon-red), var(--neon-purple));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-cyan);
+}
+
+/* Typography Helpers */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+.mono-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--neon-red);
+}
+
+/* Glassmorphism card */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-glow);
+  box-shadow: 0 12px 36px rgba(230, 57, 70, 0.15);
+  transform: translateY(-3px);
+}
+
+/* Anime scanline overlay */
+.scanlines::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 2;
+  opacity: 0.35;
+}
+
+/* Neon glow buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--neon-red), #b7094c);
+  color: #ffffff;
+  padding: 12px 28px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(230, 57, 70, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 30px rgba(230, 57, 70, 0.7);
+  background: linear-gradient(135deg, #ff2a4b, #d90429);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-main);
+  padding: 12px 24px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  transform: translateY(-2px);
+}
+
+/* Cyber HUD Card (Matching the Reference UI) */
+.cyber-hud-card {
+  position: relative;
+  background: rgba(120, 8, 8, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cyber-hud-card::before,
+.cyber-hud-card::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-color: #ffbe0b;
+  pointer-events: none;
+}
+
+.cyber-hud-card::before {
+  top: -1.5px;
+  left: -1.5px;
+  border-top: 2px solid #ffbe0b;
+  border-left: 2px solid #ffbe0b;
+}
+
+.cyber-hud-card::after {
+  bottom: -1.5px;
+  right: -1.5px;
+  border-bottom: 2px solid #ffbe0b;
+  border-right: 2px solid #ffbe0b;
+}
+
+.cyber-hud-card:hover {
+  background: rgba(160, 12, 12, 0.65);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 12px 32px rgba(255, 30, 66, 0.35), 0 0 15px rgba(255, 190, 11, 0.25);
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* Cyber Resume Button */
+.cyber-resume-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(120, 8, 8, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  padding: 8px 18px;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.cyber-resume-btn::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 6px;
+  height: 6px;
+  border-top: 2px solid #ffbe0b;
+  border-right: 2px solid #ffbe0b;
+}
+
+.cyber-resume-btn:hover {
+  background: rgba(160, 12, 12, 0.6);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 6px 24px rgba(255, 30, 66, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+.pulse-glow {
+  animation: pulseGlow 4s infinite ease-in-out;
+}
