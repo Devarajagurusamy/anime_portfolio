@@ -2,15 +2,28 @@
 
 import React from 'react';
 import HeroCanvas from '@/components/HeroCanvas';
+import AboutSection from '@/components/AboutSection';
+import WorkSection from '@/components/WorkSection';
 
 export default function Home() {
-  return (
-    <main className="relative w-full bg-black min-h-screen">
-      {/* Fixed Fullscreen Canvas Hero Animation */}
-      <HeroCanvas />
+  const handleSelectSection = (sectionId: string) => {
+    const targetId = sectionId === 'work' ? 'projects' : sectionId;
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
-      {/* Scroll track providing smooth scrubbing duration for Hero sequence */}
-      <div className="relative w-full h-[500vh] pointer-events-none" />
+  return (
+    <main className="relative w-full bg-[#08080c] min-h-screen text-white">
+      {/* 1. Hero Section with Scroll-Scrubbed Canvas Sequence */}
+      <HeroCanvas onSelectSection={handleSelectSection} />
+
+      {/* 2. About Section with 3D Lanyard on Left, Heading & Bio on Right */}
+      <AboutSection />
+
+      {/* 3. Work Section with 3D Circular Gallery */}
+      <WorkSection />
     </main>
   );
 }

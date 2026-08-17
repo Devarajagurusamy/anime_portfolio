@@ -3,9 +3,14 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import HeroHUD from './HeroHUD';
 
-export default function HeroCanvas() {
+interface HeroCanvasProps {
+  onSelectSection?: (sectionId: string) => void;
+}
+
+export default function HeroCanvas({ onSelectSection }: HeroCanvasProps) {
   const TOTAL_FRAMES = 180;
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const [loadProgress, setLoadProgress] = useState<number>(0);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [scrollProgress, setScrollProgress] = useState<number>(0);
@@ -85,13 +90,22 @@ export default function HeroCanvas() {
     renderFrame(frameToDraw);
   }, [TOTAL_FRAMES, renderFrame]);
 
-  // Handle Scroll calculation based on whole page scroll
+  // Handle Scroll calculation specifically calibrated for the hero track
   const handleScroll = useCallback(() => {
-    const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
-    if (scrollMax <= 0) return;
-
+    const container = containerRef.current;
     const scrollTop = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
-    const progress = Math.min(1, Math.max(0, scrollTop / scrollMax));
+
+    let progress = 0;
+    if (container) {
+      const containerHeight = container.offsetHeight;
+      const scrollTrack = containerHeight - window.innerHeight;
+      if (scrollTrack > 0) {
+        progress = Math.min(1, Math.max(0, scrollTop / scrollTrack));
+      }
+    } else {
+      const scrollMax = window.innerHeight * 3;
+      progress = Math.min(1, Math.max(0, scrollTop / scrollMax));
+    }
 
     setScrollProgress(progress);
     targetFrameRef.current = progress * (TOTAL_FRAMES - 1);
@@ -194,18 +208,33 @@ export default function HeroCanvas() {
         </div>
       </div>
 
-      {/* Fixed Fullscreen Canvas */}
-      <div className="fixed inset-0 w-screen h-screen overflow-hidden z-0 bg-[#ba0c0c]">
-        <canvas
-          ref={canvasRef}
-          id="hero-canvas"
-          className="w-full h-full block"
-          style={{ width: '100vw', height: '100vh' }}
-        />
-      </div>
+      {/* Hero Track Scroll Container with Sticky Viewport */}
+      <div ref={containerRef} className="relative w-full h-[380vh]">
+        <div className="sticky top-0 w-full h-screen overflow-hidden z-0 bg-[#ba0c0c]">
+          <canvas
+            ref={canvasRef}
+            id="hero-canvas"
+            className="w-full h-full block"
+            style={{ width: '100vw', height: '100vh' }}
+          />
 
-      {/* Cyber Hero HUD Overlay */}
-      <HeroHUD scrollProgress={scrollProgress} />
+          {/* Cyber Hero HUD Overlay */}
+          <HeroHUD scrollProgress={scrollProgress} onSelectSection={onSelectSection} />
+
+          {/* Scroll Down Indicator at bottom when near top */}
+          <div
+            className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 z-20 pointer-events-none transition-opacity duration-300 flex flex-col items-center gap-1.5"
+            style={{ opacity: Math.max(0, 1 - scrollProgress * 6) }}
+          >
+            <span className="text-[10px] font-mono text-white/80 tracking-[0.3em] uppercase">
+              Scroll to scrub sequence
+            </span>
+            <div className="w-4 h-7 rounded-full border border-white/40 flex justify-center p-1">
+              <div className="w-1 h-2 bg-white rounded-full animate-bounce" />
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
