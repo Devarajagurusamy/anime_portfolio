@@ -3,6 +3,8 @@
 import React from 'react';
 import HeroCanvas from '@/components/HeroCanvas';
 import AboutSection from '@/components/AboutSection';
+import SkillsSection from '@/components/SkillsSection';
+import ExperienceSection from '@/components/ExperienceSection';
 import WorkSection from '@/components/WorkSection';
 
 export default function Home() {
@@ -16,13 +18,19 @@ export default function Home() {
 
   return (
     <main className="relative w-full bg-[#08080c] min-h-screen text-white">
-      {/* 1. Hero Section with Scroll-Scrubbed Canvas Sequence */}
+      {/* 1. Hero Section with Scroll-Scrubbed Canvas Sequence & HUD */}
       <HeroCanvas onSelectSection={handleSelectSection} />
 
       {/* 2. About Section with 3D Lanyard on Left, Heading & Bio on Right */}
       <AboutSection />
 
-      {/* 3. Work Section with 3D Circular Gallery */}
+      {/* 3. Skills Section with OrbitImages Tech Visualizer */}
+      <SkillsSection />
+
+      {/* 4. Experience Section with Curved Checkpoint Progress Stepper */}
+      <ExperienceSection />
+
+      {/* 5. Work Section with 3D Circular Gallery */}
       <WorkSection />
     </main>
   );
