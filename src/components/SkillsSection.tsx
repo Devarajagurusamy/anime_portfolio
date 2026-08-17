@@ -2,8 +2,7 @@
 
 import React from 'react';
 import OrbitImages from './OrbitImages/OrbitImages';
-import { Cpu, Sparkles, Code, GeorgianLari, Cog } from 'lucide-react';
-import { GreaterCompare } from 'three';
+import { Cog } from 'lucide-react';
 
 const TECH_IMAGES = [
   'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',

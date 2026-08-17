@@ -36,6 +36,9 @@ export default function AboutSection() {
                 gravity={[0, -40, 0]}
                 fov={20}
                 lanyardWidth={1.5}
+                frontImage="/assets/lanyard/profile_original.jpg"
+                backImage="/assets/lanyard/profile_anime.png"
+                imageFit="cover"
               />
             </div>
 
@@ -48,23 +51,6 @@ export default function AboutSection() {
 
           {/* RIGHT SIDE: Heading, Bio, Stats, and Details */}
           <div className="lg:col-span-6 flex flex-col justify-center">
-            {/* Category Tag */}
-            <div className="inline-flex items-center gap-2 text-red-400 text-xs font-mono tracking-widest uppercase mb-4 w-fit">
-              <Sparkles className="w-3.5 h-3.5 text-red-400" />
-              <span>// ABOUT ME</span>
-            </div>
-
-            {/* Main Title */}
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white font-mono tracking-tight uppercase leading-tight">
-              CREATIVE FULLSTACK <span className="text-[#e50914]">DEVELOPER</span>
-            </h2>
-
-            {/* Split underline */}
-            <div className="flex items-center gap-1.5 mt-3 mb-6">
-              <span className="w-8 h-[3px] bg-white rounded-full inline-block" />
-              <span className="w-8 h-[3px] bg-[#e50914] rounded-full inline-block" />
-            </div>
-
             {/* Bio Paragraphs */}
             <div className="space-y-4 text-neutral-300 text-sm sm:text-base leading-relaxed font-sans">
               <p>
@@ -100,32 +86,6 @@ export default function AboutSection() {
                 <span className="text-[11px] font-mono text-neutral-400 tracking-wider uppercase mt-1 block">
                   Performance
                 </span>
-              </div>
-            </div>
-
-            {/* Core Tech Stack Matrix (Clean flat tags) */}
-            <div className="mb-8">
-              <span className="text-[11px] font-mono text-neutral-400 tracking-widest uppercase block mb-3">
-                [ CORE CAPABILITIES & TECH ]
-              </span>
-              <div className="flex flex-wrap gap-2.5">
-                {[
-                  'React / Next.js',
-                  'TypeScript',
-                  'Three.js & WebGL',
-                  'OGL & GLSL Shaders',
-                  'Node.js & Go',
-                  'TailwindCSS',
-                  'State Architectures',
-                  'Physics Engines'
-                ].map((tech, idx) => (
-                  <span
-                    key={idx}
-                    className="px-3 py-1 rounded text-xs font-mono text-neutral-300 bg-neutral-900/80 hover:text-white transition-colors"
-                  >
-                    {tech}
-                  </span>
-                ))}
               </div>
             </div>
 

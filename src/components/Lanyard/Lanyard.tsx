@@ -14,8 +14,8 @@ extend({ MeshLineGeometry, MeshLineMaterial });
 const BLANK_PIXEL =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
 
-const FRONT_UV_RECT = { x: 0, y: 0, w: 0.5, h: 0.755 };
-const BACK_UV_RECT = { x: 0.5, y: 0, w: 0.5, h: 0.757 };
+const FRONT_UV_RECT = { x: 0, y: 0, w: 0.5, h: 1.0 };
+const BACK_UV_RECT = { x: 0.5, y: 0, w: 0.5, h: 1.0 };
 
 const DEFAULT_CARD_GLB = '/assets/lanyard/card.glb';
 const DEFAULT_LANYARD_PNG = '/assets/lanyard/lanyard.png';
@@ -250,10 +250,19 @@ function Band({
       const dh = (img.height || 1) * scale;
       const dx = rx + (rw - dw) / 2;
       const dy = ry + (rh - dh) / 2;
+
       ctx.save();
       ctx.beginPath();
       ctx.rect(rx, ry, rw, rh);
       ctx.clip();
+
+      // Rotate 180 degrees around rectangle center so image is right-side up on the 3D card mesh
+      const cx = rx + rw / 2;
+      const cy = ry + rh / 2;
+      ctx.translate(cx, cy);
+      ctx.rotate(Math.PI);
+      ctx.translate(-cx, -cy);
+
       ctx.drawImage(img, dx, dy, dw, dh);
       ctx.restore();
     };

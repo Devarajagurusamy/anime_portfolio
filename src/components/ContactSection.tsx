@@ -125,15 +125,7 @@ export default function ContactSection() {
           {/* Left Column: Direct Info & Telemetry */}
           <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
             
-            <div className="space-y-5">
-              <div className="flex items-center gap-2 font-mono text-xs text-neutral-400">
-                <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-ping" />
-                <span className="text-white font-bold tracking-wider">STATUS: AVAILABLE FOR NEW MISSIONS</span>
-              </div>
-
-              <h3 className="text-2xl sm:text-3xl font-black text-white font-mono tracking-tight leading-tight">
-                LET&apos;S BUILD THE <span className="text-[#e50914]">FUTURE</span> TOGETHER.
-              </h3>
+            <div className="space-y-4">
               <p className="text-neutral-400 text-sm leading-relaxed font-sans">
                 Have an innovative idea, a high-performance web project, or looking for an experienced fullstack engineer to level up your team? Fill out the form or reach out directly.
               </p>
