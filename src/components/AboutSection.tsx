@@ -48,10 +48,10 @@ export default function AboutSection() {
             </div>
 
             {/* Interaction Hint at bottom of badge */}
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 pointer-events-none px-3.5 py-1.5 text-[11px] font-mono text-neutral-400 flex items-center gap-2">
+            {/* <div className="absolute bottom-2 left-1/2 -translate-x-1/2 pointer-events-none px-3.5 py-1.5 text-[11px] font-mono text-neutral-400 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
               <span>DRAG & TOSS ID BADGE</span>
-            </div>
+            </div> */}
           </div>
 
           {/* RIGHT SIDE: Heading, Bio, Stats, and Details */}

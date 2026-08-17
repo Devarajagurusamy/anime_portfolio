@@ -12,7 +12,6 @@ import {
   CheckCircle2,
   Copy,
   MessageSquare,
-  ArrowUp,
   ArrowRight
 } from 'lucide-react';
 import { soundFx } from './AudioSynth';
@@ -106,13 +105,6 @@ export default function ContactSection() {
     setFormData({ name: '', email: '', phone: '', message: '' });
   };
 
-  const scrollToTop = () => {
-    soundFx.playClick();
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
   return (
     <section
       id="contact"
@@ -139,11 +131,11 @@ export default function ContactSection() {
               />
             </div>
 
-            <div className="space-y-4">
+            {/* <div className="space-y-4">
               <p className="text-neutral-400 text-sm leading-relaxed font-sans">
                 Have an innovative idea, a high-performance web project, or looking for an experienced fullstack engineer to level up your team? Fill out the form or reach out directly.
               </p>
-            </div>
+            </div> */}
 
             {/* Direct Info List */}
             <div className="space-y-4 pt-2">
@@ -397,27 +389,6 @@ export default function ContactSection() {
 
           </div>
 
-        </div>
-
-        {/* Bottom Footer Bar */}
-        <div className="mt-20 pt-8 border-t border-neutral-900 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-neutral-500">
-          <div className="flex items-center gap-2">
-            <span className="text-white font-bold tracking-wider">DEVARAJA.</span>
-            <span>&copy; {new Date().getFullYear()} &bull; ALL RIGHTS RESERVED</span>
-          </div>
-
-          <div className="flex items-center gap-6">
-            <button
-              type="button"
-              onClick={scrollToTop}
-              onMouseEnter={() => soundFx.playHover()}
-              className="px-3 py-1.5 rounded bg-neutral-900 hover:bg-neutral-800 text-white transition-all flex items-center gap-1.5 text-xs font-mono active:scale-95 group cursor-pointer"
-              title="Return to Top"
-            >
-              <ArrowUp className="w-3.5 h-3.5 text-red-500 group-hover:-translate-y-0.5 transition-transform" />
-              <span>TOP</span>
-            </button>
-          </div>
         </div>
 
       </div>

@@ -8,6 +8,7 @@ import ExperienceSection from '@/components/ExperienceSection';
 import WorkSection from '@/components/WorkSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import ContactSection from '@/components/ContactSection';
+import Footer from '@/components/Footer';
 import LineSidebar from '@/components/LineSidebar/LineSidebar';
 
 const SECTIONS = [
@@ -135,6 +136,9 @@ export default function Home() {
 
       {/* 7. Contact Section */}
       <ContactSection />
+
+      {/* 8. Footer with Cyber LetterGlitch Background */}
+      <Footer />
     </main>
   );
 }

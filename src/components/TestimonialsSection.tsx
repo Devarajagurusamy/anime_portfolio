@@ -83,10 +83,10 @@ export default function TestimonialsSection() {
           />
 
           {/* Interaction Hint */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 pointer-events-none px-4 py-1.5 text-[11px] font-mono text-white/80 flex items-center gap-2">
+          {/* <div className="absolute bottom-4 left-1/2 -translate-x-1/2 pointer-events-none px-4 py-1.5 text-[11px] font-mono text-white/80 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
             <span>DRAG 3D DOME &bull; CLICK ANY TILE TO ENLARGE</span>
-          </div>
+          </div> */}
         </div>
 
       </div>
