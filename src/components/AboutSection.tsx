@@ -5,6 +5,8 @@ import dynamic from 'next/dynamic';
 import { Terminal, Cpu, Sparkles, Code2, ArrowRight, FileText, Mail } from 'lucide-react';
 import { soundFx } from './AudioSynth';
 
+import VerticalHeading from './VerticalHeading';
+
 // Dynamic import with ssr: false for Three.js & Rapier WebGL canvas
 const Lanyard = dynamic(() => import('./Lanyard/Lanyard'), {
   ssr: false,
@@ -24,6 +26,9 @@ export default function AboutSection() {
       id="about"
       className="relative z-10 w-full min-h-screen bg-[#000000] py-20 lg:py-28 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden flex items-center"
     >
+      {/* Vertical Section Heading */}
+      <VerticalHeading whiteText="ABOUT " redText="ME" />
+
       <div className="max-w-7xl mx-auto w-full relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           

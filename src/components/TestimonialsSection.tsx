@@ -3,6 +3,7 @@
 import React from 'react';
 import DomeGallery, { DomeImageItem } from './DomeGallery/DomeGallery';
 import { Sparkles } from 'lucide-react';
+import VerticalHeading from './VerticalHeading';
 
 const DOME_IMAGES: DomeImageItem[] = [
   {
@@ -37,6 +38,9 @@ export default function TestimonialsSection() {
       id="testimonials"
       className="relative z-10 w-full min-h-screen bg-[#000000] py-20 sm:py-28 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden flex flex-col justify-center items-center"
     >
+      {/* Vertical Section Heading */}
+      <VerticalHeading whiteText="TESTI" redText="MONIALS" />
+
       <div className="max-w-7xl w-full mx-auto relative z-10">
         
         {/* Header (Hidden) */}

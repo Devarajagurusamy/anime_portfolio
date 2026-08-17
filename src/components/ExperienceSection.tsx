@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'motion/react';
 import { Calendar, MapPin, Briefcase, Code2, Star } from 'lucide-react';
 import { soundFx } from './AudioSynth';
+import VerticalHeading from './VerticalHeading';
 
 interface ExperienceItem {
   id: string;
@@ -104,6 +105,9 @@ export default function ExperienceSection() {
       id="experience"
       className="relative z-10 w-full min-h-screen bg-[#000000] py-24 sm:py-32 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden flex flex-col items-center"
     >
+      {/* Vertical Section Heading */}
+      <VerticalHeading whiteText="EXPERI" redText="ENCE" />
+
       <div className="max-w-6xl w-full relative z-10">
         
         {/* Alternating Timeline Container */}

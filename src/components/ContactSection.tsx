@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import CurvedInput from './CurvedInput/CurvedInput';
+import VerticalHeading from './VerticalHeading';
 import {
   Mail,
   Phone,
@@ -117,14 +118,27 @@ export default function ContactSection() {
       id="contact"
       className="relative z-10 w-full min-h-screen bg-[#000000] py-20 sm:py-28 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden flex flex-col justify-between"
     >
+      {/* Vertical Section Heading */}
+      <VerticalHeading whiteText="CONTACT " redText="ME" />
+
       <div className="max-w-7xl w-full mx-auto relative z-10 my-auto">
         
         {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           
-          {/* Left Column: Direct Info & Telemetry */}
+          {/* Left Column: Direct Info & Character */}
           <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
             
+            {/* Portfolio Character */}
+            <div className="w-full flex justify-center lg:justify-start">
+              <img
+                src="/assets/character.png"
+                alt="Character Portrait"
+                className="w-full max-w-[340px] sm:max-w-[380px] lg:max-w-[400px] h-auto object-contain select-none pointer-events-none"
+                draggable={false}
+              />
+            </div>
+
             <div className="space-y-4">
               <p className="text-neutral-400 text-sm leading-relaxed font-sans">
                 Have an innovative idea, a high-performance web project, or looking for an experienced fullstack engineer to level up your team? Fill out the form or reach out directly.
