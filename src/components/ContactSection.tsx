@@ -268,7 +268,7 @@ export default function ContactSection() {
               {/* Form Content / State Handling */}
               {isSubmitted ? (
                 <div className="py-12 px-4 flex flex-col items-center justify-center text-center my-auto">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-green-500/50 bg-green-500/10 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(34,197,94,0.3)] animate-bounce">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-green-500/50 bg-green-500/10 flex items-center justify-center mb-6 shadow-md animate-bounce">
                     <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10 text-green-400" />
                   </div>
                   
@@ -294,7 +294,7 @@ export default function ContactSection() {
                     type="button"
                     onClick={handleReset}
                     onMouseEnter={() => soundFx.playHover()}
-                    className="px-6 py-2.5 rounded-lg bg-red-950/60 border border-red-500/40 hover:bg-red-900/60 text-white font-mono text-xs tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(229,9,20,0.3)] active:scale-95"
+                    className="px-6 py-2.5 rounded-lg bg-red-950/60 border border-red-500/40 hover:bg-red-900/60 text-white font-mono text-xs tracking-wider uppercase transition-all shadow-md active:scale-95"
                   >
                     SEND ANOTHER TRANSMISSION
                   </button>
@@ -334,8 +334,8 @@ export default function ContactSection() {
                           buttonTextColor="#ffffff"
                           textColor="#ffffff"
                           placeholderColor="#7c809c"
-                          shadowSize="lg"
-                          shadowColor="#e50914"
+                          shadowSize="md"
+                          shadowColor="#000000"
                           onSubmit={handleQuickSubmit}
                         />
                       </div>

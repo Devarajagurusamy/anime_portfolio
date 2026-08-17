@@ -85,7 +85,7 @@ export default function SkillsSection() {
               pathColor="rgba(229, 9, 20, 0.25)"
               pathWidth={2}
               centerContent={
-                <div className="relative flex flex-col items-center justify-center p-6 rounded-full border border-red-500/40 bg-black/80 backdrop-blur-xl shadow-[0_0_40px_rgba(229,9,20,0.3)] select-none">
+                <div className="relative flex flex-col items-center justify-center p-6 rounded-full border border-red-500/40 bg-black/80 backdrop-blur-xl shadow-xl select-none">
                   <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-dashed border-red-400/40 flex items-center justify-center animate-[spin_60s_linear_infinite] mb-2">
                     <Cpu className="w-8 h-8 sm:w-10 sm:h-10 text-red-500" />
                   </div>

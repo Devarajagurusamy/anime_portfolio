@@ -151,7 +151,7 @@ export default function ExperienceSection() {
             
             {/* Animated Solid Red Progress Line */}
             <div
-              className="absolute top-0 left-0 w-full bg-[#e50914] shadow-[0_0_10px_#ff1e42] transition-all duration-200"
+              className="absolute top-0 left-0 w-full bg-[#e50914] transition-all duration-200"
               style={{
                 height: `${Math.min(100, Math.max(0, (scrollProgress / 0.85) * 100))}%`
               }}
@@ -177,8 +177,8 @@ export default function ExperienceSection() {
                     <div
                       className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-mono text-sm sm:text-base font-bold transition-all duration-300 ${
                         isActive
-                          ? 'bg-black border-2 border-[#e50914] text-[#e50914] shadow-[0_0_18px_rgba(229,9,20,0.6)] scale-105'
-                          : 'bg-black border-2 border-white/30 text-white/90 group-hover:border-white/60'
+                          ? 'bg-black border-2 border-[#e50914] text-[#e50914] shadow-md scale-105'
+                          : 'bg-black/80 border-2 border-white/20 text-neutral-400'
                       }`}
                     >
                       {item.number}
@@ -195,7 +195,7 @@ export default function ExperienceSection() {
                     onMouseEnter={() => soundFx.playHover()}
                     className={`flex-1 rounded-2xl p-5 sm:p-7 transition-all duration-300 relative border overflow-hidden ${
                       isActive
-                        ? 'bg-black/90 border-[#e50914] shadow-[0_0_30px_rgba(229,9,20,0.15)]'
+                        ? 'bg-black/90 border-[#e50914] shadow-lg'
                         : 'bg-black/60 border-white/15 hover:border-white/30'
                     }`}
                   >

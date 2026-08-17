@@ -117,7 +117,7 @@ export default function WorkSection() {
           href="#projects"
           onClick={() => soundFx.playClick()}
           onMouseEnter={() => soundFx.playHover()}
-          className="inline-flex items-center gap-2.5 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg bg-black border border-red-600/90 hover:border-red-500 hover:bg-red-950/20 text-white hover:text-white font-mono text-xs sm:text-sm font-semibold tracking-widest uppercase transition-all duration-200 shadow-[0_0_18px_rgba(229,9,20,0.18)] hover:shadow-[0_0_25px_rgba(229,9,20,0.35)] group active:scale-98"
+          className="inline-flex items-center gap-2.5 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg bg-black border border-red-600/90 hover:border-red-500 hover:bg-red-950/20 text-white hover:text-white font-mono text-xs sm:text-sm font-semibold tracking-widest uppercase transition-all duration-200 shadow-md hover:shadow-lg group active:scale-98"
         >
           <span>VIEW ALL PROJECTS</span>
           <ArrowUpRight className="w-4 h-4 text-red-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform stroke-[2.5]" />

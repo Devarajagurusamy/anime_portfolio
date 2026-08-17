@@ -33,11 +33,6 @@ export default function AboutSection() {
           
           {/* LEFT SIDE: 3D Interactive Lanyard ID Card Badge */}
           <div className="lg:col-span-6 w-full h-[480px] sm:h-[560px] lg:h-[650px] relative flex items-center justify-center">
-            {/* Ambient Card Backlight Glow */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-red-600/10 blur-[90px]" />
-            </div>
-
             {/* Interactive Badge Canvas */}
             <div className="w-full h-full relative">
               <Lanyard
@@ -144,7 +139,7 @@ export default function AboutSection() {
                 href="#projects"
                 onClick={() => soundFx.playClick()}
                 onMouseEnter={() => soundFx.playHover()}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#e50914] hover:bg-red-600 text-white font-mono text-xs font-bold tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(229,9,20,0.4)] group"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#e50914] hover:bg-red-600 text-white font-mono text-xs font-bold tracking-wider uppercase transition-all shadow-md hover:shadow-lg group"
               >
                 <span>EXPLORE MISSIONS</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

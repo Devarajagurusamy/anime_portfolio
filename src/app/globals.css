@@ -7,7 +7,7 @@
   --bg-card: rgba(18, 19, 26, 0.75);
   --bg-card-hover: rgba(28, 30, 42, 0.85);
   --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(230, 57, 70, 0.4);
+  --border-accent: rgba(230, 57, 70, 0.5);
   --primary-red: #e63946;
   --neon-red: #ff1e42;
   --neon-cyan: #00f0ff;
@@ -31,7 +31,7 @@ html {
   color: var(--text-main);
   font-family: var(--font-body);
   scrollbar-width: thin;
-  scrollbar-color: var(--neon-red) #000;
+  scrollbar-color: var(--primary-red) #000;
 }
 
 body {
@@ -39,9 +39,6 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background-color: var(--bg-dark);
-  background-image: 
-    radial-gradient(circle at 50% 0%, rgba(230, 57, 70, 0.12) 0%, transparent 60%),
-    radial-gradient(circle at 100% 100%, rgba(157, 78, 221, 0.08) 0%, transparent 50%);
 }
 
 /* Custom Scrollbar */
@@ -54,12 +51,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--neon-red), var(--neon-purple));
+  background: var(--primary-red);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--neon-cyan);
+  background: #c10913;
 }
 
 /* Typography Helpers */
@@ -73,7 +70,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: var(--neon-red);
+  color: var(--primary-red);
 }
 
 /* Glassmorphism card */
@@ -88,8 +85,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .glass-panel:hover {
   background: var(--bg-card-hover);
-  border-color: var(--border-glow);
-  box-shadow: 0 12px 36px rgba(230, 57, 70, 0.15);
+  border-color: var(--border-accent);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
   transform: translateY(-3px);
 }
 
@@ -108,12 +105,12 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 0.35;
 }
 
-/* Neon glow buttons */
+/* Solid precision buttons */
 .btn-primary {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, var(--neon-red), #b7094c);
+  background: var(--primary-red);
   color: #ffffff;
   padding: 12px 28px;
   font-family: var(--font-mono);
@@ -126,13 +123,14 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
   text-decoration: none;
   transition: all 0.25s ease;
-  box-shadow: 0 4px 20px rgba(230, 57, 70, 0.4);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 6px 30px rgba(230, 57, 70, 0.7);
-  background: linear-gradient(135deg, #ff2a4b, #d90429);
+  background: #d90429;
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
 }
 
 .btn-secondary {
@@ -155,8 +153,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.1);
-  border-color: var(--neon-cyan);
-  color: var(--neon-cyan);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
   transform: translateY(-2px);
 }
 
@@ -202,8 +200,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .cyber-hud-card:hover {
   background: rgba(160, 12, 12, 0.65);
-  border-color: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 12px 32px rgba(255, 30, 66, 0.35), 0 0 15px rgba(255, 190, 11, 0.25);
+  border-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   transform: translateY(-2px) scale(1.02);
 }
 
@@ -237,17 +235,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .cyber-resume-btn:hover {
   background: rgba(160, 12, 12, 0.6);
-  border-color: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 6px 24px rgba(255, 30, 66, 0.4);
+  border-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
   transform: translateY(-2px);
-}
-
-/* Animations */
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.05); }
-}
-
-.pulse-glow {
-  animation: pulseGlow 4s infinite ease-in-out;
 }

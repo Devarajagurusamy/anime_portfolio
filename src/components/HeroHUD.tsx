@@ -43,8 +43,6 @@ export default function HeroHUD({ scrollProgress, onSelectSection }: HeroHUDProp
         <div className="relative w-[480px] h-[480px] md:w-[620px] md:h-[620px] lg:w-[720px] lg:h-[720px] rounded-full border border-red-500/15 flex items-center justify-center -translate-y-8">
           {/* Inner ring */}
           <div className="w-[360px] h-[360px] md:w-[480px] md:h-[480px] lg:w-[560px] lg:h-[560px] rounded-full border border-dashed border-red-400/15 animate-[spin_80s_linear_infinite]" />
-          {/* Subtle glow circle */}
-          <div className="absolute inset-0 rounded-full bg-red-600/10 blur-3xl pointer-events-none" />
         </div>
       </div>
 
