@@ -103,7 +103,7 @@ export default function ExperienceSection() {
     <section
       ref={containerRef}
       id="experience"
-      className="relative z-10 w-full min-h-screen bg-[#000000] py-24 sm:py-32 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden flex flex-col items-center"
+      className="relative z-10 w-full min-h-screen bg-transparent py-24 sm:py-32 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden flex flex-col items-center"
     >
       {/* Vertical Section Heading */}
       <VerticalHeading whiteText="EXPERI" redText="ENCE" />

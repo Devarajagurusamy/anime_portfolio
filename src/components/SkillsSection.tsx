@@ -23,7 +23,7 @@ export default function SkillsSection() {
   return (
     <section
       id="skills"
-      className="relative z-10 w-full min-h-screen bg-[#000000] py-20 sm:py-28 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden flex flex-col justify-center items-center"
+      className="relative z-10 w-full min-h-screen bg-transparent py-20 sm:py-28 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden flex flex-col justify-center items-center"
     >
       <div className="max-w-7xl w-full mx-auto relative z-10">
         

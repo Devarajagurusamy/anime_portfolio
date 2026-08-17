@@ -10,6 +10,7 @@ import TestimonialsSection from '@/components/TestimonialsSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import LineSidebar from '@/components/LineSidebar/LineSidebar';
+import Particles from '@/components/Particles/Particles';
 
 const SECTIONS = [
   { id: 'work', label: 'Work' },
@@ -79,6 +80,29 @@ export default function Home() {
 
   return (
     <main className="relative w-full bg-[#000000] min-h-screen text-white">
+      {/* Dynamic Cosmic Space Starfield Background — Fades in after Hero scrolling animation */}
+      <div
+        className={`fixed inset-0 z-0 pointer-events-none transition-opacity duration-1000 ${
+          showSidebar ? 'opacity-90' : 'opacity-0'
+        }`}
+        aria-hidden="true"
+      >
+        <Particles
+          particleCount={260}
+          particleSpread={24}
+          speed={0.15}
+          particleColors={['#ffffff', '#ffffff', '#e50914', '#ffe8e8', '#d6e8ff', '#ffffff']}
+          moveParticlesOnHover={true}
+          particleHoverFactor={0.6}
+          alphaParticles={true}
+          particleBaseSize={90}
+          sizeRandomness={1.2}
+          cameraDistance={22}
+          disableRotation={false}
+          pixelRatio={typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 2) : 1}
+        />
+      </div>
+
       {/* Floating Compact LineSidebar from React Bits — Active across all sections except Hero */}
       <aside
         className={`fixed right-3 sm:right-6 top-1/2 -translate-y-1/2 z-40 transition-all duration-500 hidden xl:block ${

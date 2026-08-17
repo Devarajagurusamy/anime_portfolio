@@ -40,7 +40,7 @@ export default function WorkSection() {
   return (
     <section
       id="projects"
-      className="relative z-10 w-full min-h-screen bg-black py-16 sm:py-20 px-4 sm:px-8 flex flex-col justify-center items-center overflow-hidden"
+      className="relative z-10 w-full min-h-screen bg-transparent py-16 sm:py-20 px-4 sm:px-8 flex flex-col justify-center items-center overflow-hidden"
     >
       {/* 1. 3D Circular Gallery Viewport */}
       <div className="relative w-full max-w-7xl h-[460px] sm:h-[540px] md:h-[600px] flex items-center justify-center my-2">

@@ -24,7 +24,7 @@ export default function AboutSection() {
   return (
     <section
       id="about"
-      className="relative z-10 w-full min-h-screen bg-[#000000] py-20 lg:py-28 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden flex items-center"
+      className="relative z-10 w-full min-h-screen bg-transparent py-20 lg:py-28 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden flex items-center"
     >
       {/* Vertical Section Heading */}
       <VerticalHeading whiteText="ABOUT " redText="ME" />
