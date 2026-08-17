@@ -46,7 +46,6 @@ export default function HeroCanvas() {
       drawWidth = canvasWidth;
       drawHeight = canvasWidth / imgRatio;
       offsetX = 0;
-      // Slight vertical adjustment for early frames so character head has ample top breathing room
       offsetY = (canvasHeight - drawHeight) / 2;
       if (frameIndex < 10) {
         offsetY = Math.max(offsetY, (canvasHeight - drawHeight) * 0.4);
@@ -58,8 +57,13 @@ export default function HeroCanvas() {
       offsetY = 0;
     }
 
-    // Match frame-001 crimson red backdrop
-    ctx.fillStyle = '#b80a0a';
+    // Crimson red for early frames, smoothly transitions
+    if (frameIndex < 100) {
+      ctx.fillStyle = '#b80a0a';
+    } else {
+      ctx.fillStyle = '#000000';
+    }
+
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
     lastDrawnFrameRef.current = frameIndex;
@@ -185,7 +189,7 @@ export default function HeroCanvas() {
             />
           </div>
           <span className="text-[11px] font-mono text-red-100 tracking-widest uppercase">
-            Synchronizing HUD {loadProgress}%
+            Synchronizing Engine {loadProgress}%
           </span>
         </div>
       </div>
@@ -200,7 +204,7 @@ export default function HeroCanvas() {
         />
       </div>
 
-      {/* Pixel-Perfect Cyber Hero HUD Overlay */}
+      {/* Cyber Hero HUD Overlay */}
       <HeroHUD scrollProgress={scrollProgress} />
     </>
   );

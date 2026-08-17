@@ -87,22 +87,13 @@ export default function Navbar() {
               <span>02. ARSENAL</span>
             </a>
             <a
-              href="#projects"
-              className="hover:text-[#9d4edd] transition-colors py-1 flex items-center gap-1.5"
-              onMouseEnter={() => soundFx.playHover()}
-              onClick={() => soundFx.playClick()}
-            >
-              <Layers className="w-3.5 h-3.5 text-[#9d4edd]" />
-              <span>03. PROJECTS</span>
-            </a>
-            <a
               href="#contact"
               className="hover:text-[#ff1e42] transition-colors py-1 flex items-center gap-1.5"
               onMouseEnter={() => soundFx.playHover()}
               onClick={() => soundFx.playClick()}
             >
               <Mail className="w-3.5 h-3.5 text-[#ff1e42]" />
-              <span>04. CONTACT</span>
+              <span>03. CONTACT</span>
             </a>
           </nav>
 

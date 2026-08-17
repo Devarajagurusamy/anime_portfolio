@@ -43,12 +43,12 @@ export default function StoryOverlays({ progress }: StoryOverlaysProps) {
 
         <div className="flex items-center gap-4">
           <a
-            href="#projects"
+            href="#arsenal"
             className="btn-primary"
             onMouseEnter={() => soundFx.playHover()}
             onClick={() => soundFx.playClick()}
           >
-            Explore Projects
+            Explore Arsenal
           </a>
           <a
             href="#about"
@@ -106,7 +106,7 @@ export default function StoryOverlays({ progress }: StoryOverlaysProps) {
             The Digital Arsenal
           </h2>
           <p className="text-gray-300 text-sm font-mono">
-            Scroll down to inspect profile stats, technology stack, and deployed projects.
+            Scroll down to inspect profile stats and technology stack.
           </p>
         </div>
       </div>
