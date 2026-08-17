@@ -25,7 +25,7 @@ export default function Home() {
   };
 
   return (
-    <main className="relative w-full bg-[#08080c] min-h-screen text-white">
+    <main className="relative w-full bg-[#000000] min-h-screen text-white">
       {/* 1. Hero Section with Scroll-Scrubbed Canvas Sequence & HUD */}
       <HeroCanvas onSelectSection={handleSelectSection} />
 

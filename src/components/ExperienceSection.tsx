@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Briefcase, Calendar, MapPin, Code2, Star, ArrowUpRight } from 'lucide-react';
+import { Briefcase, Calendar, MapPin, Code2, Star } from 'lucide-react';
 import { soundFx } from './AudioSynth';
 
 interface ExperienceItem {
@@ -60,15 +60,15 @@ const EXPERIENCES: ExperienceItem[] = [
     location: 'College Projects',
     iconType: 'star',
     description:
-      'Developed multiple projects in web development, UI/UX, and problem-solving to enhance technical skills and real-world experience.'
+      'Developed various fullstack and web design projects during coursework, building strong fundamentals in software engineering and modern web stacks.'
   }
 ];
 
 export default function ExperienceSection() {
+  const [activeStep, setActiveStep] = useState<number>(0);
+  const [scrollProgress, setScrollProgress] = useState<number>(0);
   const sectionRef = useRef<HTMLElement | null>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const [scrollProgress, setScrollProgress] = useState<number>(0);
-  const [activeStep, setActiveStep] = useState<number>(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,37 +76,36 @@ export default function ExperienceSection() {
       const rect = sectionRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      // Track scroll progress across the experience section
-      const totalScrollable = rect.height - windowHeight * 0.3;
-      const currentScroll = windowHeight * 0.6 - rect.top;
-      const progress = Math.min(1, Math.max(0, currentScroll / totalScrollable));
+      const totalScrollable = rect.height;
+      const currentScroll = windowHeight - rect.top;
+      const progress = Math.max(0, Math.min(1, currentScroll / totalScrollable));
+
       setScrollProgress(progress);
 
-      // Determine active card based on viewport visibility
-      const cardElements = cardsRef.current;
-      let currentActive = 0;
-      cardElements.forEach((card, idx) => {
-        if (card) {
-          const cardRect = card.getBoundingClientRect();
-          if (cardRect.top <= windowHeight * 0.65) {
-            currentActive = idx;
-          }
+      cardsRef.current.forEach((card, idx) => {
+        if (!card) return;
+        const cardRect = card.getBoundingClientRect();
+        if (cardRect.top <= windowHeight * 0.65) {
+          setActiveStep(prev => Math.max(prev, idx));
         }
       });
-      setActiveStep(currentActive);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const renderIcon = (type: ExperienceItem['iconType'], isActive: boolean) => {
-    const iconClass = `w-5 h-5 ${isActive ? 'text-[#e50914]' : 'text-white/80'}`;
+    const iconClass = `w-5 h-5 transition-colors ${
+      isActive ? 'text-[#e50914]' : 'text-neutral-500'
+    }`;
     switch (type) {
       case 'work':
-      case 'intern':
         return <Briefcase className={iconClass} />;
+      case 'intern':
+        return <Code2 className={iconClass} />;
       case 'code':
         return <Code2 className={iconClass} />;
       case 'star':
@@ -120,11 +119,11 @@ export default function ExperienceSection() {
     <section
       ref={sectionRef}
       id="experience"
-      className="relative z-10 w-full min-h-screen bg-black py-20 sm:py-28 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden flex flex-col items-center"
+      className="relative z-10 w-full min-h-screen bg-[#000000] py-20 sm:py-28 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden flex flex-col items-center"
     >
       <div className="max-w-5xl w-full relative z-10">
         
-        {/* 1. Header Matching Reference */}
+        {/* Header */}
         <div className="flex flex-col items-center justify-center text-center mb-16 sm:mb-20">
           <span className="text-[#e50914] font-mono tracking-[0.25em] text-xs sm:text-sm font-bold uppercase mb-2">
             // EXPERIENCE
@@ -134,22 +133,19 @@ export default function ExperienceSection() {
             MY <span className="text-[#e50914]">EXPERIENCE</span>
           </h2>
 
-          {/* Split dual-color underline (Red on left, White on right) */}
+          {/* Split dual-color underline */}
           <div className="flex items-center justify-center gap-1 mt-4">
             <span className="w-8 sm:w-10 h-[3px] bg-[#e50914] rounded-full inline-block" />
             <span className="w-8 sm:w-10 h-[3px] bg-white rounded-full inline-block" />
           </div>
         </div>
 
-        {/* 2. Timeline List with Stepper on Left and Cards on Right */}
-        <div className="relative w-full">
+        {/* Vertical Stepper Timeline (No Box Wrappers) */}
+        <div className="relative pl-6 sm:pl-10">
           
-          {/* Vertical Track Line connecting all stepper nodes */}
-          <div className="absolute left-[20px] sm:left-[24px] top-6 bottom-6 w-[2px] pointer-events-none">
-            {/* Background Dashed Line */}
+          {/* Vertical Progress Spine */}
+          <div className="absolute left-10 sm:left-14 top-4 bottom-8 w-[2px] pointer-events-none">
             <div className="w-full h-full border-l-2 border-dashed border-white/20" />
-            
-            {/* Animated Solid Red Progress Line */}
             <div
               className="absolute top-0 left-0 w-full bg-[#e50914] transition-all duration-200"
               style={{
@@ -159,7 +155,7 @@ export default function ExperienceSection() {
           </div>
 
           {/* Experience Items Container */}
-          <div className="space-y-6 sm:space-y-8">
+          <div className="space-y-10 sm:space-y-12">
             {EXPERIENCES.map((item, index) => {
               const isActive = activeStep >= index;
               const isCurrentlyActive = activeStep === index;
@@ -170,111 +166,76 @@ export default function ExperienceSection() {
                   ref={el => {
                     cardsRef.current[index] = el;
                   }}
-                  className="relative flex items-center gap-4 sm:gap-8 group"
+                  className="relative flex items-start gap-6 sm:gap-10 group"
                 >
-                  {/* STEPPER NODE (01, 02, 03, 04) */}
-                  <div className="relative z-20 flex-shrink-0">
+                  {/* STEPPER NODE */}
+                  <div className="relative z-20 flex-shrink-0 mt-1">
                     <div
                       className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-mono text-sm sm:text-base font-bold transition-all duration-300 ${
                         isActive
-                          ? 'bg-black border-2 border-[#e50914] text-[#e50914] shadow-md scale-105'
-                          : 'bg-black/80 border-2 border-white/20 text-neutral-400'
+                          ? 'bg-black border-2 border-[#e50914] text-[#e50914] scale-105'
+                          : 'bg-black border-2 border-white/20 text-neutral-400'
                       }`}
                     >
                       {item.number}
                     </div>
 
-                    {/* Active Pulsing Indicator */}
                     {isCurrentlyActive && (
                       <div className="absolute inset-0 rounded-full border border-[#e50914] animate-ping pointer-events-none opacity-40" />
                     )}
                   </div>
 
-                  {/* EXPERIENCE CARD CONTAINER */}
+                  {/* EXPERIENCE CONTENT (Pure Borderless Layout on Pitch Black) */}
                   <div
                     onMouseEnter={() => soundFx.playHover()}
-                    className={`flex-1 rounded-2xl p-5 sm:p-7 transition-all duration-300 relative border overflow-hidden ${
-                      isActive
-                        ? 'bg-black/90 border-[#e50914] shadow-lg'
-                        : 'bg-black/60 border-white/15 hover:border-white/30'
-                    }`}
+                    className="flex-1 py-1"
                   >
-                    {/* PRESENT BADGE (Top Right) */}
-                    {item.badge && (
-                      <div className="absolute top-0 right-0 bg-[#e50914] text-white font-mono text-[10px] sm:text-xs font-bold px-3 sm:px-4 py-1 rounded-bl-lg tracking-wider uppercase shadow-md">
-                        {item.badge}
-                      </div>
-                    )}
-
-                    {/* Card Inner Grid Layout */}
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6 items-start">
                       
-                      {/* Left Side: Icon, Role, Company, Date, Location */}
-                      <div className="md:col-span-6 flex items-start sm:items-center gap-4">
-                        {/* Circular Icon Container */}
-                        <div
-                          className={`w-11 h-11 sm:w-13 sm:h-13 rounded-full flex items-center justify-center flex-shrink-0 border transition-colors ${
-                            isActive
-                              ? 'border-[#e50914] bg-red-950/20'
-                              : 'border-white/20 bg-white/5'
-                          }`}
-                        >
-                          {renderIcon(item.iconType, isActive)}
-                        </div>
-
-                        <div className="flex flex-col">
-                          <h3 className="text-base sm:text-lg font-bold font-sans text-white tracking-tight">
+                      {/* Left: Role, Company, Period, Location */}
+                      <div className="md:col-span-5 flex flex-col">
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-lg sm:text-xl font-bold font-sans text-white tracking-tight">
                             {item.role}
                           </h3>
-                          <span className="text-xs sm:text-sm font-sans font-medium text-[#e50914] mt-0.5">
-                            {item.company}
-                          </span>
+                          {item.badge && (
+                            <span className="bg-[#e50914] text-white font-mono text-[9px] font-bold px-2 py-0.5 rounded tracking-wider uppercase">
+                              {item.badge}
+                            </span>
+                          )}
+                        </div>
 
-                          <div className="flex flex-col gap-1 mt-2 text-[11px] sm:text-xs text-neutral-400 font-sans">
-                            <div className="flex items-center gap-1.5">
-                              <Calendar className="w-3.5 h-3.5 text-neutral-400" />
-                              <span>{item.period}</span>
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                              <MapPin className="w-3.5 h-3.5 text-neutral-400" />
-                              <span>{item.location}</span>
-                            </div>
+                        <span className="text-sm font-sans font-medium text-[#e50914] mt-0.5">
+                          {item.company}
+                        </span>
+
+                        <div className="flex flex-col gap-1 mt-2 text-xs text-neutral-400 font-sans">
+                          <div className="flex items-center gap-1.5">
+                            <Calendar className="w-3.5 h-3.5 text-neutral-400" />
+                            <span>{item.period}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <MapPin className="w-3.5 h-3.5 text-neutral-400" />
+                            <span>{item.location}</span>
                           </div>
                         </div>
                       </div>
 
-                      {/* Right Side: Description with Red Bullet Point */}
-                      <div className="md:col-span-6 md:border-l md:border-white/10 md:pl-6 flex items-center">
-                        <div className="flex items-start gap-2.5">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#e50914] flex-shrink-0 mt-1.5 inline-block" />
-                          <p className="text-xs sm:text-sm text-neutral-300 font-sans leading-relaxed">
-                            {item.description}
-                          </p>
-                        </div>
+                      {/* Right: Description */}
+                      <div className="md:col-span-7 flex items-start gap-2.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#e50914] flex-shrink-0 mt-2 inline-block" />
+                        <p className="text-sm text-neutral-300 font-sans leading-relaxed">
+                          {item.description}
+                        </p>
                       </div>
 
                     </div>
-
                   </div>
-
                 </div>
               );
             })}
           </div>
 
-        </div>
-
-        {/* 3. Bottom Button Matching Reference */}
-        <div className="mt-14 sm:mt-16 flex justify-center">
-          <a
-            href="#experience"
-            onClick={() => soundFx.playClick()}
-            onMouseEnter={() => soundFx.playHover()}
-            className="inline-flex items-center gap-2.5 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg bg-black border border-red-600/90 hover:border-red-500 hover:bg-red-950/20 text-white font-mono text-xs sm:text-sm font-semibold tracking-widest uppercase transition-all duration-200 shadow-[0_0_18px_rgba(229,9,20,0.18)] hover:shadow-[0_0_25px_rgba(229,9,20,0.35)] group active:scale-98"
-          >
-            <span>VIEW FULL JOURNEY</span>
-            <ArrowUpRight className="w-4 h-4 text-[#e50914] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform stroke-[2.5]" />
-          </a>
         </div>
 
       </div>

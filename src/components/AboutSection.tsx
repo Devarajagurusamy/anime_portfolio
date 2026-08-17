@@ -9,7 +9,7 @@ import { soundFx } from './AudioSynth';
 const Lanyard = dynamic(() => import('./Lanyard/Lanyard'), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-full min-h-[500px] flex flex-col items-center justify-center gap-3">
+    <div className="w-full h-full min-h-[500px] flex flex-col items-center justify-center gap-3 bg-[#000000]">
       <div className="w-8 h-8 rounded-full border-2 border-red-500 border-t-transparent animate-spin" />
       <span className="text-xs font-mono text-neutral-400 tracking-widest uppercase">
         INITIALIZING PHYSICS ENGINE...
@@ -22,12 +22,8 @@ export default function AboutSection() {
   return (
     <section
       id="about"
-      className="relative z-10 w-full min-h-screen bg-[#08080c] py-20 lg:py-28 px-4 sm:px-8 md:px-12 lg:px-16 border-t border-red-900/30 overflow-hidden flex items-center"
+      className="relative z-10 w-full min-h-screen bg-[#000000] py-20 lg:py-28 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden flex items-center"
     >
-      {/* Background ambient lighting */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_40%,rgba(230,57,70,0.1),transparent_60%)] pointer-events-none" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none opacity-30" />
-
       <div className="max-w-7xl mx-auto w-full relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
@@ -44,7 +40,7 @@ export default function AboutSection() {
             </div>
 
             {/* Interaction Hint at bottom of badge */}
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 pointer-events-none px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[11px] font-mono text-neutral-400 flex items-center gap-2">
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 pointer-events-none px-3.5 py-1.5 text-[11px] font-mono text-neutral-400 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
               <span>DRAG & TOSS ID BADGE</span>
             </div>
@@ -53,7 +49,7 @@ export default function AboutSection() {
           {/* RIGHT SIDE: Heading, Bio, Stats, and Details */}
           <div className="lg:col-span-6 flex flex-col justify-center">
             {/* Category Tag */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-950/60 border border-red-500/30 text-red-400 text-xs font-mono tracking-widest uppercase mb-4 w-fit">
+            <div className="inline-flex items-center gap-2 text-red-400 text-xs font-mono tracking-widest uppercase mb-4 w-fit">
               <Sparkles className="w-3.5 h-3.5 text-red-400" />
               <span>// ABOUT ME</span>
             </div>
@@ -79,40 +75,40 @@ export default function AboutSection() {
               </p>
             </div>
 
-            {/* Stats Matrix Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-6">
-              <div className="p-3.5 rounded-xl border border-white/10 bg-white/[0.02] backdrop-blur-md">
-                <span className="text-2xl font-black font-mono text-white block">5+</span>
-                <span className="text-[10px] font-mono text-neutral-400 tracking-wider uppercase mt-0.5 block">
+            {/* Stats Matrix Grid (No Box Borders) */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 my-6">
+              <div className="py-2">
+                <span className="text-3xl font-black font-mono text-white block">5+</span>
+                <span className="text-[11px] font-mono text-neutral-400 tracking-wider uppercase mt-1 block">
                   Years Exp
                 </span>
               </div>
-              <div className="p-3.5 rounded-xl border border-white/10 bg-white/[0.02] backdrop-blur-md">
-                <span className="text-2xl font-black font-mono text-[#e50914] block">40+</span>
-                <span className="text-[10px] font-mono text-neutral-400 tracking-wider uppercase mt-0.5 block">
+              <div className="py-2">
+                <span className="text-3xl font-black font-mono text-[#e50914] block">40+</span>
+                <span className="text-[11px] font-mono text-neutral-400 tracking-wider uppercase mt-1 block">
                   Projects Done
                 </span>
               </div>
-              <div className="p-3.5 rounded-xl border border-white/10 bg-white/[0.02] backdrop-blur-md">
-                <span className="text-2xl font-black font-mono text-white block">100%</span>
-                <span className="text-[10px] font-mono text-neutral-400 tracking-wider uppercase mt-0.5 block">
+              <div className="py-2">
+                <span className="text-3xl font-black font-mono text-white block">100%</span>
+                <span className="text-[11px] font-mono text-neutral-400 tracking-wider uppercase mt-1 block">
                   Code Integrity
                 </span>
               </div>
-              <div className="p-3.5 rounded-xl border border-white/10 bg-white/[0.02] backdrop-blur-md">
-                <span className="text-2xl font-black font-mono text-amber-400 block">60 FPS</span>
-                <span className="text-[10px] font-mono text-neutral-400 tracking-wider uppercase mt-0.5 block">
+              <div className="py-2">
+                <span className="text-3xl font-black font-mono text-amber-400 block">60 FPS</span>
+                <span className="text-[11px] font-mono text-neutral-400 tracking-wider uppercase mt-1 block">
                   Performance
                 </span>
               </div>
             </div>
 
-            {/* Core Tech Stack Matrix */}
+            {/* Core Tech Stack Matrix (Clean flat tags) */}
             <div className="mb-8">
-              <span className="text-[11px] font-mono text-neutral-400 tracking-widest uppercase block mb-2.5">
+              <span className="text-[11px] font-mono text-neutral-400 tracking-widest uppercase block mb-3">
                 [ CORE CAPABILITIES & TECH ]
               </span>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2.5">
                 {[
                   'React / Next.js',
                   'TypeScript',
@@ -125,7 +121,7 @@ export default function AboutSection() {
                 ].map((tech, idx) => (
                   <span
                     key={idx}
-                    className="px-3 py-1 rounded-md bg-white/5 border border-white/10 text-xs font-mono text-neutral-200 hover:border-red-500/50 hover:text-white transition-colors"
+                    className="px-3 py-1 rounded text-xs font-mono text-neutral-300 bg-neutral-900/80 hover:text-white transition-colors"
                   >
                     {tech}
                   </span>
@@ -139,7 +135,7 @@ export default function AboutSection() {
                 href="#projects"
                 onClick={() => soundFx.playClick()}
                 onMouseEnter={() => soundFx.playHover()}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#e50914] hover:bg-red-600 text-white font-mono text-xs font-bold tracking-wider uppercase transition-all shadow-md hover:shadow-lg group"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded bg-[#e50914] hover:bg-red-600 text-white font-mono text-xs font-bold tracking-wider uppercase transition-all group"
               >
                 <span>EXPLORE MISSIONS</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -149,7 +145,7 @@ export default function AboutSection() {
                 href="#resume"
                 onClick={() => soundFx.playClick()}
                 onMouseEnter={() => soundFx.playHover()}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 text-white font-mono text-xs font-semibold tracking-wider uppercase transition-all"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded bg-neutral-900 hover:bg-neutral-800 text-white font-mono text-xs font-semibold tracking-wider uppercase transition-all"
               >
                 <FileText className="w-4 h-4" />
                 <span>RESUME</span>

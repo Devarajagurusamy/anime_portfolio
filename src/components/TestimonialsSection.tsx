@@ -2,7 +2,7 @@
 
 import React from 'react';
 import DomeGallery, { DomeImageItem } from './DomeGallery/DomeGallery';
-import { Sparkles, ShieldCheck } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 const DOME_IMAGES: DomeImageItem[] = [
   {
@@ -35,17 +35,13 @@ export default function TestimonialsSection() {
   return (
     <section
       id="testimonials"
-      className="relative z-10 w-full min-h-screen bg-[#08080c] py-20 sm:py-28 px-4 sm:px-8 md:px-12 lg:px-16 border-t border-red-900/30 overflow-hidden flex flex-col justify-center items-center"
+      className="relative z-10 w-full min-h-screen bg-[#000000] py-20 sm:py-28 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden flex flex-col justify-center items-center"
     >
-      {/* Ambient background lighting */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(230,57,70,0.1),transparent_70%)] pointer-events-none" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none opacity-40" />
-
       <div className="max-w-7xl w-full mx-auto relative z-10">
         
-        {/* 1. Header Matching Reference */}
-        <div className="flex flex-col items-center justify-center text-center mb-10 sm:mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-950/60 border border-red-500/30 text-red-400 text-xs font-mono tracking-widest uppercase mb-3">
+        {/* Header */}
+        <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12">
+          <div className="inline-flex items-center gap-2 text-red-400 text-xs font-mono tracking-widest uppercase mb-3">
             <Sparkles className="w-3.5 h-3.5 text-red-400" />
             <span>// TRANSMISSIONS & ENDORSEMENTS</span>
           </div>
@@ -65,49 +61,28 @@ export default function TestimonialsSection() {
           </p>
         </div>
 
-        {/* 2. 3D Dome Gallery Frame */}
-        <div className="relative w-full rounded-2xl border border-white/10 bg-neutral-950/80 backdrop-blur-xl p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden">
-          
-          {/* Cyber Status Bar */}
-          <div className="flex items-center justify-between px-4 py-2 border-b border-white/10 mb-2 font-mono text-xs text-neutral-400">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-white font-semibold tracking-wider">
-                DOME_FEED://LIVE_TRANSMISSIONS
-              </span>
-            </div>
-            <div className="flex items-center gap-3 text-[11px]">
-              <span className="text-neutral-500 hidden sm:inline">AUTHENTICATED CLIENTS</span>
-              <span className="text-red-400 font-bold tracking-widest uppercase flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-red-400 inline" />
-                VERIFIED REVIEWS
-              </span>
-            </div>
-          </div>
+        {/* 3D Dome Gallery Viewport (No Enclosing Box) */}
+        <div className="relative w-full h-[450px] sm:h-[520px] md:h-[600px] flex items-center justify-center">
+          <DomeGallery
+            images={DOME_IMAGES}
+            fit={0.55}
+            minRadius={520}
+            maxRadius={900}
+            segments={32}
+            dragSensitivity={18}
+            dragDampening={1.8}
+            openedImageWidth="300px"
+            openedImageHeight="380px"
+            imageBorderRadius="18px"
+            openedImageBorderRadius="24px"
+            overlayBlurColor="#000000"
+            grayscale={false}
+          />
 
-          {/* 3D Dome Gallery Viewport */}
-          <div className="relative w-full h-[420px] sm:h-[500px] md:h-[580px] flex items-center justify-center">
-            <DomeGallery
-              images={DOME_IMAGES}
-              fit={0.55}
-              minRadius={520}
-              maxRadius={900}
-              segments={32}
-              dragSensitivity={18}
-              dragDampening={1.8}
-              openedImageWidth="300px"
-              openedImageHeight="380px"
-              imageBorderRadius="18px"
-              openedImageBorderRadius="24px"
-              overlayBlurColor="#08080c"
-              grayscale={false}
-            />
-
-            {/* Interaction Hint */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 pointer-events-none px-4 py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[11px] font-mono text-white/80 shadow-lg flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
-              <span>DRAG 3D DOME &bull; CLICK ANY TILE TO ENLARGE</span>
-            </div>
+          {/* Interaction Hint */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 pointer-events-none px-4 py-1.5 text-[11px] font-mono text-white/80 flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
+            <span>DRAG 3D DOME &bull; CLICK ANY TILE TO ENLARGE</span>
           </div>
         </div>
 
