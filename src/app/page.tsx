@@ -6,10 +6,17 @@ import AboutSection from '@/components/AboutSection';
 import SkillsSection from '@/components/SkillsSection';
 import ExperienceSection from '@/components/ExperienceSection';
 import WorkSection from '@/components/WorkSection';
+import TestimonialsSection from '@/components/TestimonialsSection';
 
 export default function Home() {
   const handleSelectSection = (sectionId: string) => {
-    const targetId = sectionId === 'work' ? 'projects' : sectionId;
+    const targetId =
+      sectionId === 'work'
+        ? 'projects'
+        : sectionId === 'achievements'
+        ? 'testimonials'
+        : sectionId;
+
     const el = document.getElementById(targetId);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
@@ -32,6 +39,9 @@ export default function Home() {
 
       {/* 5. Work Section with 3D Circular Gallery */}
       <WorkSection />
+
+      {/* 6. Social Proof & Testimonials Section with 3D Dome Gallery */}
+      <TestimonialsSection />
     </main>
   );
 }
