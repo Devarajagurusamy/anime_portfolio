@@ -7,6 +7,7 @@ import SkillsSection from '@/components/SkillsSection';
 import ExperienceSection from '@/components/ExperienceSection';
 import WorkSection from '@/components/WorkSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
+import ContactSection from '@/components/ContactSection';
 
 export default function Home() {
   const handleSelectSection = (sectionId: string) => {
@@ -42,6 +43,9 @@ export default function Home() {
 
       {/* 6. Social Proof & Testimonials Section with 3D Dome Gallery */}
       <TestimonialsSection />
+
+      {/* 7. Contact Section with React Bits CurvedInput */}
+      <ContactSection />
     </main>
   );
 }
