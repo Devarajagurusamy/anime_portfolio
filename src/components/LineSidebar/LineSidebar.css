@@ -1,0 +1,110 @@
+.line-sidebar {
+  --accent-color: #e50914;
+  --text-color: #ffffff;
+  --marker-color: #404040;
+  --marker-length: 24px;
+  --marker-gap: 12px;
+  --tick-scale: 0.45;
+  --max-shift: 8px;
+  --item-gap: 36px;
+  --font-size: 0.72rem;
+  --smoothing: 180ms;
+
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  user-select: none;
+}
+
+.line-sidebar--markers {
+  padding-right: calc(var(--marker-length) + var(--marker-gap));
+}
+
+.line-sidebar__list {
+  list-style: none;
+  margin: 0;
+  padding: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--item-gap);
+}
+
+/* --effect (0..1) is driven per item by a rAF lerp in JS */
+.line-sidebar__item {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 20px;
+}
+
+/* Wide pointer target hit area */
+.line-sidebar__item::before {
+  content: '';
+  position: absolute;
+  inset: -12px -32px;
+}
+
+/* Hidden by default, smoothly reveals on hover / proximity */
+.line-sidebar__label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--font-size);
+  line-height: 1;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: color-mix(in srgb, var(--accent-color) calc(var(--effect, 0) * 100%), var(--text-color));
+  transform: translateX(calc(var(--effect, 0) * -1 * var(--max-shift)));
+  opacity: calc(var(--effect, 0));
+  pointer-events: none;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+/* Reveal label when hovering item */
+.line-sidebar__item:hover .line-sidebar__label {
+  opacity: 1;
+  transform: translateX(calc(-1 * var(--max-shift)));
+}
+
+.line-sidebar__index {
+  margin-right: 0.4rem;
+  font-size: 0.85em;
+  opacity: 0.6;
+}
+
+.line-sidebar__marker {
+  position: absolute;
+  top: 50%;
+  right: calc(-1 * var(--marker-length) - var(--marker-gap));
+  height: 1.5px;
+  width: var(--marker-length);
+  background-color: color-mix(in srgb, var(--accent-color) calc(var(--effect, 0) * 100%), var(--marker-color));
+  transform-origin: right center;
+  transform: translateY(-50%) scaleX(calc(0.6 + var(--effect, 0) * 0.7));
+  transition: background-color 0.2s ease;
+}
+
+/* Short static tick in the vertical gap between markers */
+.line-sidebar--markers .line-sidebar__item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: calc(100% + var(--item-gap) / 2);
+  right: calc(-1 * var(--marker-length) - var(--marker-gap));
+  height: 1px;
+  width: calc(var(--marker-length) * var(--tick-scale));
+  background-color: var(--marker-color);
+  opacity: 0.35;
+  transform: translateY(-50%);
+}
+
+/* Ticks scaling on hover */
+.line-sidebar--scale-tick .line-sidebar__item:not(:last-child)::after {
+  transform-origin: right center;
+  transform: translateY(-50%) scaleX(calc(0.6 + var(--effect, 0) * 0.5));
+}
