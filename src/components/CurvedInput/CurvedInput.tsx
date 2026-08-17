@@ -219,7 +219,7 @@ export const CurvedInput: React.FC<CurvedInputProps> = ({
   const buttonPathId = `ci-btn-${uid}`;
   const clipId = `ci-clip-${uid}`;
 
-  const rootRef = useRef<HTMLFormElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<SVGTextElement>(null);
@@ -338,7 +338,7 @@ export const CurvedInput: React.FC<CurvedInputProps> = ({
     setCaretIndex(target.selectionStart ?? target.value.length);
   };
 
-  const handleSubmit = (e?: React.FormEvent) => {
+  const handleSubmit = (e?: React.SyntheticEvent | React.FormEvent) => {
     if (e?.preventDefault) e.preventDefault();
     if (onSubmit) onSubmit(val);
   };
@@ -535,12 +535,11 @@ export const CurvedInput: React.FC<CurvedInputProps> = ({
   }
 
   return (
-    <form
+    <div
       ref={rootRef}
+      role="group"
       className={`curved-input ${focused ? 'curved-input--focused' : ''} ${className}`.trim()}
       style={{ width: typeof width === 'number' ? `${width}px` : width, ...style }}
-      onSubmit={handleSubmit}
-      noValidate
     >
       {content}
       <input
@@ -553,6 +552,12 @@ export const CurvedInput: React.FC<CurvedInputProps> = ({
         onChange={handleInputChange}
         onSelect={handleSelect}
         onKeyUp={handleSelect}
+        onKeyDown={e => {
+          if (e.key === 'Enter' && onSubmit) {
+            e.preventDefault();
+            handleSubmit(e);
+          }
+        }}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         aria-label={ariaLabel || placeholder || 'Curved input'}
@@ -561,7 +566,7 @@ export const CurvedInput: React.FC<CurvedInputProps> = ({
         autoCorrect="off"
         spellCheck={false}
       />
-    </form>
+    </div>
   );
 };
 
