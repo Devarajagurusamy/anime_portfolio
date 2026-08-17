@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Briefcase, Calendar, MapPin, Code2, Star } from 'lucide-react';
+import { motion, useScroll, useTransform, useSpring } from 'motion/react';
+import { Calendar, MapPin, Briefcase, Code2, Star } from 'lucide-react';
 import { soundFx } from './AudioSynth';
 
 interface ExperienceItem {
@@ -65,150 +66,99 @@ const EXPERIENCES: ExperienceItem[] = [
 ];
 
 export default function ExperienceSection() {
-  const [activeStep, setActiveStep] = useState<number>(0);
-  const [scrollProgress, setScrollProgress] = useState<number>(0);
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const containerRef = useRef<HTMLElement | null>(null);
+  const [activeIndices, setActiveIndices] = useState<number[]>([]);
+
+  // Scroll Progress tied smoothly to the container
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start 80%', 'end 70%']
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 25,
+    restDelta: 0.001
+  });
+
+  const lineHeight = useTransform(smoothProgress, [0, 1], ['0%', '100%']);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
-      const rect = sectionRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-
-      const totalScrollable = rect.height;
-      const currentScroll = windowHeight - rect.top;
-      const progress = Math.max(0, Math.min(1, currentScroll / totalScrollable));
-
-      setScrollProgress(progress);
-
-      cardsRef.current.forEach((card, idx) => {
-        if (!card) return;
-        const cardRect = card.getBoundingClientRect();
-        if (cardRect.top <= windowHeight * 0.65) {
-          setActiveStep(prev => Math.max(prev, idx));
+    const unsubscribe = smoothProgress.on('change', latest => {
+      const newActive: number[] = [];
+      EXPERIENCES.forEach((_, idx) => {
+        const threshold = (idx + 0.3) / EXPERIENCES.length;
+        if (latest >= threshold) {
+          newActive.push(idx);
         }
       });
-    };
+      setActiveIndices(newActive);
+    });
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const renderIcon = (type: ExperienceItem['iconType'], isActive: boolean) => {
-    const iconClass = `w-5 h-5 transition-colors ${
-      isActive ? 'text-[#e50914]' : 'text-neutral-500'
-    }`;
-    switch (type) {
-      case 'work':
-        return <Briefcase className={iconClass} />;
-      case 'intern':
-        return <Code2 className={iconClass} />;
-      case 'code':
-        return <Code2 className={iconClass} />;
-      case 'star':
-        return <Star className={iconClass} />;
-      default:
-        return <Briefcase className={iconClass} />;
-    }
-  };
+    return () => unsubscribe();
+  }, [smoothProgress]);
 
   return (
     <section
-      ref={sectionRef}
+      ref={containerRef}
       id="experience"
-      className="relative z-10 w-full min-h-screen bg-[#000000] py-20 sm:py-28 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden flex flex-col items-center"
+      className="relative z-10 w-full min-h-screen bg-[#000000] py-24 sm:py-32 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden flex flex-col items-center"
     >
-      <div className="max-w-5xl w-full relative z-10">
+      <div className="max-w-6xl w-full relative z-10">
         
-        {/* Header (Hidden) */}
-        {/* <div className="flex flex-col items-center justify-center text-center mb-16 sm:mb-20">
-          <span className="text-[#e50914] font-mono tracking-[0.25em] text-xs sm:text-sm font-bold uppercase mb-2">
-            // EXPERIENCE
-          </span>
-
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight font-sans text-white uppercase select-none">
-            MY <span className="text-[#e50914]">EXPERIENCE</span>
-          </h2>
-
-          <div className="flex items-center justify-center gap-1 mt-4">
-            <span className="w-8 sm:w-10 h-[3px] bg-[#e50914] rounded-full inline-block" />
-            <span className="w-8 sm:w-10 h-[3px] bg-white rounded-full inline-block" />
-          </div>
-        </div> */}
-
-        {/* Vertical Stepper Timeline (No Box Wrappers) */}
-        <div className="relative pl-6 sm:pl-10">
+        {/* Alternating Timeline Container */}
+        <div className="relative w-full">
           
-          {/* Vertical Progress Spine */}
-          <div className="absolute left-10 sm:left-14 top-4 bottom-8 w-[2px] pointer-events-none">
-            <div className="w-full h-full border-l-2 border-dashed border-white/20" />
-            <div
-              className="absolute top-0 left-0 w-full bg-[#e50914] transition-all duration-200"
-              style={{
-                height: `${Math.min(100, Math.max(0, (scrollProgress / 0.85) * 100))}%`
-              }}
+          {/* Central Vertical Spine Line (Desktop center) / Left Spine (Mobile) */}
+          <div className="absolute left-6 md:left-1/2 top-4 bottom-8 -translate-x-1/2 w-[2px] pointer-events-none">
+            {/* Background dashed track */}
+            <div className="w-full h-full border-l-2 border-dashed border-neutral-800" />
+            
+            {/* Smooth animated solid red laser trace */}
+            <motion.div
+              className="absolute top-0 left-0 w-full bg-[#e50914] origin-top"
+              style={{ height: lineHeight }}
             />
           </div>
 
-          {/* Experience Items Container */}
-          <div className="space-y-10 sm:space-y-12">
+          {/* Timeline Items */}
+          <div className="space-y-16 sm:space-y-24 md:space-y-28">
             {EXPERIENCES.map((item, index) => {
-              const isActive = activeStep >= index;
-              const isCurrentlyActive = activeStep === index;
+              const isEven = index % 2 === 0;
+              const isActive = activeIndices.includes(index);
 
               return (
                 <div
                   key={item.id}
-                  ref={el => {
-                    cardsRef.current[index] = el;
-                  }}
-                  className="relative flex items-start gap-6 sm:gap-10 group"
+                  className="relative flex flex-col md:flex-row items-start md:items-center w-full"
                 >
-                  {/* STEPPER NODE */}
-                  <div className="relative z-20 flex-shrink-0 mt-1">
-                    <div
-                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-mono text-sm sm:text-base font-bold transition-all duration-300 ${
-                        isActive
-                          ? 'bg-black border-2 border-[#e50914] text-[#e50914] scale-105'
-                          : 'bg-black border-2 border-white/20 text-neutral-400'
-                      }`}
-                    >
-                      {item.number}
-                    </div>
-
-                    {isCurrentlyActive && (
-                      <div className="absolute inset-0 rounded-full border border-[#e50914] animate-ping pointer-events-none opacity-40" />
-                    )}
-                  </div>
-
-                  {/* EXPERIENCE CONTENT (Pure Borderless Layout on Pitch Black) */}
-                  <div
-                    onMouseEnter={() => soundFx.playHover()}
-                    className="flex-1 py-1"
-                  >
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6 items-start">
-                      
-                      {/* Left: Role, Company, Period, Location */}
-                      <div className="md:col-span-5 flex flex-col">
-                        <div className="flex items-center gap-2">
-                          <h3 className="text-lg sm:text-xl font-bold font-sans text-white tracking-tight">
-                            {item.role}
-                          </h3>
+                  {/* Left Side (50% on desktop) */}
+                  <div className="w-full md:w-1/2 pl-14 md:pl-0 md:pr-14">
+                    {isEven ? (
+                      <motion.div
+                        initial={{ opacity: 0, x: -50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: false, amount: 0.3 }}
+                        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                        onMouseEnter={() => soundFx.playHover()}
+                        className="flex flex-col md:items-end md:text-right space-y-2"
+                      >
+                        <div className="flex items-center gap-2 md:justify-end">
                           {item.badge && (
-                            <span className="bg-[#e50914] text-white font-mono text-[9px] font-bold px-2 py-0.5 rounded tracking-wider uppercase">
+                            <span className="bg-[#e50914] text-white font-mono text-[10px] font-bold px-2 py-0.5 rounded tracking-wider uppercase">
                               {item.badge}
                             </span>
                           )}
+                          <h3 className="text-xl sm:text-2xl font-bold font-sans text-white tracking-tight">
+                            {item.role}
+                          </h3>
                         </div>
 
-                        <span className="text-sm font-sans font-medium text-[#e50914] mt-0.5">
+                        <span className="text-sm sm:text-base font-sans font-medium text-[#e50914]">
                           {item.company}
                         </span>
 
-                        <div className="flex flex-col gap-1 mt-2 text-xs text-neutral-400 font-sans">
+                        <div className="flex flex-wrap items-center gap-4 text-xs font-sans text-neutral-400 md:justify-end pt-1">
                           <div className="flex items-center gap-1.5">
                             <Calendar className="w-3.5 h-3.5 text-neutral-400" />
                             <span>{item.period}</span>
@@ -218,18 +168,78 @@ export default function ExperienceSection() {
                             <span>{item.location}</span>
                           </div>
                         </div>
-                      </div>
 
-                      {/* Right: Description */}
-                      <div className="md:col-span-7 flex items-start gap-2.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#e50914] flex-shrink-0 mt-2 inline-block" />
-                        <p className="text-sm text-neutral-300 font-sans leading-relaxed">
+                        <p className="text-sm text-neutral-300 font-sans leading-relaxed pt-2 max-w-lg">
                           {item.description}
                         </p>
-                      </div>
-
-                    </div>
+                      </motion.div>
+                    ) : (
+                      <div className="hidden md:block" />
+                    )}
                   </div>
+
+                  {/* Central Stepper Checkpoint Node */}
+                  <div className="absolute left-6 md:left-1/2 top-0 md:top-1/2 -translate-x-1/2 md:-translate-y-1/2 z-20">
+                    <motion.div
+                      animate={{
+                        scale: isActive ? 1.15 : 1,
+                        backgroundColor: isActive ? '#e50914' : '#000000',
+                        borderColor: isActive ? '#e50914' : '#333333',
+                        color: isActive ? '#ffffff' : '#777777'
+                      }}
+                      transition={{ duration: 0.3 }}
+                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-mono text-sm sm:text-base font-bold border-2 select-none shadow-none cursor-default"
+                    >
+                      {item.number}
+                    </motion.div>
+                  </div>
+
+                  {/* Right Side (50% on desktop) */}
+                  <div className="w-full md:w-1/2 pl-14 md:pl-14">
+                    {!isEven ? (
+                      <motion.div
+                        initial={{ opacity: 0, x: 50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: false, amount: 0.3 }}
+                        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                        onMouseEnter={() => soundFx.playHover()}
+                        className="flex flex-col md:items-start md:text-left space-y-2"
+                      >
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-xl sm:text-2xl font-bold font-sans text-white tracking-tight">
+                            {item.role}
+                          </h3>
+                          {item.badge && (
+                            <span className="bg-[#e50914] text-white font-mono text-[10px] font-bold px-2 py-0.5 rounded tracking-wider uppercase">
+                              {item.badge}
+                            </span>
+                          )}
+                        </div>
+
+                        <span className="text-sm sm:text-base font-sans font-medium text-[#e50914]">
+                          {item.company}
+                        </span>
+
+                        <div className="flex flex-wrap items-center gap-4 text-xs font-sans text-neutral-400 pt-1">
+                          <div className="flex items-center gap-1.5">
+                            <Calendar className="w-3.5 h-3.5 text-neutral-400" />
+                            <span>{item.period}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <MapPin className="w-3.5 h-3.5 text-neutral-400" />
+                            <span>{item.location}</span>
+                          </div>
+                        </div>
+
+                        <p className="text-sm text-neutral-300 font-sans leading-relaxed pt-2 max-w-lg">
+                          {item.description}
+                        </p>
+                      </motion.div>
+                    ) : (
+                      <div className="hidden md:block" />
+                    )}
+                  </div>
+
                 </div>
               );
             })}

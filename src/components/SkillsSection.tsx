@@ -2,7 +2,8 @@
 
 import React from 'react';
 import OrbitImages from './OrbitImages/OrbitImages';
-import { Cpu, Sparkles } from 'lucide-react';
+import { Cpu, Sparkles, Code, GeorgianLari, Cog } from 'lucide-react';
+import { GreaterCompare } from 'three';
 
 const TECH_IMAGES = [
   'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
@@ -61,15 +62,15 @@ export default function SkillsSection() {
             responsive={true}
             baseWidth={1200}
             showPath={true}
-            pathColor="rgba(229, 9, 20, 0.2)"
+            pathColor="rgba(206, 205, 205, 0.25)"
             pathWidth={1.5}
             centerContent={
               <div className="relative flex flex-col items-center justify-center p-6 rounded-full bg-black select-none">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-dashed border-red-500/40 flex items-center justify-center animate-[spin_60s_linear_infinite] mb-2">
-                  <Cpu className="w-8 h-8 sm:w-10 sm:h-10 text-red-500" />
+                <div className="w-16 h-16 sm:w-20 sm:h-20  flex items-center justify-center animate-[spin_60s_linear_infinite] mb-2">
+                  <Cog className="w-8 h-8 sm:w-10 sm:h-10 text-red-500" />
                 </div>
                 <span className="font-mono font-black text-xs sm:text-sm tracking-wider text-white">
-                  DEVARAJA
+                  SKILLS
                 </span>
                 <span className="text-[10px] font-mono text-red-400 uppercase tracking-widest mt-0.5">
                   CORE MATRIX
