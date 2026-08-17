@@ -39,8 +39,8 @@ export default function TestimonialsSection() {
     >
       <div className="max-w-7xl w-full mx-auto relative z-10">
         
-        {/* Header */}
-        <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12">
+        {/* Header (Hidden) */}
+        {/* <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12">
           <div className="inline-flex items-center gap-2 text-red-400 text-xs font-mono tracking-widest uppercase mb-3">
             <Sparkles className="w-3.5 h-3.5 text-red-400" />
             <span>// TRANSMISSIONS & ENDORSEMENTS</span>
@@ -50,7 +50,6 @@ export default function TestimonialsSection() {
             SOCIAL PROOF & <span className="text-[#e50914]">TESTIMONIALS</span>
           </h2>
 
-          {/* Split dual-color underline */}
           <div className="flex items-center justify-center gap-1 mt-4">
             <span className="w-8 sm:w-10 h-[3px] bg-[#e50914] rounded-full inline-block" />
             <span className="w-8 sm:w-10 h-[3px] bg-white rounded-full inline-block" />
@@ -59,7 +58,7 @@ export default function TestimonialsSection() {
           <p className="mt-4 font-mono text-xs sm:text-sm text-neutral-400 max-w-lg">
             [ 3D DOME MATRIX // DRAG & CLICK TILES TO INSPECT VERIFIED ENDORSEMENTS ]
           </p>
-        </div>
+        </div> */}
 
         {/* 3D Dome Gallery Viewport (No Enclosing Box) */}
         <div className="relative w-full h-[450px] sm:h-[520px] md:h-[600px] flex items-center justify-center">

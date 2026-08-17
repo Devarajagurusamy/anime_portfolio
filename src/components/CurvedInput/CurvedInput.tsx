@@ -206,7 +206,7 @@ export const CurvedInput: React.FC<CurvedInputProps> = ({
   buttonColor,
   buttonTextColor,
   iconColor,
-  shadowSize = 'md',
+  shadowSize = 'none',
   shadowColor,
   showButton = true,
   showIcon = true,
@@ -434,8 +434,7 @@ export const CurvedInput: React.FC<CurvedInputProps> = ({
           </clipPath>
         </defs>
 
-        <path className="curved-input__ring" d={bandPath} fill="none" stroke={accentColor} strokeWidth={borderWidth + 6} />
-        <path d={bandPath} fill={bgColor} stroke={strokeColor} strokeWidth={borderWidth} />
+        <path d={bandPath} fill={bgColor} stroke={focused ? accentColor : strokeColor} strokeWidth={borderWidth} />
 
         <path id={layoutPathId} d={layoutPath} fill="none" />
 

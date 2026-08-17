@@ -29,6 +29,9 @@ export default function Home() {
       {/* 1. Hero Section with Scroll-Scrubbed Canvas Sequence & HUD */}
       <HeroCanvas onSelectSection={handleSelectSection} />
 
+      {/* 5. Work Section with 3D Circular Gallery */}
+      <WorkSection />
+
       {/* 2. About Section with 3D Lanyard on Left, Heading & Bio on Right */}
       <AboutSection />
 
@@ -38,8 +41,7 @@ export default function Home() {
       {/* 4. Experience Section with Curved Checkpoint Progress Stepper */}
       <ExperienceSection />
 
-      {/* 5. Work Section with 3D Circular Gallery */}
-      <WorkSection />
+      
 
       {/* 6. Social Proof & Testimonials Section with 3D Dome Gallery */}
       <TestimonialsSection />

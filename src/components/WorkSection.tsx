@@ -54,8 +54,8 @@ export default function WorkSection() {
       id="projects"
       className="relative z-10 w-full min-h-screen bg-black py-16 sm:py-20 px-4 sm:px-8 flex flex-col justify-between items-center overflow-hidden"
     >
-      {/* 1. Header Section Matching Reference */}
-      <div className="flex flex-col items-center justify-center text-center mt-2 mb-4">
+      {/* 1. Header Section Matching Reference (Hidden) */}
+      {/* <div className="flex flex-col items-center justify-center text-center mt-2 mb-4">
         <span className="text-red-500 font-mono tracking-[0.3em] text-xs sm:text-sm font-bold uppercase mb-2">
           // WORK
         </span>
@@ -64,12 +64,11 @@ export default function WorkSection() {
           SELECTED <span className="text-[#e50914]">WORK</span>
         </h2>
 
-        {/* Dual-color underline indicator */}
         <div className="flex items-center justify-center gap-1.5 mt-3">
           <span className="w-7 sm:w-9 h-[3px] bg-white rounded-full inline-block" />
           <span className="w-7 sm:w-9 h-[3px] bg-[#e50914] rounded-full inline-block" />
         </div>
-      </div>
+      </div> */}
 
       {/* 2. 3D Circular Gallery with Circular Left / Right Arrow Buttons */}
       <div className="relative w-full max-w-7xl h-[460px] sm:h-[540px] md:h-[600px] flex items-center justify-center my-4">
@@ -112,7 +111,7 @@ export default function WorkSection() {
       </div>
 
       {/* 3. Bottom Button Matching Reference */}
-      <div className="mt-4 mb-6 flex justify-center">
+      {/* <div className="mt-4 mb-6 flex justify-center">
         <a
           href="#projects"
           onClick={() => soundFx.playClick()}
@@ -122,7 +121,7 @@ export default function WorkSection() {
           <span>VIEW ALL PROJECTS</span>
           <ArrowUpRight className="w-4 h-4 text-red-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform stroke-[2.5]" />
         </a>
-      </div>
+      </div> */}
     </section>
   );
 }

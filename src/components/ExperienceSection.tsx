@@ -123,8 +123,8 @@ export default function ExperienceSection() {
     >
       <div className="max-w-5xl w-full relative z-10">
         
-        {/* Header */}
-        <div className="flex flex-col items-center justify-center text-center mb-16 sm:mb-20">
+        {/* Header (Hidden) */}
+        {/* <div className="flex flex-col items-center justify-center text-center mb-16 sm:mb-20">
           <span className="text-[#e50914] font-mono tracking-[0.25em] text-xs sm:text-sm font-bold uppercase mb-2">
             // EXPERIENCE
           </span>
@@ -133,12 +133,11 @@ export default function ExperienceSection() {
             MY <span className="text-[#e50914]">EXPERIENCE</span>
           </h2>
 
-          {/* Split dual-color underline */}
           <div className="flex items-center justify-center gap-1 mt-4">
             <span className="w-8 sm:w-10 h-[3px] bg-[#e50914] rounded-full inline-block" />
             <span className="w-8 sm:w-10 h-[3px] bg-white rounded-full inline-block" />
           </div>
-        </div>
+        </div> */}
 
         {/* Vertical Stepper Timeline (No Box Wrappers) */}
         <div className="relative pl-6 sm:pl-10">

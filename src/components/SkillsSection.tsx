@@ -27,8 +27,8 @@ export default function SkillsSection() {
     >
       <div className="max-w-7xl w-full mx-auto relative z-10">
         
-        {/* Header */}
-        <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12">
+        {/* Header (Hidden) */}
+        {/* <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12">
           <div className="inline-flex items-center gap-2 text-red-400 text-xs font-mono tracking-widest uppercase mb-3">
             <Sparkles className="w-3.5 h-3.5 text-red-400" />
             <span>// TECHNICAL ARSENAL</span>
@@ -38,7 +38,6 @@ export default function SkillsSection() {
             CORE <span className="text-[#e50914]">SKILLS</span>
           </h2>
 
-          {/* Split dual-color underline */}
           <div className="flex items-center justify-center gap-1 mt-4">
             <span className="w-8 sm:w-10 h-[3px] bg-[#e50914] rounded-full inline-block" />
             <span className="w-8 sm:w-10 h-[3px] bg-white rounded-full inline-block" />
@@ -47,7 +46,7 @@ export default function SkillsSection() {
           <p className="mt-4 font-mono text-xs sm:text-sm text-neutral-400 max-w-lg">
             [ ORBITAL TECH MATRIX // ACTIVE STACK TELEMETRY ]
           </p>
-        </div>
+        </div> */}
 
         {/* OrbitImages Component Container (No Enclosing Box) */}
         <div className="relative w-full h-[420px] sm:h-[520px] md:h-[580px] flex items-center justify-center">

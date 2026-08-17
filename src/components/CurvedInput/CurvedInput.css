@@ -21,36 +21,21 @@
   font-family: inherit;
 }
 
-.curved-input__ring {
-  opacity: 0;
-  transition: opacity 0.25s ease;
-}
-
-.curved-input--focused .curved-input__ring {
-  opacity: 0.28;
-}
-
 .curved-input__button {
   cursor: pointer;
   outline: none;
 }
 
 .curved-input__button-bg {
-  transition:
-    filter 0.2s ease,
-    opacity 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 
 .curved-input__button:hover .curved-input__button-bg {
-  filter: brightness(1.12);
+  opacity: 0.9;
 }
 
 .curved-input__button:active .curved-input__button-bg {
-  filter: brightness(0.94);
-}
-
-.curved-input__button:focus-visible .curved-input__button-bg {
-  filter: brightness(1.18);
+  opacity: 0.8;
 }
 
 .curved-input__field {

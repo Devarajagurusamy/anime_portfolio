@@ -4,16 +4,15 @@ import React, { useState } from 'react';
 import CurvedInput from './CurvedInput/CurvedInput';
 import {
   Mail,
-  Sparkles,
+  Phone,
+  Send,
   MapPin,
   Clock,
   CheckCircle2,
   Copy,
   MessageSquare,
-  Zap,
   ArrowUp,
-  Terminal,
-  Radio
+  ArrowRight
 } from 'lucide-react';
 import { soundFx } from './AudioSynth';
 
@@ -35,10 +34,42 @@ const TwitterIcon = ({ className = 'w-4 h-4' }: { className?: string }) => (
   </svg>
 );
 
+// SVG Chip Icons for CurvedInput
+const UserChip = (
+  <g transform="translate(0, 0)">
+    <rect x="-15" y="-11" width="30" height="22" rx="5" fill="#e50914" />
+    <circle cx="0" cy="-2.5" r="3" fill="#ffffff" />
+    <path d="M -5 6 C -5 2.5 5 2.5 5 6 Z" fill="#ffffff" />
+  </g>
+);
+
+const MailChip = (
+  <g transform="translate(0, 0)">
+    <rect x="-15" y="-11" width="30" height="22" rx="5" fill="#e50914" />
+    <rect x="-6" y="-4" width="12" height="8.5" rx="1.2" fill="none" stroke="#ffffff" strokeWidth="1.2" />
+    <path d="M -6 -3.5 L 0 1 L 6 -3.5" fill="none" stroke="#ffffff" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+  </g>
+);
+
+const PhoneChip = (
+  <g transform="translate(0, 0)">
+    <rect x="-15" y="-11" width="30" height="22" rx="5" fill="#e50914" />
+    <path d="M -3.5 -4.5 C -4.8 -3.2 -4.8 2.8 2.8 4.2 C 3.6 4.2 4 3.4 3.6 2.6 L 2.8 1.8 C 2.4 1.4 2 1.4 1.6 1.8 L 0.8 2.6 C -0.8 1.8 -1.6 1 -2.4 -0.6 L -1.6 -1.4 C -1.2 -1.8 -1.2 -2.2 -1.6 -2.6 L -2.4 -3.4 C -3.2 -4.2 -3.6 -3.8 -3.5 -4.5 Z" fill="#ffffff" />
+  </g>
+);
+
+const MessageChip = (
+  <g transform="translate(0, 0)">
+    <rect x="-15" y="-11" width="30" height="22" rx="5" fill="#e50914" />
+    <path d="M -5 -4 L 5 -4 C 6 -4 6 -3 6 -2 L 6 2 C 6 3 5 3 4 3 L 1 3 L -2.5 5.5 L -2.5 3 L -5 3 C -6 3 -6 2 -6 1 L -6 -3 C -6 -4 -5 -4 -5 -4 Z" fill="none" stroke="#ffffff" strokeWidth="1.2" strokeLinejoin="round" />
+  </g>
+);
+
 export default function ContactSection() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     message: ''
   });
   const [copied, setCopied] = useState(false);
@@ -56,21 +87,22 @@ export default function ContactSection() {
     }
   };
 
-  const handleQuickSubmit = (val: string) => {
-    if (!val.trim()) return;
+  const handleSubmit = (e?: React.FormEvent) => {
+    if (e?.preventDefault) e.preventDefault();
+    if (!formData.name && !formData.email && !formData.message) return;
     soundFx.playClick();
     setIsTransmitting(true);
 
     setTimeout(() => {
       setIsTransmitting(false);
       setIsSubmitted(true);
-    }, 1000);
+    }, 900);
   };
 
   const handleReset = () => {
     soundFx.playClick();
     setIsSubmitted(false);
-    setFormData({ name: '', email: '', message: '' });
+    setFormData({ name: '', email: '', phone: '', message: '' });
   };
 
   const scrollToTop = () => {
@@ -87,29 +119,7 @@ export default function ContactSection() {
     >
       <div className="max-w-7xl w-full mx-auto relative z-10 my-auto">
         
-        {/* Section Header */}
-        <div className="flex flex-col items-center justify-center text-center mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 text-red-400 text-xs font-mono tracking-widest uppercase mb-3">
-            <Radio className="w-3.5 h-3.5 text-red-400 animate-pulse" />
-            <span>// DIRECT COMM LINK & TRANSMISSION</span>
-          </div>
-
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight font-sans text-white uppercase select-none">
-            GET IN <span className="text-[#e50914]">TOUCH</span>
-          </h2>
-
-          {/* Split dual-color underline */}
-          <div className="flex items-center justify-center gap-1 mt-4">
-            <span className="w-8 sm:w-10 h-[3px] bg-[#e50914] rounded-full inline-block" />
-            <span className="w-8 sm:w-10 h-[3px] bg-white rounded-full inline-block" />
-          </div>
-
-          <p className="mt-4 font-mono text-xs sm:text-sm text-neutral-400 max-w-xl">
-            [ SECURE QUANTUM UPLINK // OPEN FOR FREELANCE, ROLES & COLLABORATIONS ]
-          </p>
-        </div>
-
-        {/* Main Grid (No Box Wrappers) */}
+        {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           
           {/* Left Column: Direct Info & Telemetry */}
@@ -125,7 +135,7 @@ export default function ContactSection() {
                 LET&apos;S BUILD THE <span className="text-[#e50914]">FUTURE</span> TOGETHER.
               </h3>
               <p className="text-neutral-400 text-sm leading-relaxed font-sans">
-                Have an innovative idea, a high-performance web project, or looking for an experienced fullstack engineer to level up your team? Initiate a transmission below.
+                Have an innovative idea, a high-performance web project, or looking for an experienced fullstack engineer to level up your team? Fill out the form or reach out directly.
               </p>
             </div>
 
@@ -216,10 +226,9 @@ export default function ContactSection() {
 
           </div>
 
-          {/* Right Column: Interactive Curved Input Transmission Station */}
+          {/* Right Column: Redesigned 4-Field Curved Input Form */}
           <div className="lg:col-span-7 flex flex-col">
             
-            {/* Form Content / State Handling */}
             {isSubmitted ? (
               <div className="py-12 px-4 flex flex-col items-center justify-center text-center my-auto">
                 <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-green-500/50 bg-green-500/10 flex items-center justify-center mb-6 shadow-md animate-bounce">
@@ -230,120 +239,154 @@ export default function ContactSection() {
                   TRANSMISSION DISPATCHED!
                 </h3>
                 <p className="text-xs sm:text-sm font-sans text-neutral-300 max-w-md mb-6 leading-relaxed">
-                  Your message packet has been routed successfully into the personal queue. Expect a response within 24 hours.
+                  Thank you, <strong className="text-white">{formData.name || 'Friend'}</strong>. Your message has been received and will be reviewed within 24 hours.
                 </p>
 
                 <button
                   type="button"
                   onClick={handleReset}
                   onMouseEnter={() => soundFx.playHover()}
-                  className="px-6 py-2.5 rounded bg-[#e50914] hover:bg-red-600 text-white font-mono text-xs tracking-wider uppercase transition-all shadow-md active:scale-95"
+                  className="px-6 py-2.5 rounded bg-[#e50914] hover:bg-red-600 text-white font-mono text-xs tracking-wider uppercase transition-all shadow-md active:scale-95 cursor-pointer"
                 >
-                  SEND ANOTHER TRANSMISSION
+                  SEND ANOTHER MESSAGE
                 </button>
               </div>
             ) : (
-              <div className="flex flex-col flex-1 space-y-6">
+              <form onSubmit={handleSubmit} className="flex flex-col space-y-5">
+                
+                {/* 1. Name Field */}
                 <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[11px] font-mono text-neutral-400 tracking-wider uppercase flex items-center gap-1.5">
-                      <Zap className="w-3.5 h-3.5 text-red-500" />
-                      01. INSTANT DIRECT DISPATCH
-                    </span>
-                    <span className="text-[10px] font-mono text-red-400">
-                      CURVED REACT BITS INTERFACE
-                    </span>
-                  </div>
-                  <p className="text-xs text-neutral-400 font-sans mb-4">
-                    Type your email below and click <strong className="text-white">Transmit</strong> for immediate contact initiation.
-                  </p>
-
-                  {/* 1. Quick Dispatch CurvedInput */}
-                  <div className="w-full flex justify-center py-2">
-                    <CurvedInput
-                      placeholder="your.email@organization.com"
-                      buttonText={isTransmitting ? 'Sending...' : 'Transmit'}
-                      type="email"
-                      theme="dark"
-                      width="100%"
-                      bend={20}
-                      height={62}
-                      cornerRadius={16}
-                      fontSize={15}
-                      backgroundColor="#0a0a0a"
-                      borderColor="#222222"
-                      buttonColor="#e50914"
-                      buttonTextColor="#ffffff"
-                      textColor="#ffffff"
-                      placeholderColor="#7c809c"
-                      shadowSize="md"
-                      shadowColor="#000000"
-                      onSubmit={handleQuickSubmit}
-                    />
-                  </div>
+                  <label className="block text-[11px] font-mono text-neutral-300 uppercase tracking-wider mb-1.5">
+                    NAME
+                  </label>
+                  <CurvedInput
+                    placeholder="Enter your name"
+                    type="text"
+                    theme="dark"
+                    width="100%"
+                    bend={8}
+                    height={56}
+                    cornerRadius={14}
+                    fontSize={14}
+                    showButton={false}
+                    shadowSize="none"
+                    icon={UserChip}
+                    backgroundColor="#0a0a0a"
+                    borderColor="#222222"
+                    buttonColor="#e50914"
+                    iconColor="#e50914"
+                    textColor="#ffffff"
+                    placeholderColor="#686c87"
+                    value={formData.name}
+                    onChange={v => setFormData(prev => ({ ...prev, name: v }))}
+                  />
                 </div>
 
-                <div className="relative flex items-center justify-center my-2">
-                  <div className="border-t border-neutral-800 w-full" />
-                  <span className="bg-[#000000] px-3 font-mono text-[10px] text-neutral-500 uppercase tracking-widest absolute">
-                    OR COMPLETE DETAILED INQUIRY
-                  </span>
+                {/* 2. Email ID Field */}
+                <div>
+                  <label className="block text-[11px] font-mono text-neutral-300 uppercase tracking-wider mb-1.5">
+                    EMAIL ID
+                  </label>
+                  <CurvedInput
+                    placeholder="Enter your email address"
+                    type="email"
+                    theme="dark"
+                    width="100%"
+                    bend={8}
+                    height={56}
+                    cornerRadius={14}
+                    fontSize={14}
+                    showButton={false}
+                    shadowSize="none"
+                    icon={MailChip}
+                    backgroundColor="#0a0a0a"
+                    borderColor="#222222"
+                    buttonColor="#e50914"
+                    iconColor="#e50914"
+                    textColor="#ffffff"
+                    placeholderColor="#686c87"
+                    value={formData.email}
+                    onChange={v => setFormData(prev => ({ ...prev, email: v }))}
+                  />
                 </div>
 
-                {/* 2. Detailed Curved Form Fields */}
-                <div className="space-y-4">
-                  {/* Name Curved Input */}
-                  <div>
-                    <label className="block text-[11px] font-mono text-neutral-300 uppercase tracking-wider mb-1.5">
-                      02. IDENTIFIER / NAME
-                    </label>
-                    <CurvedInput
-                      placeholder="Your Name / Call-Sign"
-                      type="text"
-                      theme="dark"
-                      width="100%"
-                      bend={-12}
-                      height={54}
-                      cornerRadius={14}
-                      fontSize={14}
-                      showButton={false}
-                      backgroundColor="#0a0a0a"
-                      borderColor="#222222"
-                      textColor="#ffffff"
-                      placeholderColor="#686c87"
-                      value={formData.name}
-                      onChange={v => setFormData(prev => ({ ...prev, name: v }))}
-                    />
-                  </div>
-
-                  {/* Message Curved Input */}
-                  <div>
-                    <label className="block text-[11px] font-mono text-neutral-300 uppercase tracking-wider mb-1.5">
-                      03. TRANSMISSION PAYLOAD / MESSAGE
-                    </label>
-                    <CurvedInput
-                      placeholder="Tell me about your project, timeline, or query..."
-                      type="text"
-                      theme="dark"
-                      width="100%"
-                      bend={16}
-                      height={58}
-                      cornerRadius={14}
-                      fontSize={14}
-                      buttonText="Send Query"
-                      backgroundColor="#0a0a0a"
-                      borderColor="#222222"
-                      buttonColor="#e50914"
-                      buttonTextColor="#ffffff"
-                      textColor="#ffffff"
-                      placeholderColor="#686c87"
-                      value={formData.message}
-                      onChange={v => setFormData(prev => ({ ...prev, message: v }))}
-                      onSubmit={() => handleQuickSubmit(formData.message || formData.name)}
-                    />
-                  </div>
+                {/* 3. Phone Number (Optional) Field */}
+                <div>
+                  <label className="block text-[11px] font-mono text-neutral-300 uppercase tracking-wider mb-1.5">
+                    PHONE NUMBER (OPTIONAL)
+                  </label>
+                  <CurvedInput
+                    placeholder="Enter your phone number (optional)"
+                    type="tel"
+                    theme="dark"
+                    width="100%"
+                    bend={8}
+                    height={56}
+                    cornerRadius={14}
+                    fontSize={14}
+                    showButton={false}
+                    shadowSize="none"
+                    icon={PhoneChip}
+                    backgroundColor="#0a0a0a"
+                    borderColor="#222222"
+                    buttonColor="#e50914"
+                    iconColor="#e50914"
+                    textColor="#ffffff"
+                    placeholderColor="#686c87"
+                    value={formData.phone}
+                    onChange={v => setFormData(prev => ({ ...prev, phone: v }))}
+                  />
                 </div>
-              </div>
+
+                {/* 4. Message Field */}
+                <div>
+                  <label className="block text-[11px] font-mono text-neutral-300 uppercase tracking-wider mb-1.5">
+                    MESSAGE
+                  </label>
+                  <CurvedInput
+                    placeholder="Tell me about your project, idea, or query..."
+                    type="text"
+                    theme="dark"
+                    width="100%"
+                    bend={12}
+                    height={58}
+                    cornerRadius={14}
+                    fontSize={14}
+                    showButton={false}
+                    shadowSize="none"
+                    icon={MessageChip}
+                    backgroundColor="#0a0a0a"
+                    borderColor="#222222"
+                    buttonColor="#e50914"
+                    iconColor="#e50914"
+                    textColor="#ffffff"
+                    placeholderColor="#686c87"
+                    value={formData.message}
+                    onChange={v => setFormData(prev => ({ ...prev, message: v }))}
+                    onSubmit={() => handleSubmit()}
+                  />
+                </div>
+
+                {/* Submit Action Button */}
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    onMouseEnter={() => soundFx.playHover()}
+                    disabled={isTransmitting}
+                    className="w-full py-3.5 px-6 rounded-lg bg-[#e50914] hover:bg-red-600 disabled:opacity-50 text-white font-mono text-sm font-bold tracking-wider uppercase transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98 shadow-md"
+                  >
+                    {isTransmitting ? (
+                      <span>TRANSMITTING...</span>
+                    ) : (
+                      <>
+                        <span>SEND MESSAGE</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    )}
+                  </button>
+                </div>
+
+              </form>
             )}
 
           </div>
@@ -358,7 +401,6 @@ export default function ContactSection() {
           </div>
 
           <div className="flex items-center gap-6">
-            {/* Back to Top button */}
             <button
               type="button"
               onClick={scrollToTop}
