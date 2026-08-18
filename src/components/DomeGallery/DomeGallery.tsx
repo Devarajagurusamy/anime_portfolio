@@ -27,6 +27,9 @@ export interface DomeGalleryProps {
   imageBorderRadius?: string;
   openedImageBorderRadius?: string;
   grayscale?: boolean;
+  onSelect?: (index: number, item: DomeImageItem) => void;
+  autoRotate?: boolean;
+  autoRotateSpeed?: number;
 }
 
 const DEFAULT_IMAGES: DomeImageItem[] = [
@@ -143,7 +146,10 @@ export default function DomeGallery({
   openedImageHeight = '420px',
   imageBorderRadius = '20px',
   openedImageBorderRadius = '24px',
-  grayscale = false
+  grayscale = false,
+  onSelect,
+  autoRotate = true,
+  autoRotateSpeed = 0.08
 }: DomeGalleryProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const mainRef = useRef<HTMLElement | null>(null);
@@ -279,6 +285,27 @@ export default function DomeGallery({
   useEffect(() => {
     applyTransform(rotationRef.current.x, rotationRef.current.y);
   }, []);
+
+  useEffect(() => {
+    if (!autoRotate) return;
+    let animId: number;
+    const autoLoop = () => {
+      if (
+        autoRotate &&
+        !draggingRef.current &&
+        !inertiaRAF.current &&
+        !openingRef.current &&
+        !focusedElRef.current
+      ) {
+        const nextY = wrapAngleSigned(rotationRef.current.y + autoRotateSpeed);
+        rotationRef.current = { x: rotationRef.current.x, y: nextY };
+        applyTransform(rotationRef.current.x, nextY);
+      }
+      animId = requestAnimationFrame(autoLoop);
+    };
+    animId = requestAnimationFrame(autoLoop);
+    return () => cancelAnimationFrame(animId);
+  }, [autoRotate, autoRotateSpeed]);
 
   const stopInertia = useCallback(() => {
     if (inertiaRAF.current) {
@@ -592,9 +619,17 @@ export default function DomeGallery({
       if (movedRef.current) return;
       if (performance.now() - lastDragEndAt.current < 80) return;
       if (openingRef.current) return;
+      if (onSelect) {
+        const src = e.currentTarget.parentElement?.dataset.src || '';
+        const foundIndex = images.findIndex((img: any) =>
+          typeof img === 'string' ? img === src : img.src === src
+        );
+        onSelect(foundIndex >= 0 ? foundIndex : 0, { src, alt: '' });
+        return;
+      }
       openItemFromElement(e.currentTarget);
     },
-    [openItemFromElement]
+    [openItemFromElement, onSelect, images]
   );
 
   const onTilePointerUp = useCallback(
@@ -604,9 +639,17 @@ export default function DomeGallery({
       if (movedRef.current) return;
       if (performance.now() - lastDragEndAt.current < 80) return;
       if (openingRef.current) return;
+      if (onSelect) {
+        const src = e.currentTarget.parentElement?.dataset.src || '';
+        const foundIndex = images.findIndex((img: any) =>
+          typeof img === 'string' ? img === src : img.src === src
+        );
+        onSelect(foundIndex >= 0 ? foundIndex : 0, { src, alt: '' });
+        return;
+      }
       openItemFromElement(e.currentTarget);
     },
-    [openItemFromElement]
+    [openItemFromElement, onSelect, images]
   );
 
   useEffect(() => {
