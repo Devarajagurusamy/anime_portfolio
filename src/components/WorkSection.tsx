@@ -101,6 +101,7 @@ export default function WorkSection() {
               <span className="text-[#e50914] mx-0.5">O</span>
               <span>R</span>
               <span>K</span>
+              <span>S</span>
             </h2>
 
             {/* White Dotted Curved Orbit Arc */}

@@ -3,12 +3,9 @@
 import React, { useState } from 'react';
 import CurvedInput from './CurvedInput/CurvedInput';
 import VerticalHeading from './VerticalHeading';
+import TrueFocus from './TrueFocus/TrueFocus';
 import {
-  Mail,
-  MapPin,
-  Clock,
   CheckCircle2,
-  Copy,
   ArrowRight
 } from 'lucide-react';
 import { soundFx } from './AudioSynth';
@@ -51,20 +48,8 @@ export default function ContactSection() {
     phone: '',
     message: ''
   });
-  const [copied, setCopied] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isTransmitting, setIsTransmitting] = useState(false);
-
-  const contactEmail = 'devarajagurusamy@gmail.com';
-
-  const handleCopyEmail = () => {
-    soundFx.playClick();
-    if (typeof navigator !== 'undefined') {
-      navigator.clipboard.writeText(contactEmail);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
-    }
-  };
 
   const handleSubmit = (e?: React.FormEvent) => {
     if (e?.preventDefault) e.preventDefault();
@@ -97,74 +82,35 @@ export default function ContactSection() {
         {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           
-          {/* Left Column: Direct Info & Character */}
-          <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
+          {/* Left Column: Character & Centered TrueFocus Tagline */}
+          <div className="lg:col-span-5 flex flex-col items-center justify-center space-y-4">
             
             {/* Portfolio Character */}
-            <div className="w-full flex justify-center lg:justify-start">
+            <div className="w-full flex justify-center items-center">
               <img
                 src="/assets/character.png"
                 alt="Character Portrait"
-                className="w-full max-w-[340px] sm:max-w-[380px] lg:max-w-[400px] h-auto object-contain select-none pointer-events-none"
+                className="w-full max-w-[320px] sm:max-w-[360px] lg:max-w-[380px] h-auto object-contain select-none pointer-events-none mx-auto"
                 draggable={false}
               />
             </div>
 
-            {/* Direct Info List */}
-            <div className="space-y-4 pt-2">
+            {/* Centered Cyberpunk 'Let's Build' TrueFocus Tagline */}
+            <div className="w-full pt-1 flex flex-col items-center justify-center text-center select-none">
+              <TrueFocus
+                sentence="Let's Build."
+                manualMode={false}
+                blurAmount={3.5}
+                borderColor="#e50914"
+                glowColor="rgba(229, 9, 20, 0.75)"
+                animationDuration={0.6}
+                pauseBetweenAnimations={1.2}
+              />
               
-              {/* Email Copy Item */}
-              <div className="flex items-center justify-between gap-3 group">
-                <div className="flex items-center gap-3 min-w-0">
-                  <Mail className="w-5 h-5 text-red-500 flex-shrink-0" />
-                  <div className="flex flex-col min-w-0">
-                    <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-wider">
-                      Direct Email
-                    </span>
-                    <span className="text-sm font-mono font-bold text-white truncate">
-                      {contactEmail}
-                    </span>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleCopyEmail}
-                  onMouseEnter={() => soundFx.playHover()}
-                  className="px-3 py-1.5 rounded bg-neutral-900 hover:bg-neutral-800 text-neutral-300 hover:text-white transition-all flex items-center gap-1.5 text-xs font-mono cursor-pointer"
-                  title="Copy Email"
-                >
-                  {copied ? (
-                    <>
-                      <CheckCircle2 className="w-3.5 h-3.5 text-green-400" />
-                      <span className="text-green-400 font-bold">COPIED</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5" />
-                      <span>COPY</span>
-                    </>
-                  )}
-                </button>
+              <div className="pt-3 flex items-center justify-center gap-2 text-xs font-mono text-[#e50914]  tracking-widest">
+                {/* <span className="w-2 h-2 rounded-full bg-[#e50914] animate-pulse" /> */}
+                <span>Give Life to your Ideas</span>
               </div>
-
-              {/* Location & Timezone */}
-              <div className="grid grid-cols-2 gap-4 pt-2">
-                <div className="flex items-center gap-2.5">
-                  <MapPin className="w-4 h-4 text-red-500 flex-shrink-0" />
-                  <div className="flex flex-col">
-                    <span className="text-[10px] font-mono text-neutral-400 uppercase">LOCATION</span>
-                    <span className="text-xs font-mono font-bold text-white">Tamil Nadu, IN</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <Clock className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                  <div className="flex flex-col">
-                    <span className="text-[10px] font-mono text-neutral-400 uppercase">TIMEZONE</span>
-                    <span className="text-xs font-mono font-bold text-white">IST (UTC+5:30)</span>
-                  </div>
-                </div>
-              </div>
-
             </div>
 
           </div>

@@ -1,8 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import LetterGlitch from './LetterGlitch/LetterGlitch';
-import { ArrowUp } from 'lucide-react';
+import {
+  ArrowUp,
+  Mail,
+  Phone,
+  MapPin,
+  Copy,
+  CheckCircle2,
+  FileDown
+} from 'lucide-react';
 import { soundFx } from './AudioSynth';
 
 const GithubIcon = ({ className = 'w-4 h-4' }: { className?: string }) => (
@@ -24,6 +32,30 @@ const TwitterIcon = ({ className = 'w-4 h-4' }: { className?: string }) => (
 );
 
 export default function Footer() {
+  const [copiedEmail, setCopiedEmail] = useState(false);
+  const [copiedPhone, setCopiedPhone] = useState(false);
+
+  const contactEmail = 'devarajagurusamy@gmail.com';
+  const contactPhone = '+91 93454 48981';
+
+  const handleCopyEmail = () => {
+    soundFx.playClick();
+    if (typeof navigator !== 'undefined') {
+      navigator.clipboard.writeText(contactEmail);
+      setCopiedEmail(true);
+      setTimeout(() => setCopiedEmail(false), 2500);
+    }
+  };
+
+  const handleCopyPhone = () => {
+    soundFx.playClick();
+    if (typeof navigator !== 'undefined') {
+      navigator.clipboard.writeText(contactPhone);
+      setCopiedPhone(true);
+      setTimeout(() => setCopiedPhone(false), 2500);
+    }
+  };
+
   const scrollToTop = () => {
     soundFx.playClick();
     if (typeof window !== 'undefined') {
@@ -41,10 +73,10 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative w-full overflow-hidden border-t border-neutral-900 bg-[#020202] text-neutral-400">
+    <footer className="relative w-full overflow-hidden border-t border-neutral-900/80 bg-[#020202] text-neutral-400">
       
       {/* 1. LetterGlitch Canvas Layer with Cyber Red, Black & White Palette */}
-      <div className="absolute inset-0 pointer-events-none opacity-40 select-none">
+      <div className="absolute inset-0 pointer-events-none opacity-20 select-none">
         <LetterGlitch
           glitchColors={[
             '#e50914',
@@ -63,43 +95,156 @@ export default function Footer() {
         />
       </div>
 
-      {/* 2. Soft Ambient Vignette Overlay */}
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/80 via-black/40 to-black/85" />
+      {/* 2. Ambient Vignette Overlay for High-Contrast Readability */}
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/95 via-black/70 to-black/95" />
 
-      {/* Top Accent Line */}
-      <div className="relative z-10 w-full h-[1px] bg-gradient-to-r from-transparent via-[#e50914]/60 to-transparent" />
+      {/* Top Accent Gradient Line */}
+      <div className="relative z-10 w-full h-[1px] bg-gradient-to-r from-transparent via-[#e50914]/70 to-transparent" />
 
-      {/* 3. Footer Content Layer */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 md:px-12 lg:px-16 py-12 sm:py-16">
+      {/* 3. Main Footer Content Container */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 md:px-12 lg:px-16 py-10 sm:py-12 space-y-8">
         
-        {/* Upper Footer Row */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center justify-between pb-10 border-b border-white/10">
+        {/* Main Grid: 3 Clean Symmetrical Columns */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-start">
           
-          {/* Brand & Tagline */}
-          <div className="md:col-span-5 flex flex-col space-y-2">
+          {/* Col 1: Identity & Bio */}
+          <div className="md:col-span-5 flex flex-col space-y-3">
             <div className="flex items-center gap-3">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#e50914] shadow-[0_0_10px_#e50914] animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-[#e50914] shadow-[0_0_5px_#e50914] animate-bounce" />
               <span className="text-xl sm:text-2xl font-black font-mono tracking-wider text-white">
                 DEVARAJA<span className="text-[#e50914]">.</span>
               </span>
-              <span className="px-2 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] font-mono text-neutral-300">
-                SYSTEM ONLINE
-              </span>
+              
             </div>
-            <p className="text-xs font-sans text-neutral-400 max-w-sm leading-relaxed">
+            <p className="text-xs font-sans text-neutral-400 leading-relaxed max-w-sm">
               Full-Stack Developer & Creative Engineer specialized in high-performance web applications, 3D interactive graphics, and anime-inspired digital experiences.
             </p>
+            <div className="flex items-center gap-2 text-xs font-mono text-neutral-400 pt-1">
+              <MapPin className="w-3.5 h-3.5 text-[#e50914] flex-shrink-0" />
+              <span>Tamil Nadu, India</span>
+            </div>
           </div>
 
-          {/* Center Navigation Links */}
-          <div className="md:col-span-4 flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs">
+          {/* Col 2: Direct Contact Channels (Email & Phone) */}
+          <div className="md:col-span-4 flex flex-col space-y-2.5">
+            <div className="text-[11px] font-mono uppercase tracking-widest text-[#e50914] flex items-center gap-2 mb-0.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#e50914]" />
+              <span>DIRECT CONTACT</span>
+            </div>
+
+            {/* Email Channel */}
+            <div className="flex items-center justify-between gap-2 p-2.5 rounded-lg border border-white/10 bg-white/[0.02] hover:border-white/20 transition-all">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <Mail className="w-4 h-4 text-[#e50914] flex-shrink-0" />
+                <span className="text-xs font-mono font-bold text-white truncate" title={contactEmail}>
+                  {contactEmail}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={handleCopyEmail}
+                onMouseEnter={() => soundFx.playHover()}
+                className="px-2 py-1 rounded bg-neutral-900 hover:bg-neutral-800 border border-white/10 text-neutral-300 hover:text-white transition-all flex items-center gap-1 text-[10px] font-mono cursor-pointer active:scale-95 flex-shrink-0"
+                title="Copy Email"
+              >
+                {copiedEmail ? (
+                  <>
+                    <CheckCircle2 className="w-3 h-3 text-green-400" />
+                    <span className="text-green-400 font-bold">COPIED</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3 h-3" />
+                    <span>COPY</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Phone Channel */}
+            <div className="flex items-center justify-between gap-2 p-2.5 rounded-lg border border-white/10 bg-white/[0.02] hover:border-white/20 transition-all">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <Phone className="w-4 h-4 text-[#e50914] flex-shrink-0" />
+                <a
+                  href={`tel:${contactPhone.replace(/\s+/g, '')}`}
+                  className="text-xs font-mono font-bold text-white hover:text-[#e50914] transition-colors truncate"
+                  title="Call Phone Number"
+                >
+                  {contactPhone}
+                </a>
+              </div>
+              <button
+                type="button"
+                onClick={handleCopyPhone}
+                onMouseEnter={() => soundFx.playHover()}
+                className="px-2 py-1 rounded bg-neutral-900 hover:bg-neutral-800 border border-white/10 text-neutral-300 hover:text-white transition-all flex items-center gap-1 text-[10px] font-mono cursor-pointer active:scale-95 flex-shrink-0"
+                title="Copy Phone Number"
+              >
+                {copiedPhone ? (
+                  <>
+                    <CheckCircle2 className="w-3 h-3 text-green-400" />
+                    <span className="text-green-400 font-bold">COPIED</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3 h-3" />
+                    <span>COPY</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+          </div>
+
+          {/* Col 3: Resume Download & Return to Top */}
+          <div className="md:col-span-3 flex flex-col space-y-3">
+            <div className="text-[11px] font-mono uppercase tracking-widest text-neutral-400 mb-0.5">
+              DOCUMENTATION
+            </div>
+            
+            {/* Download Resume Button */}
+            <a
+              href="/assets/resume.pdf"
+              download="Devaraj_Gurusamy_Resume.pdf"
+              onClick={() => soundFx.playClick()}
+              onMouseEnter={() => soundFx.playHover()}
+              className="w-full py-2.5 px-4 rounded-lg bg-[#e50914] hover:bg-red-600 text-white font-mono text-xs font-bold tracking-wider uppercase transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(229,9,20,0.35)] active:scale-95 cursor-pointer select-none"
+              title="Download Full Resume / CV"
+            >
+              <FileDown className="w-4 h-4" />
+              <span>DOWNLOAD RESUME</span>
+            </a>
+
+            {/* Return To Top Button */}
+            <button
+              type="button"
+              onClick={scrollToTop}
+              onMouseEnter={() => soundFx.playHover()}
+              className="w-full py-2 px-4 rounded-lg border border-white/10 bg-black/60 hover:bg-white/10 hover:border-white/20 text-neutral-300 hover:text-white transition-all flex items-center justify-center gap-2 text-xs font-mono active:scale-95 group cursor-pointer shadow-sm select-none"
+              title="Scroll back to top"
+            >
+              <ArrowUp className="w-3.5 h-3.5 text-[#e50914] group-hover:-translate-y-0.5 transition-transform" />
+              <span>RETURN TO TOP</span>
+            </button>
+          </div>
+
+        </div>
+
+        {/* Bottom Divider */}
+        <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+        {/* Bottom Bar: Nav Links + Socials + Copyright */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-xs text-neutral-500">
+          
+          {/* Quick Navigation Links */}
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-5 gap-y-2">
             {navLinks.map((link, idx) => (
               <a
                 key={idx}
                 href={link.href}
                 onClick={() => soundFx.playClick()}
                 onMouseEnter={() => soundFx.playHover()}
-                className="text-neutral-400 hover:text-white transition-colors duration-200 uppercase tracking-wider relative group"
+                className="text-neutral-400 hover:text-white transition-colors uppercase tracking-wider relative group py-0.5 text-[11px]"
               >
                 <span>{link.label}</span>
                 <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#e50914] transition-all duration-300 group-hover:w-full" />
@@ -107,51 +252,34 @@ export default function Footer() {
             ))}
           </div>
 
-          {/* Right Action: Scroll To Top */}
-          <div className="md:col-span-3 flex md:justify-end items-center gap-3">
-            <button
-              type="button"
-              onClick={scrollToTop}
-              onMouseEnter={() => soundFx.playHover()}
-              className="px-4 py-2.5 rounded-lg border border-white/10 bg-black/75 hover:bg-[#e50914]/25 hover:border-[#e50914]/60 text-white transition-all flex items-center gap-2 text-xs font-mono active:scale-95 group cursor-pointer shadow-sm backdrop-blur-md"
-              title="Return to top of page"
-            >
-              <ArrowUp className="w-3.5 h-3.5 text-[#e50914] group-hover:-translate-y-1 transition-transform" />
-              <span className="tracking-wider font-bold">RETURN TO TOP</span>
-            </button>
-          </div>
+          {/* Social Icons & Copyright */}
+          <div className="flex items-center gap-4">
+            
+            <div className="flex items-center gap-2">
+              {[
+                { name: 'GitHub', icon: GithubIcon, href: 'https://github.com' },
+                { name: 'LinkedIn', icon: LinkedinIcon, href: 'https://linkedin.com' },
+                { name: 'Twitter / X', icon: TwitterIcon, href: 'https://twitter.com' }
+              ].map((social, idx) => (
+                <a
+                  key={idx}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => soundFx.playClick()}
+                  onMouseEnter={() => soundFx.playHover()}
+                  aria-label={social.name}
+                  className="w-7 h-7 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 hover:border-red-500/50 text-neutral-400 hover:text-white flex items-center justify-center transition-all active:scale-95"
+                >
+                  <social.icon className="w-3 h-3 text-neutral-300 hover:text-[#e50914] transition-colors" />
+                </a>
+              ))}
+            </div>
 
-        </div>
+            <span className="text-[10px] font-mono text-neutral-500 hidden sm:inline">
+              &copy; {new Date().getFullYear()} DEVARAJA GURUSAMY
+            </span>
 
-        {/* Lower Footer Row */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-neutral-500">
-          
-          <div className="flex items-center gap-4 text-[11px]">
-            <span>&copy; {new Date().getFullYear()} DEVARAJA GURUSAMY</span>
-            <span>&bull;</span>
-            <span className="text-neutral-400">DESIGNED & CRAFTED WITH PASSION</span>
-          </div>
-
-          {/* Social Icons */}
-          <div className="flex items-center gap-3">
-            {[
-              { name: 'GitHub', icon: GithubIcon, href: 'https://github.com' },
-              { name: 'LinkedIn', icon: LinkedinIcon, href: 'https://linkedin.com' },
-              { name: 'Twitter / X', icon: TwitterIcon, href: 'https://twitter.com' }
-            ].map((social, idx) => (
-              <a
-                key={idx}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => soundFx.playClick()}
-                onMouseEnter={() => soundFx.playHover()}
-                aria-label={social.name}
-                className="w-8 h-8 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-red-500/50 text-neutral-400 hover:text-white flex items-center justify-center transition-all active:scale-95"
-              >
-                <social.icon className="w-3.5 h-3.5 text-neutral-300 hover:text-[#e50914] transition-colors" />
-              </a>
-            ))}
           </div>
 
         </div>
