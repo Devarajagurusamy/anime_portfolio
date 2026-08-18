@@ -154,42 +154,73 @@ export default function HeroCanvas({ onSelectSection }: HeroCanvasProps) {
     };
   }, [TOTAL_FRAMES, renderFrame]);
 
-  // Preload Images
+  // Preload Images with prioritized concurrency pool
   useEffect(() => {
+    let isCancelled = false;
     let loaded = 0;
-    const imgs: HTMLImageElement[] = [];
+    const imgs: HTMLImageElement[] = new Array(TOTAL_FRAMES);
 
     for (let i = 0; i < TOTAL_FRAMES; i++) {
-      const img = new Image();
-      img.src = getFrameUrl(i);
+      imgs[i] = new Image();
+    }
+    imagesRef.current = imgs;
 
-      img.onload = () => {
-        loaded++;
-        const pct = Math.round((loaded / TOTAL_FRAMES) * 100);
-        setLoadProgress(pct);
+    const loadFrame = (index: number): Promise<void> => {
+      return new Promise(resolve => {
+        const img = imgs[index];
+        img.onload = () => {
+          if (isCancelled) return resolve();
+          loaded++;
+          const pct = Math.round((loaded / TOTAL_FRAMES) * 100);
+          setLoadProgress(pct);
 
-        if (i === 0 && lastDrawnFrameRef.current === -1) {
-          handleResize();
-          renderFrame(0);
-        }
+          if (index === 0 && lastDrawnFrameRef.current === -1) {
+            handleResize();
+            renderFrame(0);
+          }
 
-        if (loaded >= TOTAL_FRAMES) {
-          setTimeout(() => {
+          if (loaded >= TOTAL_FRAMES) {
             setIsLoaded(true);
             handleResize();
-          }, 200);
+          }
+          resolve();
+        };
+        img.onerror = () => {
+          if (isCancelled) return resolve();
+          loaded++;
+          setLoadProgress(Math.round((loaded / TOTAL_FRAMES) * 100));
+          resolve();
+        };
+        img.src = getFrameUrl(index);
+      });
+    };
+
+    const startLoading = async () => {
+      // Step 1: Load frame 0 first for instant visual readiness
+      await loadFrame(0);
+      if (isCancelled) return;
+
+      // Step 2: Stream remaining frames with controlled concurrency
+      const queue: number[] = [];
+      for (let i = 1; i < TOTAL_FRAMES; i++) {
+        queue.push(i);
+      }
+
+      const CONCURRENCY = 12;
+      const worker = async () => {
+        while (queue.length > 0 && !isCancelled) {
+          const nextIdx = queue.shift();
+          if (nextIdx !== undefined) {
+            await loadFrame(nextIdx);
+          }
         }
       };
 
-      img.onerror = () => {
-        loaded++;
-        setLoadProgress(Math.round((loaded / TOTAL_FRAMES) * 100));
-      };
+      const workers = Array.from({ length: CONCURRENCY }, () => worker());
+      await Promise.all(workers);
+    };
 
-      imgs.push(img);
-    }
-
-    imagesRef.current = imgs;
+    startLoading();
 
     window.addEventListener('resize', handleResize, { passive: true });
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -198,6 +229,7 @@ export default function HeroCanvas({ onSelectSection }: HeroCanvasProps) {
     handleScroll();
 
     return () => {
+      isCancelled = true;
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('scroll', handleScroll);
     };
