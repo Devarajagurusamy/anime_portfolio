@@ -197,16 +197,20 @@ const LetterGlitch: React.FC<LetterGlitchProps> = ({
     }
   };
 
-  const animate = () => {
-    const now = Date.now();
-    if (now - lastGlitchTime.current >= glitchSpeed) {
-      updateLetters();
-      drawLetters();
-      lastGlitchTime.current = now;
-    }
+  const isVisibleRef = useRef(false);
 
-    if (smooth) {
-      handleSmoothTransitions();
+  const animate = () => {
+    if (isVisibleRef.current) {
+      const now = Date.now();
+      if (now - lastGlitchTime.current >= glitchSpeed) {
+        updateLetters();
+        drawLetters();
+        lastGlitchTime.current = now;
+      }
+
+      if (smooth) {
+        handleSmoothTransitions();
+      }
     }
 
     animationRef.current = requestAnimationFrame(animate);
@@ -229,6 +233,19 @@ const LetterGlitch: React.FC<LetterGlitchProps> = ({
       ro.observe(parent);
     }
 
+    let io: IntersectionObserver | null = null;
+    if (parent && typeof IntersectionObserver !== 'undefined') {
+      io = new IntersectionObserver(
+        ([entry]) => {
+          isVisibleRef.current = entry.isIntersecting;
+        },
+        { rootMargin: '100px' }
+      );
+      io.observe(parent);
+    } else {
+      isVisibleRef.current = true;
+    }
+
     let resizeTimeout: NodeJS.Timeout;
     const handleResize = () => {
       clearTimeout(resizeTimeout);
@@ -242,6 +259,7 @@ const LetterGlitch: React.FC<LetterGlitchProps> = ({
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
       if (ro) ro.disconnect();
+      if (io) io.disconnect();
       window.removeEventListener('resize', handleResize);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

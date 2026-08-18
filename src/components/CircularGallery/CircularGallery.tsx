@@ -453,7 +453,7 @@ class App {
   viewport: { width: number; height: number } = { width: 0, height: 0 };
   isDown: boolean = false;
   start: number = 0;
-  raf: number = 0;
+  raf: number | null = null;
 
   boundOnResize: () => void = () => {};
   boundOnWheel: (e: any) => void = () => {};
@@ -660,7 +660,26 @@ class App {
     }
   }
 
+  isPaused: boolean = false;
+
+  pause() {
+    this.isPaused = true;
+    if (this.raf && typeof window !== 'undefined') {
+      window.cancelAnimationFrame(this.raf);
+      this.raf = null;
+    }
+  }
+
+  resume() {
+    if (!this.isPaused) return;
+    this.isPaused = false;
+    if (!this.raf && typeof window !== 'undefined') {
+      this.raf = window.requestAnimationFrame(this.update.bind(this));
+    }
+  }
+
   update() {
+    if (this.isPaused) return;
     this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease);
     const direction = this.scroll.current > this.scroll.last ? 'right' : 'left';
     if (this.medias) {
@@ -699,7 +718,7 @@ class App {
 
   destroy() {
     if (typeof window !== 'undefined') {
-      window.cancelAnimationFrame(this.raf);
+      if (this.raf) window.cancelAnimationFrame(this.raf);
       window.removeEventListener('resize', this.boundOnResize);
       window.removeEventListener('mousemove', this.boundOnTouchMove);
       window.removeEventListener('mouseup', this.boundOnTouchUp);
@@ -747,6 +766,7 @@ const CircularGallery = forwardRef<CircularGalleryHandle, CircularGalleryProps>(
   useEffect(() => {
     if (!containerRef.current) return;
     let isMounted = true;
+    let observer: IntersectionObserver | null = null;
 
     resolveFont(font, fontUrl).then(resolvedFont => {
       if (!isMounted || !containerRef.current) return;
@@ -759,10 +779,26 @@ const CircularGallery = forwardRef<CircularGalleryHandle, CircularGalleryProps>(
         scrollSpeed,
         scrollEase
       });
+
+      if (typeof IntersectionObserver !== 'undefined' && containerRef.current) {
+        observer = new IntersectionObserver(
+          ([entry]) => {
+            if (!appRef.current) return;
+            if (entry.isIntersecting) {
+              appRef.current.resume();
+            } else {
+              appRef.current.pause();
+            }
+          },
+          { rootMargin: '200px' }
+        );
+        observer.observe(containerRef.current);
+      }
     });
 
     return () => {
       isMounted = false;
+      if (observer) observer.disconnect();
       if (appRef.current) {
         appRef.current.destroy();
         appRef.current = null;

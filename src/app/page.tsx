@@ -100,6 +100,7 @@ export default function Home() {
           cameraDistance={22}
           disableRotation={false}
           pixelRatio={typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 1.5) : 1}
+          isActive={showSidebar}
         />
       </div>
 

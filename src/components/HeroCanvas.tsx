@@ -20,6 +20,7 @@ export default function HeroCanvas({ onSelectSection }: HeroCanvasProps) {
   const targetFrameRef = useRef<number>(0);
   const lastDrawnFrameRef = useRef<number>(-1);
   const animationFrameIdRef = useRef<number | null>(null);
+  const isHeroVisibleRef = useRef<boolean>(true);
 
   // Helper to format frame path (001 to 180)
   const getFrameUrl = (index: number) => {
@@ -111,17 +112,35 @@ export default function HeroCanvas({ onSelectSection }: HeroCanvasProps) {
     targetFrameRef.current = progress * (TOTAL_FRAMES - 1);
   }, [TOTAL_FRAMES]);
 
-  // Animation Loop with lerp dampening for ultra-smooth scrubbing
+  // Pause calculations when scrolled completely past hero
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isHeroVisibleRef.current = entry.isIntersecting;
+      },
+      { rootMargin: '100px' }
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
+  // Frame Interpolation Loop
   useEffect(() => {
     const animate = () => {
-      currentFrameRef.current += (targetFrameRef.current - currentFrameRef.current) * 0.12;
-      const frameToDraw = Math.min(
-        TOTAL_FRAMES - 1,
-        Math.max(0, Math.round(currentFrameRef.current))
-      );
+      if (isHeroVisibleRef.current) {
+        currentFrameRef.current += (targetFrameRef.current - currentFrameRef.current) * 0.12;
+        const frameToDraw = Math.min(
+          TOTAL_FRAMES - 1,
+          Math.max(0, Math.round(currentFrameRef.current))
+        );
 
-      if (frameToDraw !== lastDrawnFrameRef.current) {
-        renderFrame(frameToDraw);
+        if (frameToDraw !== lastDrawnFrameRef.current) {
+          renderFrame(frameToDraw);
+        }
       }
 
       animationFrameIdRef.current = requestAnimationFrame(animate);

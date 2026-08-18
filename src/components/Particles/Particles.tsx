@@ -19,6 +19,7 @@ export interface ParticlesProps {
   pixelRatio?: number;
   className?: string;
   style?: React.CSSProperties;
+  isActive?: boolean;
 }
 
 const defaultColors = ['#ffffff', '#ffffff', '#ffffff'];
@@ -45,7 +46,7 @@ const vertex = /* glsl */ `
   
   uniform mat4 modelMatrix;
   uniform mat4 viewMatrix;
-  uniform mat4 projectionMatrix;
+  uniform projectionMatrix;
   uniform float uTime;
   uniform float uSpread;
   uniform float uBaseSize;
@@ -117,10 +118,16 @@ const Particles: React.FC<ParticlesProps> = ({
   disableRotation = false,
   pixelRatio = 1,
   className = '',
-  style
+  style,
+  isActive = true
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const isActiveRef = useRef(isActive);
+
+  useEffect(() => {
+    isActiveRef.current = isActive;
+  }, [isActive]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -218,6 +225,7 @@ const Particles: React.FC<ParticlesProps> = ({
 
     const update = (t: number) => {
       animationFrameId = requestAnimationFrame(update);
+      if (!isActiveRef.current) return;
       const delta = t - lastTime;
       lastTime = t;
       elapsed += delta * speed;

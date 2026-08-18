@@ -54,6 +54,21 @@ export default function Lanyard({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const [inView, setInView] = useState(true);
+
+  useEffect(() => {
+    if (!mounted || !wrapperRef.current || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setInView(entry.isIntersecting);
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(wrapperRef.current);
+    return () => observer.disconnect();
+  }, [mounted]);
+
   if (!mounted) {
     return (
       <div className="lanyard-wrapper flex items-center justify-center">
@@ -63,8 +78,9 @@ export default function Lanyard({
   }
 
   return (
-    <div className="lanyard-wrapper w-full h-full min-h-[500px]">
+    <div ref={wrapperRef} className="lanyard-wrapper w-full h-full min-h-[500px]">
       <Canvas
+        frameloop={inView ? 'always' : 'never'}
         camera={{ position: position, fov: fov }}
         dpr={[1, 1.5]}
         gl={{ alpha: transparent, antialias: true }}

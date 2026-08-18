@@ -286,12 +286,29 @@ export default function DomeGallery({
     applyTransform(rotationRef.current.x, rotationRef.current.y);
   }, []);
 
+  const isVisibleRef = useRef(true);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisibleRef.current = entry.isIntersecting;
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     if (!autoRotate) return;
     let animId: number;
     const autoLoop = () => {
       if (
         autoRotate &&
+        isVisibleRef.current &&
         !draggingRef.current &&
         !inertiaRAF.current &&
         !openingRef.current &&
