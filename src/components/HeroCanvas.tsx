@@ -79,7 +79,7 @@ export default function HeroCanvas({ onSelectSection }: HeroCanvasProps) {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
 

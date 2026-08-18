@@ -134,7 +134,7 @@ const LetterGlitch: React.FC<LetterGlitchProps> = ({
     const parent = canvas.parentElement;
     if (!parent) return;
 
-    const dpr = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
+    const dpr = typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 1.5) : 1;
     const rect = parent.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return;
 

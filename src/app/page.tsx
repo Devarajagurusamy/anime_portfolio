@@ -99,7 +99,7 @@ export default function Home() {
           sizeRandomness={1.2}
           cameraDistance={22}
           disableRotation={false}
-          pixelRatio={typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 2) : 1}
+          pixelRatio={typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 1.5) : 1}
         />
       </div>
 

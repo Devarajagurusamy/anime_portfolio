@@ -503,7 +503,7 @@ class App {
     this.renderer = new Renderer({
       alpha: true,
       antialias: true,
-      dpr: Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2)
+      dpr: Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 1.5)
     });
     this.gl = this.renderer.gl;
     this.gl.clearColor(0, 0, 0, 0);
