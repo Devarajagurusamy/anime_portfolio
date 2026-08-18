@@ -277,13 +277,22 @@ function Band({
     return composite;
   }, [frontImage, backImage, imageFit, frontTex, backTex, materials]);
 
+  const isValidVector = (v: any): boolean =>
+    v != null &&
+    typeof v.x === 'number' &&
+    typeof v.y === 'number' &&
+    typeof v.z === 'number' &&
+    Number.isFinite(v.x) &&
+    Number.isFinite(v.y) &&
+    Number.isFinite(v.z);
+
   const [curve] = useState(
     () =>
       new THREE.CatmullRomCurve3([
-        new THREE.Vector3(),
-        new THREE.Vector3(),
-        new THREE.Vector3(),
-        new THREE.Vector3()
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(0.5, 0, 0),
+        new THREE.Vector3(1, 0, 0),
+        new THREE.Vector3(1.5, 0, 0)
       ])
   );
   const [dragged, drag] = useState<any>(false);
@@ -305,41 +314,84 @@ function Band({
   }, [hovered, dragged]);
 
   useFrame((state, delta) => {
-    if (dragged) {
+    // Clamp frame delta to prevent physics lerp overshooting / divergence
+    const safeDelta = Math.min(Math.max(delta, 0.001), 0.064);
+
+    if (dragged && card.current) {
       vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera);
       dir.copy(vec).sub(state.camera.position).normalize();
       vec.add(dir.multiplyScalar(state.camera.position.length()));
       [card, j1, j2, j3, fixed].forEach(ref => ref.current?.wakeUp());
-      card.current?.setNextKinematicTranslation({
-        x: vec.x - dragged.x,
-        y: vec.y - dragged.y,
-        z: vec.z - dragged.z
-      });
+      const nextX = vec.x - (dragged.x || 0);
+      const nextY = vec.y - (dragged.y || 0);
+      const nextZ = vec.z - (dragged.z || 0);
+      if (Number.isFinite(nextX) && Number.isFinite(nextY) && Number.isFinite(nextZ)) {
+        card.current.setNextKinematicTranslation({
+          x: nextX,
+          y: nextY,
+          z: nextZ
+        });
+      }
     }
     if (fixed.current) {
       [j1, j2].forEach(ref => {
         if (!ref.current) return;
-        if (!ref.current.lerped) ref.current.lerped = new THREE.Vector3().copy(ref.current.translation());
+        const currentTrans = ref.current.translation();
+        if (!isValidVector(currentTrans)) return;
+
+        if (!ref.current.lerped || !isValidVector(ref.current.lerped)) {
+          ref.current.lerped = new THREE.Vector3(currentTrans.x, currentTrans.y, currentTrans.z);
+        }
+
+        const dist = ref.current.lerped.distanceTo(currentTrans);
         const clampedDistance = Math.max(
           0.1,
-          Math.min(1, ref.current.lerped.distanceTo(ref.current.translation()))
+          Math.min(1, Number.isFinite(dist) ? dist : 0.1)
         );
-        ref.current.lerped.lerp(
-          ref.current.translation(),
-          delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed))
+
+        // Clamp lerp interpolation factor to [0, 1] to prevent exponential oscillation and NaN
+        const lerpFactor = Math.min(
+          1,
+          Math.max(0, safeDelta * (minSpeed + clampedDistance * (maxSpeed - minSpeed)))
         );
+
+        ref.current.lerped.lerp(currentTrans, lerpFactor);
       });
-      if (j3.current && j2.current && j1.current && fixed.current && band.current) {
-        curve.points[0].copy(j3.current.translation());
-        curve.points[1].copy(j2.current.lerped || j2.current.translation());
-        curve.points[2].copy(j1.current.lerped || j1.current.translation());
-        curve.points[3].copy(fixed.current.translation());
-        band.current.geometry.setPoints(curve.getPoints(isMobile ? 16 : 32));
+
+      const p3 = j3.current?.translation();
+      const p2 = j2.current?.lerped || j2.current?.translation();
+      const p1 = j1.current?.lerped || j1.current?.translation();
+      const p0 = fixed.current?.translation();
+
+      if (isValidVector(p0) && isValidVector(p1) && isValidVector(p2) && isValidVector(p3)) {
+        curve.points[0].set(p3.x, p3.y, p3.z);
+        curve.points[1].set(p2.x, p2.y, p2.z);
+        curve.points[2].set(p1.x, p1.y, p1.z);
+        curve.points[3].set(p0.x, p0.y, p0.z);
+
+        const pointCount = isMobile ? 16 : 32;
+        const pts = curve.getPoints(pointCount);
+        const allPointsValid = pts.length > 0 && pts.every(isValidVector);
+
+        if (allPointsValid && band.current?.geometry) {
+          band.current.geometry.setPoints(pts);
+        }
       }
+
       if (card.current) {
-        ang.copy(card.current.angvel());
-        rot.copy(card.current.rotation());
-        card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z }, true);
+        const av = card.current.angvel();
+        const rotVal = card.current.rotation();
+        if (
+          isValidVector(av) &&
+          rotVal &&
+          typeof rotVal.y === 'number' &&
+          Number.isFinite(rotVal.y)
+        ) {
+          card.current.setAngvel(
+            { x: av.x, y: av.y - rotVal.y * 0.25, z: av.z },
+            true
+          );
+        }
       }
     }
   });
@@ -379,7 +431,10 @@ function Band({
               }}
               onPointerDown={(e: any) => {
                 e.target.setPointerCapture(e.pointerId);
-                drag(new THREE.Vector3().copy(e.point).sub(vec.copy(card.current.translation())));
+                const currentTrans = card.current?.translation();
+                if (isValidVector(currentTrans)) {
+                  drag(new THREE.Vector3().copy(e.point).sub(vec.copy(currentTrans)));
+                }
               }}
             >
               <mesh geometry={nodes.card.geometry}>
