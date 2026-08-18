@@ -10,6 +10,7 @@ import {
   Star,
   Home,
   FileText,
+  MessageSquareQuote,
 } from 'lucide-react';
 import { soundFx } from './AudioSynth';
 
@@ -265,23 +266,23 @@ export default function HeroHUD({ scrollProgress, onSelectSection }: HeroHUDProp
           </div>
         </div>
 
-        {/* 3. ACHIEVEMENTS */}
+        {/* 3. TESTIMONIALS */}
         <div className="relative group">
           <button
             type="button"
-            onClick={() => handleCardClick('achievements')}
+            onClick={() => handleCardClick('testimonials')}
             onMouseEnter={() => soundFx.playHover()}
             className="cyber-hud-card w-full text-left cursor-pointer"
           >
             <div className="w-9 h-9 flex items-center justify-center flex-shrink-0">
-              <Star className="w-5 h-5 text-white stroke-[1.8]" />
+              <MessageSquareQuote className="w-5 h-5 text-white stroke-[1.8]" />
             </div>
             <div className="flex flex-col">
               <span className="font-mono font-extrabold text-[13px] tracking-wider text-white uppercase group-hover:text-yellow-200 transition-colors">
-                ACHIEVEMENTS
+                TESTIMONIALS
               </span>
               <span className="text-[11px] text-red-100/90 font-sans tracking-wide leading-tight mt-0.5">
-                Milestones and highlights
+                Client feedback and reviews
               </span>
             </div>
           </button>
