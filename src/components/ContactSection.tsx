@@ -97,6 +97,8 @@ export default function ContactSection() {
               <img
                 src="/assets/character.png"
                 alt="Character Portrait"
+                loading="lazy"
+                decoding="async"
                 className="w-full max-w-[320px] sm:max-w-[360px] lg:max-w-[380px] h-auto object-contain select-none pointer-events-none mx-auto"
                 draggable={false}
               />

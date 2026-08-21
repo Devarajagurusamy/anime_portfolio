@@ -82,8 +82,8 @@ export default function Lanyard({
       <Canvas
         frameloop={inView ? 'always' : 'never'}
         camera={{ position: position, fov: fov }}
-        dpr={[1, 1.5]}
-        gl={{ alpha: transparent, antialias: true }}
+        dpr={[1, 1.25]}
+        gl={{ alpha: transparent, antialias: true, powerPreference: 'high-performance' }}
         onCreated={({ gl }) => {
           gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1);
         }}
@@ -95,7 +95,7 @@ export default function Lanyard({
         <pointLight position={[0, 4, 5]} intensity={2} color="#ffffff" />
 
         <Suspense fallback={null}>
-          <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
+          <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60} paused={!inView}>
             <Band
               isMobile={isMobile}
               frontImage={frontImage}
@@ -385,7 +385,7 @@ function Band({
         curve.points[2].set(p1.x, p1.y, p1.z);
         curve.points[3].set(p0.x, p0.y, p0.z);
 
-        const pointCount = isMobile ? 16 : 32;
+        const pointCount = isMobile ? 12 : 16;
         const pts = curve.getPoints(pointCount);
         const allPointsValid = pts.length > 0 && pts.every(isValidVector);
 
@@ -456,7 +456,7 @@ function Band({
               <mesh geometry={nodes.card.geometry}>
                 <meshPhysicalMaterial
                   map={cardMap}
-                  map-anisotropy={16}
+                  map-anisotropy={4}
                   clearcoat={isMobile ? 0 : 1}
                   clearcoatRoughness={0.15}
                   roughness={0.8}

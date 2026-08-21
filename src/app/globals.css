@@ -26,12 +26,27 @@
 }
 
 html {
-  scroll-behavior: smooth;
   background-color: var(--bg-dark);
   color: var(--text-main);
   font-family: var(--font-body);
   scrollbar-width: thin;
   scrollbar-color: var(--primary-red) #000;
+}
+
+html.lenis, html.lenis-smooth {
+  height: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }
 
 body {

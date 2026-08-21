@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import Lenis from 'lenis';
 import HeroCanvas from '@/components/HeroCanvas';
 import AboutSection from '@/components/AboutSection';
 import SkillsSection from '@/components/SkillsSection';
@@ -25,8 +26,35 @@ export default function Home() {
   const [showSidebar, setShowSidebar] = useState(false);
   const [activeSectionIndex, setActiveSectionIndex] = useState<number | null>(0);
 
-  const sidebarRef = React.useRef(false);
-  const activeIndexRef = React.useRef<number | null>(0);
+  const sidebarRef = useRef(false);
+  const activeIndexRef = useRef<number | null>(0);
+  const lenisRef = useRef<Lenis | null>(null);
+
+  // Initialize Lenis Virtual Momentum Smooth Scrolling
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      touchMultiplier: 1.5,
+    });
+    lenisRef.current = lenis;
+
+    let rafId: number;
+    function raf(time: number) {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    }
+    rafId = requestAnimationFrame(raf);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+      lenisRef.current = null;
+    };
+  }, []);
 
   const handleSelectSection = (sectionId: string) => {
     const targetId =
@@ -38,7 +66,11 @@ export default function Home() {
 
     const el = document.getElementById(targetId) || document.getElementById(sectionId);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(el, { offset: 0, duration: 1.2 });
+      } else {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
@@ -113,7 +145,7 @@ export default function Home() {
         aria-hidden="true"
       >
         <Particles
-          particleCount={260}
+          particleCount={160}
           particleSpread={24}
           speed={0.15}
           particleColors={['#ffffff', '#ffffff', '#e50914', '#ffe8e8', '#d6e8ff', '#ffffff']}
@@ -124,7 +156,7 @@ export default function Home() {
           sizeRandomness={1.2}
           cameraDistance={22}
           disableRotation={false}
-          pixelRatio={typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 1.5) : 1}
+          pixelRatio={typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 1.25) : 1}
           isActive={showSidebar}
         />
       </div>
@@ -160,7 +192,11 @@ export default function Home() {
             const targetId = SECTIONS[index].id;
             const el = document.getElementById(targetId);
             if (el) {
-              el.scrollIntoView({ behavior: 'smooth' });
+              if (lenisRef.current) {
+                lenisRef.current.scrollTo(el, { offset: 0, duration: 1.2 });
+              } else {
+                el.scrollIntoView({ behavior: 'smooth' });
+              }
             }
           }}
         />

@@ -23,7 +23,7 @@ const TESTIMONIALS: TestimonialItem[] = [
     name: 'James Carter',
     role: 'CEO',
     company: 'FitLens App',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=774&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=75&w=600&auto=format&fit=crop',
     quote:
       'Devaraj delivered beyond expectations. The project was smooth, professional, and the results were outstanding.',
     rating: 5
@@ -33,7 +33,7 @@ const TESTIMONIALS: TestimonialItem[] = [
     name: 'Elena Rostova',
     role: 'VP of Engineering',
     company: 'Verto Creative',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=774&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=75&w=600&auto=format&fit=crop',
     quote:
       'Exceptional engineering precision and creative 3D performance. Delivered our WebGL platform ahead of schedule with 60 FPS fluidity.',
     rating: 5
@@ -43,7 +43,7 @@ const TESTIMONIALS: TestimonialItem[] = [
     name: 'Marcus Vance',
     role: 'Chief Architect',
     company: 'Quantum Vault',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=774&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=75&w=600&auto=format&fit=crop',
     quote:
       'A rare talent who seamlessly bridges bleeding-edge visual aesthetics with rock-solid fullstack architecture and security protocols.',
     rating: 5
@@ -53,7 +53,7 @@ const TESTIMONIALS: TestimonialItem[] = [
     name: 'Sarah Lin',
     role: 'Creative Director',
     company: 'Aura Studio',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=774&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=75&w=600&auto=format&fit=crop',
     quote:
       'The anime cyberpunk HUD aesthetic was executed with pristine vector precision. Our users were instantly wowed by the experience.',
     rating: 5
@@ -63,7 +63,7 @@ const TESTIMONIALS: TestimonialItem[] = [
     name: 'David Chen',
     role: 'Founder & CEO',
     company: 'Novus Analytics',
-    image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=774&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=75&w=600&auto=format&fit=crop',
     quote:
       'Outstanding communication, rapid delivery, and top-tier code quality. Devaraj is our go-to engineer for ambitious web projects.',
     rating: 5
@@ -73,7 +73,7 @@ const TESTIMONIALS: TestimonialItem[] = [
     name: 'Maya Thorne',
     role: 'Lead 3D Artist',
     company: 'Arc Studio',
-    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=774&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=75&w=600&auto=format&fit=crop',
     quote:
       'Working with Devaraj was an absolute pleasure. His deep mastery of Three.js and shader physics brought our vision to life.',
     rating: 5
@@ -245,6 +245,8 @@ export default function TestimonialsSection() {
                         <img
                           src={current.image}
                           alt={current.name}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-full object-cover object-[center_20%] pointer-events-none"
                           draggable={false}
                         />

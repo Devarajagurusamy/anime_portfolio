@@ -6,31 +6,31 @@ import CircularGallery, { GalleryItem, CircularGalleryHandle } from './CircularG
 
 const GALLERY_ITEMS: GalleryItem[] = [
   {
-    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80',
+    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop&q=75',
     text: 'Design'
   },
   {
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format&fit=crop&q=80',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&auto=format&fit=crop&q=75',
     text: 'Verto Creative'
   },
   {
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop&q=75',
     text: 'Novus Analytics'
   },
   {
-    image: 'https://images.unsplash.com/photo-1510519138197-06b8628cbf47?w=800&auto=format&fit=crop&q=80',
+    image: 'https://images.unsplash.com/photo-1510519138197-06b8628cbf47?w=600&auto=format&fit=crop&q=75',
     text: 'FitLens App'
   },
   {
-    image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&auto=format&fit=crop&q=80',
+    image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=600&auto=format&fit=crop&q=75',
     text: 'Portfolio'
   },
   {
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80',
+    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=75',
     text: 'Aura Studio'
   },
   {
-    image: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&auto=format&fit=crop&q=80',
+    image: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=600&auto=format&fit=crop&q=75',
     text: 'Quantum Vault'
   }
 ];
