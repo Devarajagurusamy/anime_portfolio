@@ -51,22 +51,53 @@ export default function ContactSection() {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isTransmitting, setIsTransmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleSubmit = (e?: React.FormEvent) => {
+  const handleSubmit = async (e?: React.FormEvent) => {
     if (e?.preventDefault) e.preventDefault();
-    if (!formData.name && !formData.email && !formData.message) return;
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      setErrorMessage('Please fill in Name, Email ID, and Message before dispatching transmission.');
+      return;
+    }
     soundFx.playClick();
     setIsTransmitting(true);
+    setErrorMessage(null);
 
-    setTimeout(() => {
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: 'e39dca76-bc47-4890-83b9-c43b554a2ed3',
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || 'Not Provided',
+          message: formData.message,
+          subject: `Portfolio Message from ${formData.name} (Devaraja S G Portfolio)`
+        })
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setIsSubmitted(true);
+        setFormData({ name: '', email: '', phone: '', message: '' });
+      } else {
+        setErrorMessage(result.message || 'Transmission failed. Please try again or reach out via direct email.');
+      }
+    } catch {
+      setErrorMessage('Network transmission error. Please check your connection or reach out via direct email.');
+    } finally {
       setIsTransmitting(false);
-      setIsSubmitted(true);
-    }, 900);
+    }
   };
 
   const handleReset = () => {
     soundFx.playClick();
     setIsSubmitted(false);
+    setErrorMessage(null);
     setFormData({ name: '', email: '', phone: '', message: '' });
   };
 
@@ -270,6 +301,18 @@ export default function ContactSection() {
                     onSubmit={() => handleSubmit()}
                   />
                 </div>
+
+                {/* Error Notification Banner */}
+                {errorMessage && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-3 rounded-lg border border-red-500/40 bg-red-950/40 text-red-300 font-mono text-xs flex items-center gap-2"
+                  >
+                    <span className="w-2 h-2 rounded-full bg-[#e50914] animate-ping flex-shrink-0" />
+                    <span>{errorMessage}</span>
+                  </motion.div>
+                )}
 
                 {/* Submit Action Button */}
                 <div className="pt-2">
