@@ -75,14 +75,23 @@ export default function HeroCanvas({ onSelectSection }: HeroCanvasProps) {
     lastDrawnFrameRef.current = frameIndex;
   }, []);
 
+  const cachedScrollTrackRef = useRef<number>(2000);
+  const lastReportedProgressRef = useRef<number>(-1);
+
   // Handle Resize to match viewport and devicePixelRatio
   const handleResize = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
     canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
+
+    if (containerRef.current) {
+      cachedScrollTrackRef.current = Math.max(1, containerRef.current.offsetHeight - window.innerHeight);
+    } else {
+      cachedScrollTrackRef.current = window.innerHeight * 2.8;
+    }
 
     const frameToDraw = Math.min(
       TOTAL_FRAMES - 1,
@@ -93,22 +102,15 @@ export default function HeroCanvas({ onSelectSection }: HeroCanvasProps) {
 
   // Handle Scroll calculation specifically calibrated for the hero track
   const handleScroll = useCallback(() => {
-    const container = containerRef.current;
+    if (!isHeroVisibleRef.current) return;
     const scrollTop = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+    const track = cachedScrollTrackRef.current || (window.innerHeight * 2.8);
+    const progress = Math.min(1, Math.max(0, scrollTop / track));
 
-    let progress = 0;
-    if (container) {
-      const containerHeight = container.offsetHeight;
-      const scrollTrack = containerHeight - window.innerHeight;
-      if (scrollTrack > 0) {
-        progress = Math.min(1, Math.max(0, scrollTop / scrollTrack));
-      }
-    } else {
-      const scrollMax = window.innerHeight * 3;
-      progress = Math.min(1, Math.max(0, scrollTop / scrollMax));
+    if (Math.abs(progress - lastReportedProgressRef.current) > 0.005) {
+      lastReportedProgressRef.current = progress;
+      setScrollProgress(progress);
     }
-
-    setScrollProgress(progress);
     targetFrameRef.current = progress * (TOTAL_FRAMES - 1);
   }, [TOTAL_FRAMES]);
 
@@ -132,7 +134,7 @@ export default function HeroCanvas({ onSelectSection }: HeroCanvasProps) {
   useEffect(() => {
     const animate = () => {
       if (isHeroVisibleRef.current) {
-        currentFrameRef.current += (targetFrameRef.current - currentFrameRef.current) * 0.12;
+        currentFrameRef.current += (targetFrameRef.current - currentFrameRef.current) * 0.2;
         const frameToDraw = Math.min(
           TOTAL_FRAMES - 1,
           Math.max(0, Math.round(currentFrameRef.current))
@@ -274,7 +276,7 @@ export default function HeroCanvas({ onSelectSection }: HeroCanvasProps) {
 
           {/* Scroll Down Indicator at bottom when near top */}
           <div
-            className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 z-20 pointer-events-none transition-opacity duration-300 flex flex-col items-center gap-1.5"
+            className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 z-20 pointer-events-none will-change-[opacity] flex flex-col items-center gap-1.5"
             style={{ opacity: Math.max(0, 1 - scrollProgress * 6) }}
           >
             <span className="text-[10px] font-mono text-white/80 tracking-[0.3em] uppercase">

@@ -33,7 +33,7 @@ export default function HeroHUD({ scrollProgress, onSelectSection }: HeroHUDProp
 
   return (
     <div
-      className="fixed inset-0 z-20 pointer-events-none transition-opacity duration-300 select-none overflow-hidden"
+      className="fixed inset-0 z-20 pointer-events-none select-none overflow-hidden will-change-[opacity]"
       style={{
         opacity,
         pointerEvents: pointerEvents as 'auto' | 'none',

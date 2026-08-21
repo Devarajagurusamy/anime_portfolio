@@ -206,10 +206,27 @@ export default function OrbitImages({
     return () => observer.disconnect();
   }, [responsive, baseWidth]);
 
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    if (!containerRef.current || typeof IntersectionObserver === 'undefined') {
+      setIsInView(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   const progress = useMotionValue(0);
 
   useEffect(() => {
-    if (paused) return;
+    if (paused || !isInView) return;
     const controls = animate(progress, direction === 'reverse' ? -100 : 100, {
       duration,
       ease: easing,
@@ -217,7 +234,7 @@ export default function OrbitImages({
       repeatType: 'loop',
     });
     return () => controls.stop();
-  }, [progress, duration, easing, direction, paused]);
+  }, [progress, duration, easing, direction, paused, isInView]);
 
   const containerWidth = responsive ? '100%' : (typeof width === 'number' ? width : '100%');
   const containerHeight = responsive ? 'auto' : (typeof height === 'number' ? height : (typeof width === 'number' ? width : 'auto'));

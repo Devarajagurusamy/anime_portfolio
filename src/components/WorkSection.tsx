@@ -51,16 +51,10 @@ export default function WorkSection() {
     restDelta: 0.001
   });
 
-  // Deep-space emergence: scales smoothly from 0.2 directly out of the pitch darkness to full 1.0
-  const scale = useTransform(smoothProgress, [0, 0.55, 1], [0.2, 1, 1]);
+  // Deep-space emergence: scales smoothly from 0.85 directly out of the pitch darkness to full 1.0
+  const scale = useTransform(smoothProgress, [0, 0.45, 1], [0.85, 1, 1]);
   // Smooth void fade-in
-  const opacity = useTransform(smoothProgress, [0, 0.4, 1], [0, 1, 1]);
-  // Deep-space bloom from dark blur to sharp crisp focus
-  const filter = useTransform(
-    smoothProgress,
-    [0, 0.45],
-    ['blur(8px) brightness(0.3)', 'blur(0px) brightness(1)']
-  );
+  const opacity = useTransform(smoothProgress, [0, 0.35, 1], [0, 1, 1]);
 
   const [isNearViewport, setIsNearViewport] = React.useState(false);
 
@@ -89,8 +83,8 @@ export default function WorkSection() {
       <div className="sticky top-0 w-full h-screen overflow-hidden flex flex-col justify-center items-center px-4 sm:px-8">
         
         <motion.div
-          style={{ scale, opacity, filter }}
-          className="w-full flex flex-col items-center justify-center origin-center select-none"
+          style={{ scale, opacity }}
+          className="w-full flex flex-col items-center justify-center origin-center select-none will-change-transform"
         >
           {/* 1. 3D Circular Gallery Viewport */}
           <div className="relative w-full max-w-7xl h-[460px] sm:h-[540px] md:h-[600px] flex items-center justify-center my-2">
