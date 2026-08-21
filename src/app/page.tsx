@@ -25,6 +25,9 @@ export default function Home() {
   const [showSidebar, setShowSidebar] = useState(false);
   const [activeSectionIndex, setActiveSectionIndex] = useState<number | null>(0);
 
+  const sidebarRef = React.useRef(false);
+  const activeIndexRef = React.useRef<number | null>(0);
+
   const handleSelectSection = (sectionId: string) => {
     const targetId =
       sectionId === 'work'
@@ -40,19 +43,29 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const handleScroll = () => {
-      // Hide during Hero/HUD (top of page)
+    let ticking = false;
+
+    const checkScroll = () => {
+      const scrollY = window.scrollY || window.pageYOffset || 0;
       const heroThreshold = window.innerHeight * 0.75;
-      const isPastHero = window.scrollY > heroThreshold;
-      setShowSidebar(isPastHero);
+      const isPastHero = scrollY > heroThreshold;
+
+      if (isPastHero !== sidebarRef.current) {
+        sidebarRef.current = isPastHero;
+        setShowSidebar(isPastHero);
+      }
 
       if (!isPastHero) {
-        setActiveSectionIndex(null);
+        if (activeIndexRef.current !== null) {
+          activeIndexRef.current = null;
+          setActiveSectionIndex(null);
+        }
+        ticking = false;
         return;
       }
 
       // Calculate which section is most centered in the viewport
-      const scrollCenter = window.scrollY + window.innerHeight / 3;
+      const scrollCenter = scrollY + window.innerHeight / 3;
       let currentIndex = 0;
 
       for (let i = 0; i < SECTIONS.length; i++) {
@@ -69,11 +82,23 @@ export default function Home() {
         }
       }
 
-      setActiveSectionIndex(currentIndex);
+      if (currentIndex !== activeIndexRef.current) {
+        activeIndexRef.current = currentIndex;
+        setActiveSectionIndex(currentIndex);
+      }
+
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(checkScroll);
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    checkScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);

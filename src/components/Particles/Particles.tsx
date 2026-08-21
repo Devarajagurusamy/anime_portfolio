@@ -219,13 +219,16 @@ const Particles: React.FC<ParticlesProps> = ({
 
     const particles = new Mesh(gl, { mode: gl.POINTS, geometry, program });
 
-    let animationFrameId: number;
+    let animationFrameId: number | null = null;
     let lastTime = performance.now();
     let elapsed = 0;
 
     const update = (t: number) => {
+      if (!isActiveRef.current) {
+        animationFrameId = null;
+        return;
+      }
       animationFrameId = requestAnimationFrame(update);
-      if (!isActiveRef.current) return;
       const delta = t - lastTime;
       lastTime = t;
       elapsed += delta * speed;
@@ -249,7 +252,9 @@ const Particles: React.FC<ParticlesProps> = ({
       renderer.render({ scene: particles, camera });
     };
 
-    animationFrameId = requestAnimationFrame(update);
+    if (isActiveRef.current) {
+      animationFrameId = requestAnimationFrame(update);
+    }
 
     return () => {
       window.removeEventListener('resize', resize);
@@ -257,13 +262,16 @@ const Particles: React.FC<ParticlesProps> = ({
       if (moveParticlesOnHover) {
         window.removeEventListener('mousemove', handleMouseMove);
       }
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+      }
       if (container.contains(gl.canvas)) {
         container.removeChild(gl.canvas);
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    isActive,
     particleCount,
     particleSpread,
     speed,

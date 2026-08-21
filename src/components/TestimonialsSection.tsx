@@ -84,6 +84,23 @@ export default function TestimonialsSection() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [isNearViewport, setIsNearViewport] = useState(false);
+  const sectionRef = React.useRef<HTMLElement | null>(null);
+
+  React.useEffect(() => {
+    if (!sectionRef.current || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsNearViewport(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '350px' }
+    );
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   const current = TESTIMONIALS[currentIndex];
 
@@ -129,6 +146,7 @@ export default function TestimonialsSection() {
 
   return (
     <section
+      ref={sectionRef}
       id="testimonials"
       className="relative z-10 w-full min-h-screen bg-transparent py-16 sm:py-20 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden flex flex-col justify-center items-center select-none"
     >
@@ -141,29 +159,31 @@ export default function TestimonialsSection() {
         <motion.div
           initial={{ opacity: 0, scale: 0.85 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
           className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-auto"
         >
-          <DomeGallery
-            images={domeImages}
-            fit={0.55}
-            minRadius={520}
-            maxRadius={900}
-            segments={32}
-            dragSensitivity={18}
-            dragDampening={1.8}
-            overlayBlurColor="#000000"
-            grayscale={false}
-            autoRotate={true}
-            autoRotateSpeed={0.08}
-            onSelect={idx => {
-              soundFx.playClick();
-              setDirection(idx >= currentIndex ? 1 : -1);
-              setCurrentIndex(idx);
-              setIsOpen(true);
-            }}
-          />
+          {isNearViewport && (
+            <DomeGallery
+              images={domeImages}
+              fit={0.55}
+              minRadius={520}
+              maxRadius={900}
+              segments={32}
+              dragSensitivity={18}
+              dragDampening={1.8}
+              overlayBlurColor="#000000"
+              grayscale={false}
+              autoRotate={true}
+              autoRotateSpeed={0.08}
+              onSelect={idx => {
+                soundFx.playClick();
+                setDirection(idx >= currentIndex ? 1 : -1);
+                setCurrentIndex(idx);
+                setIsOpen(true);
+              }}
+            />
+          )}
         </motion.div>
 
         {/* 2. Interactive Testimonial Card Modal (Appears Only When A Picture Is Clicked) */}

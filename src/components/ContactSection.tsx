@@ -87,7 +87,7 @@ export default function ContactSection() {
           <motion.div
             initial={{ opacity: 0, x: -40, scale: 0.96 }}
             whileInView={{ opacity: 1, x: 0, scale: 1 }}
-            viewport={{ once: false, amount: 0.25 }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-5 flex flex-col items-center justify-center space-y-4"
           >
@@ -126,7 +126,7 @@ export default function ContactSection() {
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.25 }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
             className="lg:col-span-7 flex flex-col"
           >

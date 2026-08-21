@@ -22,8 +22,27 @@ const Lanyard = dynamic(() => import('./Lanyard/Lanyard'), {
 });
 
 export default function AboutSection() {
+  const [isNearViewport, setIsNearViewport] = React.useState(false);
+  const sectionRef = React.useRef<HTMLElement | null>(null);
+
+  React.useEffect(() => {
+    if (!sectionRef.current || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsNearViewport(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '350px' }
+    );
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="about"
       className="relative z-10 w-full min-h-screen bg-transparent py-20 lg:py-28 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden flex items-center"
     >
@@ -37,21 +56,30 @@ export default function AboutSection() {
           <motion.div
             initial={{ opacity: 0, x: -50, scale: 0.95 }}
             whileInView={{ opacity: 1, x: 0, scale: 1 }}
-            viewport={{ once: false, amount: 0.25 }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-6 w-full h-[480px] sm:h-[560px] lg:h-[650px] relative flex items-center justify-center"
           >
             {/* Interactive Badge Canvas */}
             <div className="w-full h-full relative">
-              <Lanyard
-                position={[0, 0, 15]}
-                gravity={[0, -40, 0]}
-                fov={20}
-                lanyardWidth={1.5}
-                frontImage="/assets/lanyard/profile_original.jpg"
-                backImage="/assets/lanyard/profile_anime.png"
-                imageFit="cover"
-              />
+              {isNearViewport ? (
+                <Lanyard
+                  position={[0, 0, 15]}
+                  gravity={[0, -40, 0]}
+                  fov={20}
+                  lanyardWidth={1.5}
+                  frontImage="/assets/lanyard/profile_original.jpg"
+                  backImage="/assets/lanyard/profile_anime.png"
+                  imageFit="cover"
+                />
+              ) : (
+                <div className="w-full h-full min-h-[500px] flex flex-col items-center justify-center gap-3 bg-[#000000]">
+                  <div className="w-8 h-8 rounded-full border-2 border-red-500 border-t-transparent animate-spin" />
+                  <span className="text-xs font-mono text-neutral-400 tracking-widest uppercase">
+                    INITIALIZING PHYSICS ENGINE...
+                  </span>
+                </div>
+              )}
             </div>
           </motion.div>
 
@@ -59,7 +87,7 @@ export default function AboutSection() {
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.25 }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
             className="lg:col-span-6 flex flex-col justify-center"
           >
@@ -85,7 +113,7 @@ export default function AboutSection() {
                   key={idx}
                   initial={{ opacity: 0, y: 15 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false, amount: 0.3 }}
+                  viewport={{ once: true, amount: 0.15 }}
                   transition={{ duration: 0.45, delay: 0.15 + idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
                   className="py-2"
                 >

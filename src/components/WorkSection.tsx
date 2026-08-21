@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'motion/react';
 import CircularGallery, { GalleryItem, CircularGalleryHandle } from './CircularGallery/CircularGallery';
 
@@ -62,6 +62,23 @@ export default function WorkSection() {
     ['blur(8px) brightness(0.3)', 'blur(0px) brightness(1)']
   );
 
+  const [isNearViewport, setIsNearViewport] = React.useState(false);
+
+  useEffect(() => {
+    if (!containerRef.current || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsNearViewport(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '350px' }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
       ref={containerRef}
@@ -78,17 +95,18 @@ export default function WorkSection() {
           {/* 1. 3D Circular Gallery Viewport */}
           <div className="relative w-full max-w-7xl h-[460px] sm:h-[540px] md:h-[600px] flex items-center justify-center my-2">
             <div className="w-full h-full relative">
-              <CircularGallery
-                ref={galleryRef}
-                items={GALLERY_ITEMS}
-                bend={3}
-                textColor="#ffffff"
-                borderRadius={0.05}
-                scrollEase={0.03}
-                scrollSpeed={2}
-                fontUrl="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap"
-                font="bold 28px Orbitron"
-              />
+              {isNearViewport && (
+                <CircularGallery
+                  ref={galleryRef}
+                  items={GALLERY_ITEMS}
+                  bend={3}
+                  textColor="#ffffff"
+                  borderRadius={0.05}
+                  scrollEase={0.03}
+                  scrollSpeed={2}
+                  font="bold 26px var(--font-jetbrains-mono), monospace"
+                />
+              )}
             </div>
           </div>
 

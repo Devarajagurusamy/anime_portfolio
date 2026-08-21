@@ -36,7 +36,7 @@ export default function SkillsSection() {
         <motion.div
           initial={{ opacity: 0, scale: 0.88, y: 35 }}
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.25 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="relative w-full h-[420px] sm:h-[520px] md:h-[580px] flex items-center justify-center"
         >
