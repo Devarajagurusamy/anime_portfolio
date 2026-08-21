@@ -30,10 +30,8 @@ const EXPERIENCES: ExperienceItem[] = [
     badge: 'RECENT',
     iconType: 'work',
     highlights: [
-      'Developed and maintained web applications using Laravel-PHP, MySQL, Next.js, Nest.js, JavaScript/TypeScript, HTML, and CSS, contributing to admin panels, dynamic forms, and database-driven features.',
-      'Improved frontend UI, integrated REST APIs, and resolved bugs to deliver scalable, user-friendly solutions while collaborating remotely with the development team.',
-      'Used Git for version control and participated in CI/CD-based deployment workflows to ship updates reliably.',
-      'Focused on performance optimization and clean code practices across admin panel and dynamic form modules.'
+      'Developed scalable full-stack web applications and dynamic admin panels using Next.js, Nest.js, Laravel-PHP, TypeScript, and MySQL.',
+      'Built responsive UIs, integrated RESTful APIs, optimized performance, and shipped reliable releases via Git and CI/CD pipelines.'
     ]
   },
   {
