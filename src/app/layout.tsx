@@ -34,6 +34,11 @@ export const metadata: Metadata = {
   description: 'Interactive cinematic anime portfolio featuring smooth scroll-driven canvas animations, creative coding, and modern web engineering.',
   keywords: ['Devaraja', 'Devaraja S G', 'Full Stack Developer', 'Anime Portfolio', 'Creative Developer', 'Next.js', 'Canvas Animation'],
   authors: [{ name: 'Devaraja S G' }],
+  icons: {
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
+  },
 };
 
 export default function RootLayout({

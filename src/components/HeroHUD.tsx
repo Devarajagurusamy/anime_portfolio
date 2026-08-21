@@ -78,10 +78,13 @@ export default function HeroHUD({ scrollProgress, onSelectSection }: HeroHUDProp
         {/* Top Right Resume Button */}
         <div>
           <a
-            href="#resume"
+            href="https://drive.google.com/file/d/1wYVS6i6jlZW4tH1Ei0T7WFw3hUrjoRxg/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
             onClick={() => soundFx.playClick()}
             onMouseEnter={() => soundFx.playHover()}
             className="cyber-resume-btn group"
+            title="View Resume"
           >
             <FileText className="w-4 h-4 text-white group-hover:scale-105 transition-transform" />
             <span className="font-mono font-bold text-xs sm:text-sm tracking-wider text-white">

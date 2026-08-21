@@ -25,18 +25,12 @@ const LinkedinIcon = ({ className = 'w-4 h-4' }: { className?: string }) => (
   </svg>
 );
 
-const TwitterIcon = ({ className = 'w-4 h-4' }: { className?: string }) => (
-  <svg className={className} fill="currentColor" viewBox="0 0 24 24">
-    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-  </svg>
-);
-
 export default function Footer() {
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
 
-  const contactEmail = 'devarajagurusamy@gmail.com';
-  const contactPhone = '+91 93454 48981';
+  const contactEmail = 'devarajaguru2002@gmail.com';
+  const contactPhone = '+91 6384139796';
 
   const handleCopyEmail = () => {
     soundFx.playClick();
@@ -113,16 +107,16 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               <span className="w-2 h-2 rounded-full bg-[#e50914] shadow-[0_0_5px_#e50914] animate-bounce" />
               <span className="text-xl sm:text-2xl font-black font-mono tracking-wider text-white">
-                DEVARAJA<span className="text-[#e50914]">.</span>
+                DEVARAJA S G<span className="text-[#e50914]">.</span>
               </span>
               
             </div>
             <p className="text-xs font-sans text-neutral-400 leading-relaxed max-w-sm">
-              Full-Stack Developer & Creative Engineer specialized in high-performance web applications, 3D interactive graphics, and anime-inspired digital experiences.
+              Full Stack Developer specialized in high-performance production web applications, dynamic APIs, and modern responsive digital platforms.
             </p>
             <div className="flex items-center gap-2 text-xs font-mono text-neutral-400 pt-1">
               <MapPin className="w-3.5 h-3.5 text-[#e50914] flex-shrink-0" />
-              <span>Madurai, Tamil Nadu, India</span>
+              <span>Madurai, TN, India</span>
             </div>
           </div>
 
@@ -167,7 +161,7 @@ export default function Footer() {
               <div className="flex items-center gap-2.5 min-w-0">
                 <Phone className="w-4 h-4 text-[#e50914] flex-shrink-0" />
                 <a
-                  href={`tel:${contactPhone.replace(/\s+/g, '')}`}
+                  href={`tel:${contactPhone.replace(/[\s+()\-]/g, '')}`}
                   className="text-xs font-mono font-bold text-white hover:text-[#e50914] transition-colors truncate"
                   title="Call Phone Number"
                 >
@@ -205,8 +199,9 @@ export default function Footer() {
             
             {/* Download Resume Button */}
             <a
-              href="/assets/resume.pdf"
-              download="Devaraj_Gurusamy_Resume.pdf"
+              href="https://drive.google.com/file/d/1wYVS6i6jlZW4tH1Ei0T7WFw3hUrjoRxg/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => soundFx.playClick()}
               onMouseEnter={() => soundFx.playHover()}
               className="w-full py-2.5 px-4 rounded-lg bg-[#e50914] hover:bg-red-600 text-white font-mono text-xs font-bold tracking-wider uppercase transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(229,9,20,0.35)] active:scale-95 cursor-pointer select-none"
@@ -267,9 +262,8 @@ export default function Footer() {
             
             <div className="flex items-center gap-2">
               {[
-                { name: 'GitHub', icon: GithubIcon, href: 'https://github.com' },
-                { name: 'LinkedIn', icon: LinkedinIcon, href: 'https://linkedin.com' },
-                { name: 'Twitter / X', icon: TwitterIcon, href: 'https://twitter.com' }
+                { name: 'GitHub', icon: GithubIcon, href: 'https://github.com/Devarajagurusamy' },
+                { name: 'LinkedIn', icon: LinkedinIcon, href: 'https://www.linkedin.com/in/devaraja-s-g' }
               ].map((social, idx) => (
                 <a
                   key={idx}
@@ -281,13 +275,13 @@ export default function Footer() {
                   aria-label={social.name}
                   className="w-7 h-7 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 hover:border-red-500/50 text-neutral-400 hover:text-white flex items-center justify-center transition-all active:scale-95"
                 >
-                  <social.icon className="w-3 h-3 text-neutral-300 hover:text-[#e50914] transition-colors" />
+                  <social.icon className="w-3.5 h-3.5 text-neutral-300 hover:text-[#e50914] transition-colors" />
                 </a>
               ))}
             </div>
 
             <span className="text-[10px] font-mono text-neutral-500 hidden sm:inline">
-              &copy; {new Date().getFullYear()} DEVARAJA GURUSAMY
+              &copy; {new Date().getFullYear()} DEVARAJA S G
             </span>
 
           </div>

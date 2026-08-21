@@ -138,10 +138,13 @@ export default function AboutSection() {
               </a>
 
               <a
-                href="#resume"
+                href="https://drive.google.com/file/d/1wYVS6i6jlZW4tH1Ei0T7WFw3hUrjoRxg/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => soundFx.playClick()}
                 onMouseEnter={() => soundFx.playHover()}
                 className="inline-flex items-center gap-2 px-5 py-3 rounded bg-neutral-900 hover:bg-neutral-800 text-white font-mono text-xs font-semibold tracking-wider uppercase transition-all"
+                title="View Resume"
               >
                 <FileText className="w-4 h-4" />
                 <span>RESUME</span>
