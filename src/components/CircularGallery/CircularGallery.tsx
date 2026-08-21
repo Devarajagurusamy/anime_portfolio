@@ -2,11 +2,13 @@
 
 import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform } from 'ogl';
 import React, { useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
+import { soundFx } from '../AudioSynth';
 import './CircularGallery.css';
 
 export interface GalleryItem {
   image: string;
   text: string;
+  link?: string;
 }
 
 export interface CircularGalleryHandle {
@@ -227,6 +229,7 @@ class Media {
   scene: any;
   screen: any;
   text: string;
+  link?: string;
   viewport: any;
   bend: number;
   textColor: string;
@@ -254,6 +257,7 @@ class Media {
     scene,
     screen,
     text,
+    link,
     viewport,
     bend,
     textColor,
@@ -270,6 +274,7 @@ class Media {
     this.scene = scene;
     this.screen = screen;
     this.text = text;
+    this.link = link;
     this.viewport = viewport;
     this.bend = bend;
     this.textColor = textColor;
@@ -453,6 +458,9 @@ class App {
   viewport: { width: number; height: number } = { width: 0, height: 0 };
   isDown: boolean = false;
   start: number = 0;
+  startX: number = 0;
+  startY: number = 0;
+  hasMoved: boolean = false;
   raf: number | null = null;
 
   boundOnResize: () => void = () => {};
@@ -555,6 +563,7 @@ class App {
         scene: this.scene,
         screen: this.screen,
         text: data.text,
+        link: data.link,
         viewport: this.viewport,
         bend,
         textColor,
@@ -586,16 +595,60 @@ class App {
     this.isDown = true;
     this.scroll.position = this.scroll.current;
     this.start = e.touches ? e.touches[0].clientX : e.clientX;
+    this.startX = e.touches ? e.touches[0].clientX : e.clientX;
+    this.startY = e.touches ? e.touches[0].clientY : e.clientY;
+    this.hasMoved = false;
   }
 
   onTouchMove(e: any) {
     if (!this.isDown) return;
     const x = e.touches ? e.touches[0].clientX : e.clientX;
+    const y = e.touches ? e.touches[0].clientY : e.clientY;
+    if (Math.hypot(x - this.startX, y - this.startY) > 8) {
+      this.hasMoved = true;
+    }
     const distance = (this.start - x) * (this.scrollSpeed * 0.025);
     this.scroll.target = (this.scroll.position || 0) + distance;
   }
 
   onTouchUp() {
+    if (this.isDown && !this.hasMoved && this.container) {
+      const rect = this.container.getBoundingClientRect();
+      const clientX = this.startX;
+      const clientY = this.startY;
+      const clickX = ((clientX - rect.left) / rect.width - 0.5) * this.viewport.width;
+      const clickY = -((clientY - rect.top) / rect.height - 0.5) * this.viewport.height;
+
+      let clickedMedia: Media | null = null;
+      let minDistance = Infinity;
+
+      for (const media of this.medias) {
+        if (!media.plane) continue;
+        const halfW = media.plane.scale.x / 2;
+        const halfH = media.plane.scale.y / 2;
+        const mx = media.plane.position.x;
+        const my = media.plane.position.y;
+
+        if (
+          clickX >= mx - halfW &&
+          clickX <= mx + halfW &&
+          clickY >= my - halfH &&
+          clickY <= my + halfH
+        ) {
+          const dist = Math.hypot(clickX - mx, clickY - my);
+          if (dist < minDistance) {
+            minDistance = dist;
+            clickedMedia = media;
+          }
+        }
+      }
+
+      if (clickedMedia?.link) {
+        soundFx.playClick();
+        window.open(clickedMedia.link, '_blank', 'noopener,noreferrer');
+      }
+    }
+
     this.isDown = false;
     this.onCheck();
   }

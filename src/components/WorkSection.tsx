@@ -6,32 +6,34 @@ import CircularGallery, { GalleryItem, CircularGalleryHandle } from './CircularG
 
 const GALLERY_ITEMS: GalleryItem[] = [
   {
-    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop&q=75',
-    text: 'Design'
+    image: '/assets/works/hrConsultancy.png',
+    text: 'HR Consult M',
+    link: 'https://hr-consult-m.vercel.app/'
   },
   {
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&auto=format&fit=crop&q=75',
-    text: 'Verto Creative'
+    image: '/assets/works/pos.png',
+    text: 'POS System',
+    link: 'https://pos-two-ruddy.vercel.app/'
   },
   {
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop&q=75',
-    text: 'Novus Analytics'
+    image: '/assets/works/curcuma-caesia.png',
+    text: 'Curcuma Caesia',
+    link: 'https://curcuma-caesia.vercel.app/'
   },
   {
-    image: 'https://images.unsplash.com/photo-1510519138197-06b8628cbf47?w=600&auto=format&fit=crop&q=75',
-    text: 'FitLens App'
+    image: '/assets/works/employeeManagement.png',
+    text: 'Employee Dashboard',
+    link: 'https://employee-management-dashboard-delta-jade.vercel.app/'
   },
   {
-    image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=600&auto=format&fit=crop&q=75',
-    text: 'Portfolio'
+    image: '/assets/works/ecom.png',
+    text: 'E-Commerce App',
+    link: 'https://e-commerce-crud-app.vercel.app/'
   },
   {
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=75',
-    text: 'Aura Studio'
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=600&auto=format&fit=crop&q=75',
-    text: 'Quantum Vault'
+    image: '/assets/works/wellnessCoach.png',
+    text: 'Wellness Coach',
+    link: 'https://wah-coach-1.vercel.app/'
   }
 ];
 
@@ -134,6 +136,12 @@ export default function WorkSection() {
                   </linearGradient>
                 </defs>
               </svg>
+            </div>
+
+            {/* Interactive Cyber Helper Badge */}
+            <div className="flex items-center gap-2 px-3.5 py-1 rounded-full bg-neutral-900/80 border border-white/10 text-[10px] sm:text-[11px] font-mono text-neutral-400 uppercase tracking-widest mt-2 shadow-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#e50914] animate-pulse" />
+              <span>DRAG TO ROTATE • CLICK CARD TO OPEN LIVE SITE</span>
             </div>
 
           </div>
