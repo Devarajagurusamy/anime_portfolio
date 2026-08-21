@@ -97,9 +97,11 @@ export default function WorkSection() {
                   bend={3}
                   textColor="#ffffff"
                   borderRadius={0.05}
-                  scrollEase={0.03}
+                  scrollEase={0.04}
                   scrollSpeed={2}
-                  font="bold 26px var(--font-jetbrains-mono), monospace"
+                  autoRotate={true}
+                  autoRotateSpeed={0.045}
+                  font="bold 48px var(--font-jetbrains-mono), monospace"
                 />
               )}
             </div>

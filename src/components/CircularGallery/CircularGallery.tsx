@@ -25,6 +25,8 @@ export interface CircularGalleryProps {
   fontUrl?: string;
   scrollSpeed?: number;
   scrollEase?: number;
+  autoRotate?: boolean;
+  autoRotateSpeed?: number;
   className?: string;
 }
 
@@ -139,26 +141,38 @@ function getFontSize(font: string): number {
   return match ? parseInt(match[1], 10) : 30;
 }
 
-function createTextTexture(gl: any, text: string, font: string = 'bold 30px monospace', color: string = 'black') {
+function createTextTexture(gl: any, text: string, font: string = 'bold 48px monospace', color: string = 'white') {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
   if (!context) return { texture: new Texture(gl), width: 1, height: 1 };
   
+  const dpr = 2.5; // High-DPI canvas for ultra crisp text rendering
   context.font = font;
   const metrics = context.measureText(text);
   const textWidth = Math.ceil(metrics.width);
-  const textHeight = Math.ceil(getFontSize(font) * 1.2);
-  canvas.width = textWidth + 20;
-  canvas.height = textHeight + 20;
+  const fontSize = getFontSize(font);
+  const textHeight = Math.ceil(fontSize * 1.15);
+  
+  canvas.width = (textWidth + 20) * dpr;
+  canvas.height = (textHeight + 8) * dpr;
+  
+  context.scale(dpr, dpr);
   context.font = font;
   context.fillStyle = color;
   context.textBaseline = 'middle';
   context.textAlign = 'center';
   context.clearRect(0, 0, canvas.width, canvas.height);
-  context.fillText(text, canvas.width / 2, canvas.height / 2);
-  const texture = new Texture(gl, { generateMipmaps: false });
+  
+  // Subtle text shadow for enhanced depth & legibility
+  context.shadowColor = 'rgba(0, 0, 0, 0.95)';
+  context.shadowBlur = 8;
+  context.shadowOffsetY = 2;
+  
+  context.fillText(text, (textWidth + 20) / 2, (textHeight + 8) / 2);
+  
+  const texture = new Texture(gl, { generateMipmaps: true });
   texture.image = canvas;
-  return { texture, width: canvas.width, height: canvas.height };
+  return { texture, width: textWidth + 20, height: textHeight + 8 };
 }
 
 class Title {
@@ -170,7 +184,7 @@ class Title {
   font: string;
   mesh: any;
 
-  constructor({ gl, plane, renderer, text, textColor = '#545050', font = '30px sans-serif' }: any) {
+  constructor({ gl, plane, renderer, text, textColor = '#ffffff', font = 'bold 48px sans-serif' }: any) {
     autoBind(this);
     this.gl = gl;
     this.plane = plane;
@@ -201,7 +215,7 @@ class Title {
         varying vec2 vUv;
         void main() {
           vec4 color = texture2D(tMap, vUv);
-          if (color.a < 0.1) discard;
+          if (color.a < 0.05) discard;
           gl_FragColor = color;
         }
       `,
@@ -210,10 +224,12 @@ class Title {
     });
     this.mesh = new Mesh(this.gl, { geometry, program });
     const aspect = width / height;
-    const textHeight = this.plane.scale.y * 0.15;
+    // Bold, prominent 3D text scale for project names
+    const textHeight = this.plane.scale.y * 0.38;
     const textWidth = textHeight * aspect;
     this.mesh.scale.set(textWidth, textHeight, 1);
-    this.mesh.position.y = -this.plane.scale.y * 0.5 - textHeight * 0.5 - 0.05;
+    // Snug positioning with reduced vertical gap directly below the image
+    this.mesh.position.y = -this.plane.scale.y * 0.5 - textHeight * 0.5 + 0.03;
     this.mesh.setParent(this.plane);
   }
 }
@@ -463,12 +479,18 @@ class App {
   hasMoved: boolean = false;
   raf: number | null = null;
 
+  autoRotate: boolean = true;
+  autoRotateSpeed: number = 0.045;
+  isHovered: boolean = false;
+
   boundOnResize: () => void = () => {};
   boundOnWheel: (e: any) => void = () => {};
   boundOnTouchDown: (e: any) => void = () => {};
   boundOnTouchMove: (e: any) => void = () => {};
   boundOnTouchUp: () => void = () => {};
   boundOnKeyDown: (e: KeyboardEvent) => void = () => {};
+  boundOnMouseEnter: () => void = () => {};
+  boundOnMouseLeave: () => void = () => {};
 
   constructor(
     container: HTMLElement,
@@ -479,7 +501,9 @@ class App {
       borderRadius = 0,
       font = 'bold 30px Figtree',
       scrollSpeed = 2,
-      scrollEase = 0.05
+      scrollEase = 0.05,
+      autoRotate = true,
+      autoRotateSpeed = 0.045
     }: {
       items?: GalleryItem[];
       bend?: number;
@@ -488,6 +512,8 @@ class App {
       font?: string;
       scrollSpeed?: number;
       scrollEase?: number;
+      autoRotate?: boolean;
+      autoRotateSpeed?: number;
     } = {}
   ) {
     if (typeof document !== 'undefined') {
@@ -495,6 +521,8 @@ class App {
     }
     this.container = container;
     this.scrollSpeed = scrollSpeed;
+    this.autoRotate = autoRotate;
+    this.autoRotateSpeed = autoRotateSpeed;
     this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
     this.onCheckDebounce = debounce(this.onCheck.bind(this), 200);
     this.createRenderer();
@@ -733,8 +761,12 @@ class App {
 
   update() {
     if (this.isPaused) return;
+    if (this.autoRotate && !this.isDown) {
+      const step = this.isHovered ? this.autoRotateSpeed * 0.35 : this.autoRotateSpeed;
+      this.scroll.target += step;
+    }
     this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease);
-    const direction = this.scroll.current > this.scroll.last ? 'right' : 'left';
+    const direction = this.scroll.current >= this.scroll.last ? 'right' : 'left';
     if (this.medias) {
       this.medias.forEach(media => media.update(this.scroll, direction));
     }
@@ -752,6 +784,12 @@ class App {
     this.boundOnTouchMove = this.onTouchMove.bind(this);
     this.boundOnTouchUp = this.onTouchUp.bind(this);
     this.boundOnKeyDown = this.onKeyDown.bind(this);
+    this.boundOnMouseEnter = () => {
+      this.isHovered = true;
+    };
+    this.boundOnMouseLeave = () => {
+      this.isHovered = false;
+    };
 
     window.addEventListener('resize', this.boundOnResize);
     
@@ -761,6 +799,8 @@ class App {
       container.addEventListener('touchstart', this.boundOnTouchDown, { passive: true });
       container.addEventListener('keydown', this.boundOnKeyDown);
       container.addEventListener('wheel', this.boundOnWheel, { passive: true });
+      container.addEventListener('mouseenter', this.boundOnMouseEnter);
+      container.addEventListener('mouseleave', this.boundOnMouseLeave);
     }
 
     window.addEventListener('mousemove', this.boundOnTouchMove);
@@ -783,6 +823,8 @@ class App {
       this.container.removeEventListener('touchstart', this.boundOnTouchDown);
       this.container.removeEventListener('keydown', this.boundOnKeyDown);
       this.container.removeEventListener('wheel', this.boundOnWheel);
+      this.container.removeEventListener('mouseenter', this.boundOnMouseEnter);
+      this.container.removeEventListener('mouseleave', this.boundOnMouseLeave);
     }
     if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
       this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas);
@@ -800,6 +842,8 @@ const CircularGallery = forwardRef<CircularGalleryHandle, CircularGalleryProps>(
     fontUrl,
     scrollSpeed = 2,
     scrollEase = 0.05,
+    autoRotate = true,
+    autoRotateSpeed = 0.045,
     className = ''
   },
   ref
@@ -830,7 +874,9 @@ const CircularGallery = forwardRef<CircularGalleryHandle, CircularGalleryProps>(
         borderRadius,
         font: resolvedFont,
         scrollSpeed,
-        scrollEase
+        scrollEase,
+        autoRotate,
+        autoRotateSpeed
       });
 
       if (typeof IntersectionObserver !== 'undefined' && containerRef.current) {
@@ -857,7 +903,7 @@ const CircularGallery = forwardRef<CircularGalleryHandle, CircularGalleryProps>(
         appRef.current = null;
       }
     };
-  }, [items, bend, textColor, borderRadius, font, fontUrl, scrollSpeed, scrollEase]);
+  }, [items, bend, textColor, borderRadius, font, fontUrl, scrollSpeed, scrollEase, autoRotate, autoRotateSpeed]);
 
   return (
     <div
