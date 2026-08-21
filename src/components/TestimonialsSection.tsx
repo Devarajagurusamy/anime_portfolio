@@ -20,62 +20,102 @@ export interface TestimonialItem {
 const TESTIMONIALS: TestimonialItem[] = [
   {
     id: '01',
-    name: 'James Carter',
-    role: 'CEO',
-    company: 'FitLens App',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=75&w=600&auto=format&fit=crop',
+    name: 'Ananya Sundaram',
+    role: 'Co-Founder & Creative Director',
+    company: 'Curcuma Caesia',
+    image: '/assets/clients/client_01.png',
     quote:
-      'Devaraj delivered beyond expectations. The project was smooth, professional, and the results were outstanding.',
+      'Devaraja completely transformed our brand’s online presence. His attention to detail, modern design sensibility, and fluid user interactions made our e-commerce platform an instant success.',
     rating: 5
   },
   {
     id: '02',
-    name: 'Elena Rostova',
-    role: 'VP of Engineering',
-    company: 'Verto Creative',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=75&w=600&auto=format&fit=crop',
+    name: 'Meenakshi Natarajan',
+    role: 'Managing Director',
+    company: 'HR Consult M',
+    image: '/assets/clients/client_02.png',
     quote:
-      'Exceptional engineering precision and creative 3D performance. Delivered our WebGL platform ahead of schedule with 60 FPS fluidity.',
+      'Working with Devaraja on our HR platform was a seamless experience. He delivered a robust, scalable system with dynamic admin panels well ahead of our launch deadline.',
     rating: 5
   },
   {
     id: '03',
-    name: 'Marcus Vance',
-    role: 'Chief Architect',
-    company: 'Quantum Vault',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=75&w=600&auto=format&fit=crop',
+    name: 'Dr. Senthil Murugan',
+    role: 'Founder & CEO',
+    company: 'Retail POS Systems',
+    image: '/assets/clients/client_03.png',
     quote:
-      'A rare talent who seamlessly bridges bleeding-edge visual aesthetics with rock-solid fullstack architecture and security protocols.',
+      'Devaraja built our POS application with exceptional speed and architectural precision. The database queries and real-time inventory synchronization are rock-solid.',
     rating: 5
   },
   {
     id: '04',
-    name: 'Sarah Lin',
-    role: 'Creative Director',
-    company: 'Aura Studio',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=75&w=600&auto=format&fit=crop',
+    name: 'K. Ramanathan',
+    role: 'Managing Director',
+    company: 'Heritage Naturals',
+    image: '/assets/clients/client_04.png',
     quote:
-      'The anime cyberpunk HUD aesthetic was executed with pristine vector precision. Our users were instantly wowed by the experience.',
+      'A true full-stack professional who understands business goals. His clean code, responsive layouts, and reliable API integrations elevated our digital operations.',
     rating: 5
   },
   {
     id: '05',
-    name: 'David Chen',
-    role: 'Founder & CEO',
-    company: 'Novus Analytics',
-    image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=75&w=600&auto=format&fit=crop',
+    name: 'Lakshmi Saravanan',
+    role: 'Principal Consultant',
+    company: 'Global HR Advisory',
+    image: '/assets/clients/client_05.png',
     quote:
-      'Outstanding communication, rapid delivery, and top-tier code quality. Devaraj is our go-to engineer for ambitious web projects.',
+      'Devaraja’s communication and problem-solving skills are outstanding. He converted complex workflow requirements into intuitive, elegant dashboard experiences.',
     rating: 5
   },
   {
     id: '06',
-    name: 'Maya Thorne',
-    role: 'Lead 3D Artist',
-    company: 'Arc Studio',
-    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=75&w=600&auto=format&fit=crop',
+    name: 'Deepika Chandrasekar',
+    role: 'Lead Product Manager',
+    company: 'E-Commerce Hub',
+    image: '/assets/clients/client_06.png',
     quote:
-      'Working with Devaraj was an absolute pleasure. His deep mastery of Three.js and shader physics brought our vision to life.',
+      'From authentication to product CRUD and cart checkout, Devaraja delivered high-performance code with zero bugs. His work ethic and technical expertise are top notch.',
+    rating: 5
+  },
+  {
+    id: '07',
+    name: 'V. Muthukumarasamy',
+    role: 'Chairman',
+    company: 'Sri Krishna Logistics',
+    image: '/assets/clients/client_07.png',
+    quote:
+      'Devaraja delivered our enterprise tracking platform with great stability and performance. He is dedicated, trustworthy, and extremely skilled in modern web stacks.',
+    rating: 5
+  },
+  {
+    id: '08',
+    name: 'Radha Sundaram',
+    role: 'Founder & Director',
+    company: 'Wellness Coaching Hub',
+    image: '/assets/clients/client_08.png',
+    quote:
+      'Our wellness coaching platform received overwhelming praise from our clients. Devaraja’s responsive design and booking workflows work flawlessly across mobile and desktop.',
+    rating: 5
+  },
+  {
+    id: '09',
+    name: 'Keerthana Vijayaraghavan',
+    role: 'VP of Growth',
+    company: 'OmniStore Digital',
+    image: '/assets/clients/client_09.png',
+    quote:
+      'Devaraja’s performance optimization increased our site speed drastically. His expertise in Next.js and Tailwind CSS created a visually stunning shopping experience.',
+    rating: 5
+  },
+  {
+    id: '10',
+    name: 'Aravind Subramanian',
+    role: 'Co-Founder & CTO',
+    company: 'CloudFlow Systems',
+    image: '/assets/clients/client_10.png',
+    quote:
+      'Devaraja has a rare knack for engineering clean, maintainable code with cutting-edge UI aesthetics. Collaborating with him remotely was an absolute breeze.',
     rating: 5
   }
 ];

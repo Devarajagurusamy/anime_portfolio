@@ -77,7 +77,7 @@ export default function Footer() {
     <footer className="relative w-full overflow-hidden border-t border-neutral-900/80 bg-[#020202] text-neutral-400">
       
       {/* 1. LetterGlitch Canvas Layer with Cyber Red, Black & White Palette */}
-      <div className="absolute inset-0 pointer-events-none opacity-20 select-none">
+      <div className="absolute inset-0 pointer-events-none opacity-80 select-none">
         <LetterGlitch
           glitchColors={[
             '#e50914',
@@ -122,7 +122,7 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-2 text-xs font-mono text-neutral-400 pt-1">
               <MapPin className="w-3.5 h-3.5 text-[#e50914] flex-shrink-0" />
-              <span>Tamil Nadu, India</span>
+              <span>Madurai, Tamil Nadu, India</span>
             </div>
           </div>
 

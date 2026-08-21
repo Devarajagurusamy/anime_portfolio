@@ -30,10 +30,10 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'Devaraj | Creative Developer & Anime Portfolio',
+  title: 'Devaraja | Full Stack Developer & Anime Portfolio',
   description: 'Interactive cinematic anime portfolio featuring smooth scroll-driven canvas animations, creative coding, and modern web engineering.',
-  keywords: ['Devaraj', 'Developer Portfolio', 'Anime Portfolio', 'Creative Developer', 'Next.js', 'Canvas Animation'],
-  authors: [{ name: 'Devaraj' }],
+  keywords: ['Devaraja', 'Devaraja S G', 'Full Stack Developer', 'Anime Portfolio', 'Creative Developer', 'Next.js', 'Canvas Animation'],
+  authors: [{ name: 'Devaraja S G' }],
 };
 
 export default function RootLayout({

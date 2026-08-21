@@ -93,20 +93,19 @@ export default function AboutSection() {
             {/* Bio Paragraphs */}
             <div className="space-y-4 text-neutral-300 text-sm sm:text-base leading-relaxed font-sans">
               <p>
-                I&apos;m <span className="text-white font-bold font-mono">DEVARAJA</span>, a passionate fullstack engineer specializing in crafting immersive web applications, high-performance WebGL graphics, and cinematic anime-styled digital experiences.
+                I&apos;m <span className="text-white font-bold font-mono">DEVARAJA S G</span>, a Full Stack Developer with 2 years of experience building scalable web applications using React, Next.js, Nest.js, Laravel, and TypeScript. Passionate about creating clean, high-performance solutions and turning ideas into unique reliable products.
               </p>
               <p className="text-neutral-400 text-sm">
-                Bridging engineering precision with cutting-edge visual aesthetics, I design and build modern architectures from robust backend distributed services down to sub-millisecond fluid frontend interactions.
+              Build modern, high-performance web applications by combining solid backend architecture with clean, responsive, and engaging frontend experiences.
               </p>
             </div>
 
             {/* Stats Matrix Grid (No Box Borders) */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 my-6">
               {[
-                { value: '5+', label: 'Years Exp', color: 'text-white' },
-                { value: '40+', label: 'Projects Done', color: 'text-[#e50914]' },
-                { value: '100%', label: 'Code Integrity', color: 'text-white' },
-                { value: '60 FPS', label: 'Performance', color: 'text-amber-400' }
+                { value: '2+', label: 'Years Exp', color: 'text-white' },
+                { value: '10+', label: 'Projects Done', color: 'text-[#e50914]' },
+                { value: '100%', label: 'Integrity', color: 'text-white' },
               ].map((stat, idx) => (
                 <motion.div
                   key={idx}

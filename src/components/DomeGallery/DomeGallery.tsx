@@ -88,7 +88,6 @@ function buildItems(pool: (string | DomeImageItem)[], seg: number) {
     return ys.map(y => ({ x, y, sizeX: 2, sizeY: 2 }));
   });
 
-  const totalSlots = coords.length;
   if (pool.length === 0) {
     return coords.map(c => ({ ...c, src: '', alt: '' }));
   }
@@ -100,18 +99,20 @@ function buildItems(pool: (string | DomeImageItem)[], seg: number) {
     return { src: image.src || '', alt: image.alt || '' };
   });
 
-  const usedImages = Array.from({ length: totalSlots }, (_, i) => normalizedImages[i % normalizedImages.length]);
+  const N = normalizedImages.length;
+  
+  // Deterministic 2D pseudo-random spatial distribution to break all grid/striped patterns
+  const usedImages = coords.map((c, idx) => {
+    const noise = Math.abs(Math.sin(c.x * 12.9898 + c.y * 78.233 + (idx + 1) * 37.719) * 43758.5453);
+    const chosenIndex = Math.floor(noise * 1000) % N;
+    return normalizedImages[chosenIndex];
+  });
 
+  // Guarantee no adjacent horizontal or vertical duplicate tiles
   for (let i = 1; i < usedImages.length; i++) {
     if (usedImages[i].src === usedImages[i - 1].src) {
-      for (let j = i + 1; j < usedImages.length; j++) {
-        if (usedImages[j].src !== usedImages[i].src) {
-          const tmp = usedImages[i];
-          usedImages[i] = usedImages[j];
-          usedImages[j] = tmp;
-          break;
-        }
-      }
+      const altIdx = (normalizedImages.findIndex(img => img.src === usedImages[i].src) + 3) % N;
+      usedImages[i] = normalizedImages[altIdx];
     }
   }
 
