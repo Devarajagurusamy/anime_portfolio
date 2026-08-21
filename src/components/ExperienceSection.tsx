@@ -14,8 +14,9 @@ interface ExperienceItem {
   period: string;
   location: string;
   badge?: string;
-  iconType: 'work' | 'intern' | 'code' | 'star';
-  description: string;
+  iconType: 'work' | 'intern' | 'seo';
+  description?: string;
+  highlights?: string[];
 }
 
 const EXPERIENCES: ExperienceItem[] = [
@@ -23,46 +24,41 @@ const EXPERIENCES: ExperienceItem[] = [
     id: '01',
     number: '01',
     role: 'Junior Developer',
-    company: 'HappyCoders Private Limited',
-    period: 'Jan 2024 – May 2024',
-    location: 'Thoothukudi, Tamil Nadu (Remote)',
-    badge: 'PRESENT',
+    company: 'Happycoders Private Limited',
+    period: 'Mar 2024 – Feb 2026',
+    location: 'Thoothukudi, TN (Remote)',
+    badge: 'RECENT',
     iconType: 'work',
-    description:
-      'Worked on developing and maintaining web applications using modern technologies. Collaborated with the team to deliver efficient and scalable solutions.'
+    highlights: [
+      'Developed and maintained web applications using Laravel-PHP, MySQL, Next.js, Nest.js, JavaScript/TypeScript, HTML, and CSS, contributing to admin panels, dynamic forms, and database-driven features.',
+      'Improved frontend UI, integrated REST APIs, and resolved bugs to deliver scalable, user-friendly solutions while collaborating remotely with the development team.',
+      'Used Git for version control and participated in CI/CD-based deployment workflows to ship updates reliably.',
+      'Focused on performance optimization and clean code practices across admin panel and dynamic form modules.'
+    ]
   },
   {
     id: '02',
     number: '02',
-    role: 'Web Developer Intern',
-    company: 'HappyCoders Private Limited',
-    period: 'Sep 2023 – Dec 2023',
-    location: 'Thoothukudi, Tamil Nadu (Remote)',
+    role: 'Digital Marketing Intern',
+    company: 'Happycoders Private Limited',
+    period: 'Nov 2023 – Jan 2024',
+    location: 'Thoothukudi, TN (Remote)',
     iconType: 'intern',
-    description:
-      'Assisted in building and testing web applications. Gained hands-on experience in frontend development and backend integration.'
+    highlights: [
+      'Contributed to the execution of comprehensive digital marketing campaigns for Happycoders, gaining practical experience across digital marketing strategies.'
+    ]
   },
   {
     id: '03',
     number: '03',
-    role: 'Freelance Developer',
-    company: 'Self Employed',
-    period: 'Jun 2023 – Aug 2023',
-    location: 'Remote',
-    iconType: 'code',
-    description:
-      'Built responsive websites and custom solutions for clients. Focused on creating clean UI and seamless user experiences.'
-  },
-  {
-    id: '04',
-    number: '04',
-    role: 'Student Projects',
-    company: 'Academic',
-    period: '2021 – 2023',
-    location: 'College Projects',
-    iconType: 'star',
-    description:
-      'Developed various fullstack and web design projects during coursework, building strong fundamentals in software engineering and modern web stacks.'
+    role: 'Search Engine Optimization Intern',
+    company: 'Drawlead Private Limited',
+    period: 'Aug 2023 – Oct 2023',
+    location: 'Chennai, TN',
+    iconType: 'seo',
+    highlights: [
+      'Assisted in implementing effective SEO strategies to enhance online visibility and improve search engine rankings for Drawlead.'
+    ]
   }
 ];
 
@@ -90,7 +86,7 @@ export default function ExperienceSection() {
     const unsubscribe = smoothProgress.on('change', latest => {
       const newActive: number[] = [];
       EXPERIENCES.forEach((_, idx) => {
-        const threshold = (idx + 0.3) / EXPERIENCES.length;
+        const threshold = (idx + 0.25) / EXPERIENCES.length;
         if (latest >= threshold) {
           newActive.push(idx);
         }
@@ -184,9 +180,20 @@ export default function ExperienceSection() {
                           </div>
                         </div>
 
-                        <p className="text-sm text-neutral-300 font-sans leading-relaxed pt-2 max-w-lg">
-                          {item.description}
-                        </p>
+                        {item.highlights && item.highlights.length > 0 ? (
+                          <ul className="space-y-2 pt-2 text-xs sm:text-sm text-neutral-300 font-sans leading-relaxed max-w-lg text-left">
+                            {item.highlights.map((point, pIdx) => (
+                              <li key={pIdx} className="flex items-start gap-2">
+                                <span className="text-[#e50914] font-bold mt-0.5 select-none flex-shrink-0">›</span>
+                                <span>{point}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : item.description ? (
+                          <p className="text-sm text-neutral-300 font-sans leading-relaxed pt-2 max-w-lg">
+                            {item.description}
+                          </p>
+                        ) : null}
                       </motion.div>
                     ) : (
                       <div className="hidden md:block" />
@@ -246,9 +253,20 @@ export default function ExperienceSection() {
                           </div>
                         </div>
 
-                        <p className="text-sm text-neutral-300 font-sans leading-relaxed pt-2 max-w-lg">
-                          {item.description}
-                        </p>
+                        {item.highlights && item.highlights.length > 0 ? (
+                          <ul className="space-y-2 pt-2 text-xs sm:text-sm text-neutral-300 font-sans leading-relaxed max-w-lg text-left">
+                            {item.highlights.map((point, pIdx) => (
+                              <li key={pIdx} className="flex items-start gap-2">
+                                <span className="text-[#e50914] font-bold mt-0.5 select-none flex-shrink-0">›</span>
+                                <span>{point}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : item.description ? (
+                          <p className="text-sm text-neutral-300 font-sans leading-relaxed pt-2 max-w-lg">
+                            {item.description}
+                          </p>
+                        ) : null}
                       </motion.div>
                     ) : (
                       <div className="hidden md:block" />
