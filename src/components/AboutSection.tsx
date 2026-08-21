@@ -22,7 +22,7 @@ const Lanyard = dynamic(() => import('./Lanyard/Lanyard'), {
 });
 
 export default function AboutSection() {
-  const [isNearViewport, setIsNearViewport] = React.useState(false);
+  const [isNearViewport, setIsNearViewport] = React.useState(true);
   const sectionRef = React.useRef<HTMLElement | null>(null);
 
   React.useEffect(() => {
@@ -31,10 +31,9 @@ export default function AboutSection() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsNearViewport(true);
-          observer.disconnect();
         }
       },
-      { rootMargin: '350px' }
+      { rootMargin: '800px' }
     );
     observer.observe(sectionRef.current);
     return () => observer.disconnect();
@@ -130,7 +129,7 @@ export default function AboutSection() {
             {/* Action Buttons */}
             <div className="flex flex-wrap items-center gap-4">
               <a
-                href="#projects"
+                href="#work"
                 onClick={() => soundFx.playClick()}
                 onMouseEnter={() => soundFx.playHover()}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded bg-[#e50914] hover:bg-red-600 text-white font-mono text-xs font-bold tracking-wider uppercase transition-all group"

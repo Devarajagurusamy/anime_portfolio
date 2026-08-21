@@ -64,6 +64,7 @@ export default function Footer() {
   };
 
   const navLinks = [
+    { label: 'HOME', href: '#home' },
     { label: 'WORK', href: '#work' },
     { label: 'ABOUT', href: '#about' },
     { label: 'SKILLS', href: '#skills' },
@@ -242,7 +243,16 @@ export default function Footer() {
               <a
                 key={idx}
                 href={link.href}
-                onClick={() => soundFx.playClick()}
+                onClick={(e) => {
+                  e.preventDefault();
+                  soundFx.playClick();
+                  if (link.href === '#home') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  } else {
+                    const el = document.querySelector(link.href);
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
                 onMouseEnter={() => soundFx.playHover()}
                 className="text-neutral-400 hover:text-white transition-colors uppercase tracking-wider relative group py-0.5 text-[11px]"
               >

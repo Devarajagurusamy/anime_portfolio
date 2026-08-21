@@ -262,7 +262,7 @@ export default function HeroCanvas({ onSelectSection }: HeroCanvasProps) {
       </div>
 
       {/* Hero Track Scroll Container with Sticky Viewport */}
-      <div ref={containerRef} className="relative w-full h-[380vh]">
+      <div id="home" ref={containerRef} className="relative w-full h-[380vh]">
         <div className="sticky top-0 w-full h-screen overflow-hidden z-0 bg-[#ba0c0c]">
           <canvas
             ref={canvasRef}

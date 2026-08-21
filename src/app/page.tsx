@@ -13,7 +13,10 @@ import Footer from '@/components/Footer';
 import LineSidebar from '@/components/LineSidebar/LineSidebar';
 import Particles from '@/components/Particles/Particles';
 
+import { soundFx } from '@/components/AudioSynth';
+
 const SECTIONS = [
+  { id: 'home', label: 'Home' },
   { id: 'work', label: 'Work' },
   { id: 'about', label: 'About' },
   { id: 'skills', label: 'Skills' },
@@ -33,11 +36,12 @@ export default function Home() {
   // Initialize Lenis Virtual Momentum Smooth Scrolling
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.15,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      duration: 1.35,
+      easing: (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
+      wheelMultiplier: 0.95,
       touchMultiplier: 1.5,
     });
     lenisRef.current = lenis;
@@ -56,21 +60,69 @@ export default function Home() {
     };
   }, []);
 
+  // Cinematic smooth scrolling controller that glides gracefully across all intermediate sections
+  const smoothScrollToTarget = (targetElementOrY: HTMLElement | number) => {
+    const currentY = window.scrollY || window.pageYOffset || 0;
+    let targetY = 0;
+
+    if (typeof targetElementOrY === 'number') {
+      targetY = targetElementOrY;
+    } else {
+      const rect = targetElementOrY.getBoundingClientRect();
+      targetY = rect.top + currentY;
+    }
+
+    const distance = Math.abs(targetY - currentY);
+    // Smoothly scale duration based on distance so scrolling across multiple sections glides fluidly
+    const duration = Math.min(2.4, Math.max(1.3, 0.95 + Math.pow(distance / 4500, 0.45) * 0.95));
+
+    // Symmetrical ease-in-out curve: gentle acceleration -> fluid travel through all sections -> gentle deceleration
+    const customEasing = (t: number) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(targetY, {
+        duration,
+        easing: customEasing,
+        lock: false,
+      });
+    } else {
+      const startTime = performance.now();
+      const durationMs = duration * 1000;
+      const startY = currentY;
+      const diff = targetY - startY;
+
+      const step = (now: number) => {
+        const elapsed = now - startTime;
+        const progress = Math.min(1, elapsed / durationMs);
+        const eased = customEasing(progress);
+        window.scrollTo(0, startY + diff * eased);
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      };
+      requestAnimationFrame(step);
+    }
+  };
+
   const handleSelectSection = (sectionId: string) => {
+    soundFx.playClick();
+    if (sectionId === 'home') {
+      smoothScrollToTarget(0);
+      return;
+    }
+
     const targetId =
-      sectionId === 'work'
-        ? 'projects'
+      sectionId === 'projects'
+        ? 'work'
         : sectionId === 'achievements'
         ? 'testimonials'
         : sectionId;
 
     const el = document.getElementById(targetId) || document.getElementById(sectionId);
     if (el) {
-      if (lenisRef.current) {
-        lenisRef.current.scrollTo(el, { offset: 0, duration: 1.2 });
-      } else {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
+      smoothScrollToTarget(el);
     }
   };
 
@@ -88,28 +140,37 @@ export default function Home() {
       }
 
       if (!isPastHero) {
-        if (activeIndexRef.current !== null) {
-          activeIndexRef.current = null;
-          setActiveSectionIndex(null);
+        if (activeIndexRef.current !== 0) {
+          activeIndexRef.current = 0;
+          setActiveSectionIndex(0);
         }
         ticking = false;
         return;
       }
 
-      // Calculate which section is most centered in the viewport
-      const scrollCenter = scrollY + window.innerHeight / 3;
-      let currentIndex = 0;
+      // Calculate which section is currently centered in the viewport
+      const scrollCenter = scrollY + window.innerHeight / 2;
+      let currentIndex = 1; // Default to Work if scrolled past hero
 
-      for (let i = 0; i < SECTIONS.length; i++) {
-        const el = document.getElementById(SECTIONS[i].id);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollCenter >= top && scrollCenter < top + height) {
-            currentIndex = i;
-            break;
-          } else if (scrollCenter >= top) {
-            currentIndex = i;
+      // Check if at the bottom of the page
+      if (
+        typeof document !== 'undefined' &&
+        window.innerHeight + scrollY >= document.documentElement.scrollHeight - 150
+      ) {
+        currentIndex = SECTIONS.length - 1;
+      } else {
+        for (let i = 1; i < SECTIONS.length; i++) {
+          const el = document.getElementById(SECTIONS[i].id);
+          if (el) {
+            const rect = el.getBoundingClientRect();
+            const top = rect.top + scrollY;
+            const height = rect.height;
+            if (scrollCenter >= top && scrollCenter < top + height) {
+              currentIndex = i;
+              break;
+            } else if (scrollCenter >= top) {
+              currentIndex = i;
+            }
           }
         }
       }
@@ -185,18 +246,19 @@ export default function Home() {
           markerGap={10}
           tickScale={0.45}
           scaleTick
-          itemGap={38}
+          itemGap={30}
           fontSize={0.72}
           smoothing={180}
           onItemClick={(index) => {
-            const targetId = SECTIONS[index].id;
-            const el = document.getElementById(targetId);
+            soundFx.playClick();
+            const target = SECTIONS[index];
+            if (target.id === 'home') {
+              smoothScrollToTarget(0);
+              return;
+            }
+            const el = document.getElementById(target.id);
             if (el) {
-              if (lenisRef.current) {
-                lenisRef.current.scrollTo(el, { offset: 0, duration: 1.2 });
-              } else {
-                el.scrollIntoView({ behavior: 'smooth' });
-              }
+              smoothScrollToTarget(el);
             }
           }}
         />

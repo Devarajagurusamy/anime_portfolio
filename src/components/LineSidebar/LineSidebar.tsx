@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useCallback, useEffect } from 'react';
+import { soundFx } from '../AudioSynth';
 import './LineSidebar.css';
 
 const FALLOFF_CURVES: Record<string, (p: number) => number> = {
@@ -190,7 +191,11 @@ export const LineSidebar: React.FC<LineSidebarProps> = ({
             }}
             className="line-sidebar__item"
             aria-current={activeIndex === index ? 'true' : undefined}
-            onClick={() => handleClick(index, label)}
+            onMouseEnter={() => soundFx.playHover()}
+            onClick={() => {
+              soundFx.playClick();
+              handleClick(index, label);
+            }}
           >
             {showMarker && <span className="line-sidebar__marker" aria-hidden="true" />}
             <span className="line-sidebar__label">

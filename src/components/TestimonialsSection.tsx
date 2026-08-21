@@ -84,7 +84,7 @@ export default function TestimonialsSection() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
-  const [isNearViewport, setIsNearViewport] = useState(false);
+  const [isNearViewport, setIsNearViewport] = useState(true);
   const sectionRef = React.useRef<HTMLElement | null>(null);
 
   React.useEffect(() => {
@@ -93,10 +93,9 @@ export default function TestimonialsSection() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsNearViewport(true);
-          observer.disconnect();
         }
       },
-      { rootMargin: '350px' }
+      { rootMargin: '800px' }
     );
     observer.observe(sectionRef.current);
     return () => observer.disconnect();

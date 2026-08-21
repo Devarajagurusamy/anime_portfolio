@@ -51,12 +51,12 @@ export default function WorkSection() {
     restDelta: 0.001
   });
 
-  // Deep-space emergence: scales smoothly from 0.85 directly out of the pitch darkness to full 1.0
-  const scale = useTransform(smoothProgress, [0, 0.45, 1], [0.85, 1, 1]);
-  // Smooth void fade-in
-  const opacity = useTransform(smoothProgress, [0, 0.35, 1], [0, 1, 1]);
+  // Deep-space emergence: scales smoothly from 0.92 directly out of the pitch darkness to full 1.0
+  const scale = useTransform(smoothProgress, [0, 0.45, 1], [0.95, 1, 1]);
+  // Smooth void visibility
+  const opacity = useTransform(smoothProgress, [0, 0.1, 1], [1, 1, 1]);
 
-  const [isNearViewport, setIsNearViewport] = React.useState(false);
+  const [isNearViewport, setIsNearViewport] = React.useState(true);
 
   useEffect(() => {
     if (!containerRef.current || typeof IntersectionObserver === 'undefined') return;
@@ -64,10 +64,9 @@ export default function WorkSection() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsNearViewport(true);
-          observer.disconnect();
         }
       },
-      { rootMargin: '350px' }
+      { rootMargin: '500px' }
     );
     observer.observe(containerRef.current);
     return () => observer.disconnect();
@@ -76,7 +75,7 @@ export default function WorkSection() {
   return (
     <section
       ref={containerRef}
-      id="projects"
+      id="work"
       className="relative z-10 w-full h-[220vh] bg-transparent"
     >
       {/* Sticky Viewport: Locks in the center of the screen during zoom-in without vertical drift */}
