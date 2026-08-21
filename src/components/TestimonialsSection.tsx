@@ -137,8 +137,14 @@ export default function TestimonialsSection() {
 
       <div className="max-w-7xl w-full mx-auto relative z-10 flex items-center justify-center min-h-[580px] sm:min-h-[640px]">
         
-        {/* 1. 3D Dome Gallery Background with Continuous Slight Rotation */}
-        <div className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-auto">
+        {/* 1. 3D Dome Gallery Background with Continuous Slight Rotation & Smooth Motion Entrance */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.85 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-auto"
+        >
           <DomeGallery
             images={domeImages}
             fit={0.55}
@@ -158,7 +164,7 @@ export default function TestimonialsSection() {
               setIsOpen(true);
             }}
           />
-        </div>
+        </motion.div>
 
         {/* 2. Interactive Testimonial Card Modal (Appears Only When A Picture Is Clicked) */}
         <AnimatePresence>

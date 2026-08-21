@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import CurvedInput from './CurvedInput/CurvedInput';
 import VerticalHeading from './VerticalHeading';
 import TrueFocus from './TrueFocus/TrueFocus';
@@ -83,7 +84,13 @@ export default function ContactSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           
           {/* Left Column: Character & Centered TrueFocus Tagline */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center space-y-4">
+          <motion.div
+            initial={{ opacity: 0, x: -40, scale: 0.96 }}
+            whileInView={{ opacity: 1, x: 0, scale: 1 }}
+            viewport={{ once: false, amount: 0.25 }}
+            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-5 flex flex-col items-center justify-center space-y-4"
+          >
             
             {/* Portfolio Character */}
             <div className="w-full flex justify-center items-center">
@@ -113,10 +120,16 @@ export default function ContactSection() {
               </div>
             </div>
 
-          </div>
+          </motion.div>
 
           {/* Right Column: Redesigned 4-Field Curved Input Form */}
-          <div className="lg:col-span-7 flex flex-col">
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false, amount: 0.25 }}
+            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            className="lg:col-span-7 flex flex-col"
+          >
             
             {isSubmitted ? (
               <div className="py-12 px-4 flex flex-col items-center justify-center text-center my-auto">
@@ -278,7 +291,7 @@ export default function ContactSection() {
               </form>
             )}
 
-          </div>
+          </motion.div>
 
         </div>
 

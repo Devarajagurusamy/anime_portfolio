@@ -108,7 +108,13 @@ export default function ExperienceSection() {
       {/* Vertical Section Heading */}
       <VerticalHeading whiteText="EXPERI" redText="ENCE" />
 
-      <div className="max-w-6xl w-full relative z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.15 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="max-w-6xl w-full relative z-10"
+      >
         
         {/* Alternating Timeline Container */}
         <div className="relative w-full">
@@ -251,7 +257,7 @@ export default function ExperienceSection() {
 
         </div>
 
-      </div>
+      </motion.div>
     </section>
   );
 }
