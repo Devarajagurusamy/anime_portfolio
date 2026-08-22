@@ -48,7 +48,7 @@ export default function HeroHUD({ scrollProgress, onSelectSection }: HeroHUDProp
       </div>
 
       {/* TOP BAR */}
-      <header className="absolute top-0 left-0 right-0 z-30 px-8 sm:px-12 md:px-16 pt-7 sm:pt-8 flex items-center justify-between pointer-events-auto">
+      <header className="absolute top-0 left-0 right-0 z-30 px-5 sm:px-12 md:px-16 pt-5 sm:pt-8 flex items-center justify-between pointer-events-auto">
         {/* Brand */}
         <div className="flex flex-col">
           <div className="flex items-baseline gap-1">
@@ -62,19 +62,6 @@ export default function HeroHUD({ scrollProgress, onSelectSection }: HeroHUDProp
           </span>
         </div>
 
-        {/* Center Home Icon */}
-        {/* <div className="flex items-center justify-center">
-          <button
-            type="button"
-            className="p-2 rounded-full text-white/90 hover:text-white transition-all cursor-pointer"
-            onClick={() => soundFx.playClick()}
-            onMouseEnter={() => soundFx.playHover()}
-            title="Home"
-          >
-            <Home className="w-5 h-5 stroke-[1.8]" />
-          </button>
-        </div> */}
-
         {/* Top Right Resume Button */}
         <div>
           <a
@@ -83,10 +70,10 @@ export default function HeroHUD({ scrollProgress, onSelectSection }: HeroHUDProp
             rel="noopener noreferrer"
             onClick={() => soundFx.playClick()}
             onMouseEnter={() => soundFx.playHover()}
-            className="cyber-resume-btn group"
+            className="cyber-resume-btn group py-1.5 px-3 sm:py-2 sm:px-4.5"
             title="View Resume"
           >
-            <FileText className="w-4 h-4 text-white group-hover:scale-105 transition-transform" />
+            <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white group-hover:scale-105 transition-transform" />
             <span className="font-mono font-bold text-xs sm:text-sm tracking-wider text-white">
               RESUME
             </span>
@@ -94,8 +81,8 @@ export default function HeroHUD({ scrollProgress, onSelectSection }: HeroHUDProp
         </div>
       </header>
 
-      {/* LEFT SIDE NAVIGATION BUTTONS & SPREAD CIRCUITS */}
-      <div className="absolute left-6 sm:left-10 md:left-14 lg:left-20 top-[18%] bottom-[20%] w-[240px] sm:w-[260px] md:w-[280px] flex flex-col justify-between pointer-events-auto z-30">
+      {/* LEFT SIDE NAVIGATION BUTTONS & SPREAD CIRCUITS (Desktop only, hidden on mobile to prevent character overlap) */}
+      <div className="hidden lg:flex absolute left-6 sm:left-10 md:left-14 lg:left-20 top-[18%] bottom-[20%] w-[240px] sm:w-[260px] md:w-[280px] flex-col justify-between pointer-events-auto z-30">
         {/* 1. ABOUT ME */}
         <div className="relative group">
           <button
@@ -199,8 +186,8 @@ export default function HeroHUD({ scrollProgress, onSelectSection }: HeroHUDProp
         </div>
       </div>
 
-      {/* RIGHT SIDE NAVIGATION BUTTONS & SPREAD CIRCUITS */}
-      <div className="absolute right-6 sm:right-10 md:right-14 lg:right-20 top-[18%] bottom-[20%] w-[240px] sm:w-[260px] md:w-[280px] flex flex-col justify-between pointer-events-auto z-30">
+      {/* RIGHT SIDE NAVIGATION BUTTONS & SPREAD CIRCUITS (Desktop only, hidden on mobile to prevent character overlap) */}
+      <div className="hidden lg:flex absolute right-6 sm:right-10 md:right-14 lg:right-20 top-[18%] bottom-[20%] w-[240px] sm:w-[260px] md:w-[280px] flex-col justify-between pointer-events-auto z-30">
         {/* 1. EXPERIENCE */}
         <div className="relative group">
           <button
@@ -304,17 +291,17 @@ export default function HeroHUD({ scrollProgress, onSelectSection }: HeroHUDProp
         </div>
       </div>
 
-      {/* BOTTOM GIANT "FULLSTACK DEVELOPER" BANNER */}
-      <footer className="absolute bottom-3 sm:bottom-5 left-0 right-0 z-30 px-4 flex justify-center items-center pointer-events-auto">
-        <div className="flex items-center justify-center tracking-tight">
-          {/* FULLSTACK text with tall condensed techno font */}
-          <span className="font-black text-4xl sm:text-6xl md:text-7xl lg:text-[86px] text-white font-mono tracking-tighter pr-3 sm:pr-5 drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)] leading-none select-none">
+      {/* BOTTOM RESPONSIVE "FULLSTACK DEVELOPER" BANNER */}
+      <footer className="absolute bottom-3 sm:bottom-5 left-0 right-0 z-30 px-3 sm:px-6 flex justify-center items-center pointer-events-auto">
+        <div className="flex flex-wrap sm:flex-nowrap items-center justify-center tracking-tight max-w-full gap-1.5 sm:gap-0">
+          {/* FULLSTACK text with responsive techno font */}
+          <span className="font-black text-2xl xs:text-3xl sm:text-6xl md:text-7xl lg:text-[86px] text-white font-mono tracking-tighter sm:pr-4 md:pr-5 drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)] leading-none select-none">
             FULLSTACK
           </span>
 
           {/* DEVELOPER white box badge with bold black font */}
-          <div className="bg-white px-3 sm:px-6 py-1 sm:py-2 rounded-[3px] shadow-[0_10px_30px_rgba(0,0,0,0.7)] flex items-center justify-center select-none">
-            <span className="font-black text-3xl sm:text-5xl md:text-6xl lg:text-[74px] text-black font-mono tracking-normal leading-none">
+          <div className="bg-white px-2.5 sm:px-6 py-0.5 sm:py-2 rounded-[3px] shadow-[0_10px_30px_rgba(0,0,0,0.7)] flex items-center justify-center select-none">
+            <span className="font-black text-xl xs:text-2xl sm:text-5xl md:text-6xl lg:text-[74px] text-black font-mono tracking-normal leading-none">
               DEVELOPER
             </span>
           </div>

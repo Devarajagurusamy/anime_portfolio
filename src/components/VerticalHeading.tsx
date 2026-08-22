@@ -22,7 +22,7 @@ export default function VerticalHeading({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className={`absolute ${align === 'left' ? 'left-3 sm:left-6 md:left-8' : 'right-3 sm:right-6 md:right-8'} top-1/2 -translate-y-1/2 z-20 select-none pointer-events-none flex flex-col items-center gap-4 ${className}`}
+      className={`hidden md:flex absolute ${align === 'left' ? 'left-3 sm:left-6 md:left-8' : 'right-3 sm:right-6 md:right-8'} top-1/2 -translate-y-1/2 z-20 select-none pointer-events-none flex-col items-center gap-4 ${className}`}
       aria-hidden="true"
     >
       {/* Top Red Accent Spine */}
