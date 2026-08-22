@@ -295,13 +295,13 @@ export default function HeroHUD({ scrollProgress, onSelectSection }: HeroHUDProp
       <footer className="absolute bottom-3 sm:bottom-5 left-0 right-0 z-30 px-3 sm:px-6 flex justify-center items-center pointer-events-auto">
         <div className="flex flex-wrap sm:flex-nowrap items-center justify-center tracking-tight max-w-full gap-1.5 sm:gap-0">
           {/* FULLSTACK text with responsive techno font */}
-          <span className="font-black text-2xl xs:text-3xl sm:text-6xl md:text-7xl lg:text-[86px] text-white font-mono tracking-tighter sm:pr-4 md:pr-5 drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)] leading-none select-none">
+          <span className="font-black text-6xl xs:text-7xl sm:text-6xl md:text-7xl lg:text-[86px] text-white font-mono tracking-tighter sm:pr-4 md:pr-5 drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)] leading-none select-none">
             FULLSTACK
           </span>
 
           {/* DEVELOPER white box badge with bold black font */}
           <div className="bg-white px-2.5 sm:px-6 py-0.5 sm:py-2 rounded-[3px] shadow-[0_10px_30px_rgba(0,0,0,0.7)] flex items-center justify-center select-none">
-            <span className="font-black text-xl xs:text-2xl sm:text-5xl md:text-6xl lg:text-[74px] text-black font-mono tracking-normal leading-none">
+            <span className="font-black text-6xl xs:text-7xl sm:text-5xl md:text-6xl lg:text-[74px] text-black font-mono tracking-normal leading-none">
               DEVELOPER
             </span>
           </div>
