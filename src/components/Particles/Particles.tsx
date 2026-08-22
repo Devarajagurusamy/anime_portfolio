@@ -124,10 +124,7 @@ const Particles: React.FC<ParticlesProps> = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const isActiveRef = useRef(isActive);
-
-  useEffect(() => {
-    isActiveRef.current = isActive;
-  }, [isActive]);
+  const startAnimationRef = useRef<() => void>(() => {});
 
   useEffect(() => {
     const container = containerRef.current;
@@ -252,11 +249,20 @@ const Particles: React.FC<ParticlesProps> = ({
       renderer.render({ scene: particles, camera });
     };
 
-    if (isActiveRef.current) {
+    const startLoop = () => {
+      if (animationFrameId !== null) return;
+      lastTime = performance.now();
       animationFrameId = requestAnimationFrame(update);
+    };
+
+    if (isActiveRef.current) {
+      startLoop();
     }
 
+    startAnimationRef.current = startLoop;
+
     return () => {
+      startAnimationRef.current = () => {};
       window.removeEventListener('resize', resize);
       if (ro) ro.disconnect();
       if (moveParticlesOnHover) {
@@ -264,6 +270,7 @@ const Particles: React.FC<ParticlesProps> = ({
       }
       if (animationFrameId !== null) {
         cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
       }
       if (container.contains(gl.canvas)) {
         container.removeChild(gl.canvas);
@@ -271,7 +278,6 @@ const Particles: React.FC<ParticlesProps> = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    isActive,
     particleCount,
     particleSpread,
     speed,
@@ -284,6 +290,13 @@ const Particles: React.FC<ParticlesProps> = ({
     disableRotation,
     pixelRatio
   ]);
+
+  useEffect(() => {
+    isActiveRef.current = isActive;
+    if (isActive) {
+      startAnimationRef.current();
+    }
+  }, [isActive]);
 
   return <div ref={containerRef} className={`particles-container ${className}`} style={style} />;
 };

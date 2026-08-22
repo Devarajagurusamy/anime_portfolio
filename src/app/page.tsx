@@ -33,16 +33,16 @@ export default function Home() {
   const activeIndexRef = useRef<number | null>(0);
   const lenisRef = useRef<Lenis | null>(null);
 
-  // Initialize Lenis Virtual Momentum Smooth Scrolling
+  // Initialize Lenis Virtual Momentum Smooth Scrolling with crisp, responsive configuration
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.35,
-      easing: (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2),
+      duration: 0.9,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 0.95,
-      touchMultiplier: 1.5,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.2,
     });
     lenisRef.current = lenis;
 
@@ -73,10 +73,8 @@ export default function Home() {
     }
 
     const distance = Math.abs(targetY - currentY);
-    // Smoothly scale duration based on distance so scrolling across multiple sections glides fluidly
-    const duration = Math.min(2.4, Math.max(1.3, 0.95 + Math.pow(distance / 4500, 0.45) * 0.95));
+    const duration = Math.min(1.8, Math.max(0.9, 0.7 + Math.pow(distance / 5000, 0.5) * 0.8));
 
-    // Symmetrical ease-in-out curve: gentle acceleration -> fluid travel through all sections -> gentle deceleration
     const customEasing = (t: number) =>
       t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
@@ -126,7 +124,27 @@ export default function Home() {
     }
   };
 
+  // Cached layout offsets to avoid forced layout thrashing on scroll
   useEffect(() => {
+    let sectionOffsets: { id: string; top: number; height: number }[] = [];
+
+    const measureSections = () => {
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      sectionOffsets = SECTIONS.map(s => {
+        const el = document.getElementById(s.id);
+        if (!el) return { id: s.id, top: 0, height: 0 };
+        const rect = el.getBoundingClientRect();
+        return {
+          id: s.id,
+          top: rect.top + scrollY,
+          height: rect.height
+        };
+      });
+    };
+
+    measureSections();
+    window.addEventListener('resize', measureSections, { passive: true });
+
     let ticking = false;
 
     const checkScroll = () => {
@@ -148,23 +166,18 @@ export default function Home() {
         return;
       }
 
-      // Calculate which section is currently centered in the viewport
       const scrollCenter = scrollY + window.innerHeight / 2;
-      let currentIndex = 1; // Default to Work if scrolled past hero
+      let currentIndex = 1;
 
-      // Check if at the bottom of the page
       if (
         typeof document !== 'undefined' &&
         window.innerHeight + scrollY >= document.documentElement.scrollHeight - 150
       ) {
         currentIndex = SECTIONS.length - 1;
       } else {
-        for (let i = 1; i < SECTIONS.length; i++) {
-          const el = document.getElementById(SECTIONS[i].id);
-          if (el) {
-            const rect = el.getBoundingClientRect();
-            const top = rect.top + scrollY;
-            const height = rect.height;
+        for (let i = 1; i < sectionOffsets.length; i++) {
+          const { top, height } = sectionOffsets[i];
+          if (height > 0) {
             if (scrollCenter >= top && scrollCenter < top + height) {
               currentIndex = i;
               break;
@@ -193,7 +206,10 @@ export default function Home() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     checkScroll();
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', measureSections);
+    };
   }, []);
 
   return (

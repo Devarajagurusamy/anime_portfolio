@@ -199,8 +199,15 @@ const LetterGlitch: React.FC<LetterGlitchProps> = ({
 
   const isVisibleRef = useRef(false);
 
-  const animate = () => {
-    if (isVisibleRef.current) {
+  const startLoop = () => {
+    if (animationRef.current !== null) return;
+
+    const animate = () => {
+      if (!isVisibleRef.current) {
+        animationRef.current = null;
+        return;
+      }
+
       const now = Date.now();
       if (now - lastGlitchTime.current >= glitchSpeed) {
         updateLetters();
@@ -211,7 +218,9 @@ const LetterGlitch: React.FC<LetterGlitchProps> = ({
       if (smooth) {
         handleSmoothTransitions();
       }
-    }
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
 
     animationRef.current = requestAnimationFrame(animate);
   };
@@ -222,7 +231,6 @@ const LetterGlitch: React.FC<LetterGlitchProps> = ({
 
     context.current = canvas.getContext('2d');
     resizeCanvas();
-    animate();
 
     const parent = canvas.parentElement;
     let ro: ResizeObserver | null = null;
@@ -238,12 +246,19 @@ const LetterGlitch: React.FC<LetterGlitchProps> = ({
       io = new IntersectionObserver(
         ([entry]) => {
           isVisibleRef.current = entry.isIntersecting;
+          if (entry.isIntersecting) {
+            startLoop();
+          } else if (animationRef.current !== null) {
+            cancelAnimationFrame(animationRef.current);
+            animationRef.current = null;
+          }
         },
         { rootMargin: '100px' }
       );
       io.observe(parent);
     } else {
       isVisibleRef.current = true;
+      startLoop();
     }
 
     let resizeTimeout: NodeJS.Timeout;

@@ -287,29 +287,20 @@ export default function DomeGallery({
     applyTransform(rotationRef.current.x, rotationRef.current.y);
   }, []);
 
-  const isVisibleRef = useRef(true);
+  const isVisibleRef = useRef(false);
+  const animIdRef = useRef<number | null>(null);
 
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root || typeof IntersectionObserver === 'undefined') return;
+  const startAutoRotateLoop = useCallback(() => {
+    if (!autoRotate || animIdRef.current !== null) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        isVisibleRef.current = entry.isIntersecting;
-      },
-      { rootMargin: '200px' }
-    );
-    observer.observe(root);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!autoRotate) return;
-    let animId: number;
     const autoLoop = () => {
+      if (!isVisibleRef.current) {
+        animIdRef.current = null;
+        return;
+      }
+
       if (
         autoRotate &&
-        isVisibleRef.current &&
         !draggingRef.current &&
         !inertiaRAF.current &&
         !openingRef.current &&
@@ -319,11 +310,37 @@ export default function DomeGallery({
         rotationRef.current = { x: rotationRef.current.x, y: nextY };
         applyTransform(rotationRef.current.x, nextY);
       }
-      animId = requestAnimationFrame(autoLoop);
+      animIdRef.current = requestAnimationFrame(autoLoop);
     };
-    animId = requestAnimationFrame(autoLoop);
-    return () => cancelAnimationFrame(animId);
+
+    animIdRef.current = requestAnimationFrame(autoLoop);
   }, [autoRotate, autoRotateSpeed]);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisibleRef.current = entry.isIntersecting;
+        if (entry.isIntersecting) {
+          startAutoRotateLoop();
+        } else if (animIdRef.current !== null) {
+          cancelAnimationFrame(animIdRef.current);
+          animIdRef.current = null;
+        }
+      },
+      { rootMargin: '100px' }
+    );
+    observer.observe(root);
+    return () => {
+      observer.disconnect();
+      if (animIdRef.current !== null) {
+        cancelAnimationFrame(animIdRef.current);
+        animIdRef.current = null;
+      }
+    };
+  }, [startAutoRotateLoop]);
 
   const stopInertia = useCallback(() => {
     if (inertiaRAF.current) {

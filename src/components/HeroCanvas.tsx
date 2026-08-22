@@ -132,28 +132,48 @@ export default function HeroCanvas({ onSelectSection }: HeroCanvasProps) {
     return () => observer.disconnect();
   }, [handleScroll]);
 
-  // Frame Interpolation Loop
+  // Frame Interpolation Loop with smart idle sleep
   useEffect(() => {
-    const animate = () => {
-      if (isHeroVisibleRef.current) {
-        currentFrameRef.current += (targetFrameRef.current - currentFrameRef.current) * 0.25;
-        const frameToDraw = Math.min(
-          TOTAL_FRAMES - 1,
-          Math.max(0, Math.round(currentFrameRef.current))
-        );
+    let isRunning = false;
 
-        if (frameToDraw !== lastDrawnFrameRef.current) {
-          renderFrame(frameToDraw);
-        }
+    const tick = () => {
+      if (!isHeroVisibleRef.current && Math.abs(targetFrameRef.current - currentFrameRef.current) < 0.05) {
+        isRunning = false;
+        animationFrameIdRef.current = null;
+        return;
       }
 
-      animationFrameIdRef.current = requestAnimationFrame(animate);
+      currentFrameRef.current += (targetFrameRef.current - currentFrameRef.current) * 0.25;
+      const frameToDraw = Math.min(
+        TOTAL_FRAMES - 1,
+        Math.max(0, Math.round(currentFrameRef.current))
+      );
+
+      if (frameToDraw !== lastDrawnFrameRef.current) {
+        renderFrame(frameToDraw);
+      }
+
+      animationFrameIdRef.current = requestAnimationFrame(tick);
     };
 
-    animationFrameIdRef.current = requestAnimationFrame(animate);
+    const wakeUp = () => {
+      if (!isRunning) {
+        isRunning = true;
+        animationFrameIdRef.current = requestAnimationFrame(tick);
+      }
+    };
+
+    wakeUp();
+
+    const onScrollWake = () => wakeUp();
+    window.addEventListener('scroll', onScrollWake, { passive: true });
+
     return () => {
+      isRunning = false;
+      window.removeEventListener('scroll', onScrollWake);
       if (animationFrameIdRef.current) {
         cancelAnimationFrame(animationFrameIdRef.current);
+        animationFrameIdRef.current = null;
       }
     };
   }, [TOTAL_FRAMES, renderFrame]);

@@ -208,7 +208,7 @@ export default function TestimonialsSection() {
               fit={0.55}
               minRadius={520}
               maxRadius={900}
-              segments={32}
+              segments={24}
               dragSensitivity={18}
               dragDampening={1.8}
               overlayBlurColor="#000000"
