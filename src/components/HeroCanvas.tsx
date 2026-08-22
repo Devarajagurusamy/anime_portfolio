@@ -102,19 +102,18 @@ export default function HeroCanvas({ onSelectSection }: HeroCanvasProps) {
 
   // Handle Scroll calculation specifically calibrated for the hero track
   const handleScroll = useCallback(() => {
-    if (!isHeroVisibleRef.current) return;
-    const scrollTop = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+    const scrollTop = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
     const track = cachedScrollTrackRef.current || (window.innerHeight * 2.8);
     const progress = Math.min(1, Math.max(0, scrollTop / track));
 
-    if (Math.abs(progress - lastReportedProgressRef.current) > 0.005) {
+    if (Math.abs(progress - lastReportedProgressRef.current) > 0.002 || progress === 0 || progress === 1) {
       lastReportedProgressRef.current = progress;
       setScrollProgress(progress);
     }
     targetFrameRef.current = progress * (TOTAL_FRAMES - 1);
   }, [TOTAL_FRAMES]);
 
-  // Pause calculations when scrolled completely past hero
+  // Pause calculations when scrolled completely past hero, and force sync when entering
   useEffect(() => {
     const container = containerRef.current;
     if (!container || typeof IntersectionObserver === 'undefined') return;
@@ -122,19 +121,22 @@ export default function HeroCanvas({ onSelectSection }: HeroCanvasProps) {
     const observer = new IntersectionObserver(
       ([entry]) => {
         isHeroVisibleRef.current = entry.isIntersecting;
+        if (entry.isIntersecting) {
+          handleScroll();
+        }
       },
-      { rootMargin: '100px' }
+      { rootMargin: '200px' }
     );
 
     observer.observe(container);
     return () => observer.disconnect();
-  }, []);
+  }, [handleScroll]);
 
   // Frame Interpolation Loop
   useEffect(() => {
     const animate = () => {
       if (isHeroVisibleRef.current) {
-        currentFrameRef.current += (targetFrameRef.current - currentFrameRef.current) * 0.2;
+        currentFrameRef.current += (targetFrameRef.current - currentFrameRef.current) * 0.25;
         const frameToDraw = Math.min(
           TOTAL_FRAMES - 1,
           Math.max(0, Math.round(currentFrameRef.current))
@@ -279,9 +281,9 @@ export default function HeroCanvas({ onSelectSection }: HeroCanvasProps) {
             className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 z-20 pointer-events-none will-change-[opacity] flex flex-col items-center gap-1.5"
             style={{ opacity: Math.max(0, 1 - scrollProgress * 6) }}
           >
-            <span className="text-[10px] font-mono text-white/80 tracking-[0.3em] uppercase">
+            {/* <span className="text-[10px] font-mono text-white/80 tracking-[0.3em] uppercase">
               Scroll to scrub sequence
-            </span>
+            </span> */}
             <div className="w-4 h-7 rounded-full border border-white/40 flex justify-center p-1">
               <div className="w-1 h-2 bg-white rounded-full animate-bounce" />
             </div>
