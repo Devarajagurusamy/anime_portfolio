@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'motion/react';
-import { Calendar, MapPin, Briefcase, Code2, Star } from 'lucide-react';
+import { Calendar, MapPin, Briefcase, Code2, TrendingUp, Search, Megaphone } from 'lucide-react';
 import { soundFx } from './AudioSynth';
 import VerticalHeading from './VerticalHeading';
 
@@ -198,7 +198,7 @@ export default function ExperienceSection() {
                     )}
                   </div>
 
-                  {/* Central Stepper Checkpoint Node */}
+                  {/* Central Stepper Checkpoint Node with Icons */}
                   <div className="absolute left-6 md:left-1/2 top-0 md:top-1/2 -translate-x-1/2 md:-translate-y-1/2 z-20">
                     <motion.div
                       animate={{
@@ -208,9 +208,18 @@ export default function ExperienceSection() {
                         color: isActive ? '#ffffff' : '#777777'
                       }}
                       transition={{ duration: 0.3 }}
-                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-mono text-sm sm:text-base font-bold border-2 select-none shadow-none cursor-default"
+                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center border-2 select-none shadow-none cursor-default"
+                      title={item.role}
                     >
-                      {item.number}
+                      {item.iconType === 'work' ? (
+                        <Code2 className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
+                      ) : item.iconType === 'intern' ? (
+                        <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
+                      ) : item.iconType === 'seo' ? (
+                        <Search className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
+                      ) : (
+                        <Briefcase className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
+                      )}
                     </motion.div>
                   </div>
 

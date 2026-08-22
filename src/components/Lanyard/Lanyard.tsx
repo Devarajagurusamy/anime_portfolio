@@ -32,7 +32,61 @@ export interface LanyardProps {
   lanyardWidth?: number;
 }
 
-export default function Lanyard({
+class LanyardErrorBoundary extends React.Component<
+  { children: React.ReactNode; fallback?: React.ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: { children: React.ReactNode; fallback?: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: any) {
+    console.warn('Lanyard 3D Canvas encountered an issue, displaying resilient fallback:', error);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        this.props.fallback || (
+          <div className="w-full h-full min-h-[480px] flex flex-col items-center justify-center relative p-6 select-none bg-[#08080c] rounded-2xl border border-white/10">
+            <div className="w-48 sm:w-56 h-72 sm:h-80 rounded-2xl bg-neutral-900/90 border border-red-500/40 p-4 flex flex-col items-center justify-between shadow-[0_0_30px_rgba(229,9,20,0.2)]">
+              <div className="w-full bg-[#e50914] py-1.5 px-3 rounded text-center">
+                <span className="font-mono font-black text-xs text-white tracking-wider">DEVARAJA .</span>
+              </div>
+              <div className="w-28 h-32 rounded-lg border border-red-500/40 bg-black/60 overflow-hidden flex items-center justify-center">
+                <img
+                  src="/assets/lanyard/profile_original.jpg"
+                  alt="Devaraja Profile"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="w-full text-center">
+                <span className="font-mono text-[11px] text-white font-bold block">FULLSTACK DEVELOPER</span>
+                <span className="font-mono text-[9px] text-[#ffbe0b] uppercase tracking-widest mt-0.5 block">CLASS-S CLEARANCE</span>
+              </div>
+            </div>
+          </div>
+        )
+      );
+    }
+    return this.props.children;
+  }
+}
+
+export default function Lanyard(props: LanyardProps) {
+  return (
+    <LanyardErrorBoundary>
+      <LanyardInner {...props} />
+    </LanyardErrorBoundary>
+  );
+}
+
+function LanyardInner({
   position = [0, 0, 24],
   gravity = [0, -40, 0],
   fov = 20,
@@ -45,6 +99,7 @@ export default function Lanyard({
 }: LanyardProps) {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [mounted, setMounted] = useState<boolean>(false);
+  const [hasContextError, setHasContextError] = useState<boolean>(false);
 
   useEffect(() => {
     setMounted(true);
@@ -71,14 +126,37 @@ export default function Lanyard({
 
   if (!mounted) {
     return (
-      <div className="lanyard-wrapper flex items-center justify-center">
+      <div className="lanyard-wrapper flex items-center justify-center bg-[#000000]">
         <div className="w-8 h-8 rounded-full border-2 border-red-500 border-t-transparent animate-spin" />
       </div>
     );
   }
 
+  if (hasContextError) {
+    return (
+      <div className="w-full h-full min-h-[480px] flex flex-col items-center justify-center relative p-6 select-none bg-[#08080c] rounded-2xl border border-white/10">
+        <div className="w-48 sm:w-56 h-72 sm:h-80 rounded-2xl bg-neutral-900/90 border border-red-500/40 p-4 flex flex-col items-center justify-between shadow-[0_0_30px_rgba(229,9,20,0.2)]">
+          <div className="w-full bg-[#e50914] py-1.5 px-3 rounded text-center">
+            <span className="font-mono font-black text-xs text-white tracking-wider">DEVARAJA .</span>
+          </div>
+          <div className="w-28 h-32 rounded-lg border border-red-500/40 bg-black/60 overflow-hidden flex items-center justify-center">
+            <img
+              src="/assets/lanyard/profile_original.jpg"
+              alt="Devaraja Profile"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="w-full text-center">
+            <span className="font-mono text-[11px] text-white font-bold block">FULLSTACK DEVELOPER</span>
+            <span className="font-mono text-[9px] text-[#ffbe0b] uppercase tracking-widest mt-0.5 block">CLASS-S CLEARANCE</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div ref={wrapperRef} className="lanyard-wrapper w-full h-full min-h-[500px]">
+    <div ref={wrapperRef} className="lanyard-wrapper w-full h-full min-h-[500px] bg-transparent">
       <Canvas
         frameloop={inView ? 'always' : 'never'}
         camera={{ position: position, fov: fov }}
@@ -86,6 +164,12 @@ export default function Lanyard({
         gl={{ alpha: transparent, antialias: true, powerPreference: 'high-performance' }}
         onCreated={({ gl }) => {
           gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1);
+          const canvasEl = gl.domElement;
+          canvasEl.addEventListener('webglcontextlost', (e) => {
+            e.preventDefault();
+            console.warn('WebGL context lost in Lanyard canvas');
+            setHasContextError(true);
+          });
         }}
       >
         <ambientLight intensity={1.8} />
