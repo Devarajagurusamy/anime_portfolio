@@ -1,0 +1,97 @@
+/* Solid White Classic Pointer Cursor */
+
+/* Globally hide OS default cursor on all desktop fine-pointer devices */
+@media (hover: hover) and (pointer: fine) {
+  *,
+  *::before,
+  *::after,
+  html,
+  body,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  canvas,
+  svg,
+  [role="button"],
+  [class*="cursor"] {
+    cursor: none !important;
+  }
+}
+
+.custom-cursor-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99999;
+  overflow: hidden;
+  transition: opacity 0.2s ease;
+}
+
+/* Sharp Solid White Pointer Arrow */
+.white-cursor-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 24px;
+  pointer-events: none;
+  will-change: transform;
+  transform-origin: 0px 0px;
+  transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: none;
+}
+
+.white-cursor-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  display: block;
+}
+
+/* Hover state on interactive elements */
+.white-cursor-wrapper.cursor-hover {
+  transform: scale(1.15);
+}
+
+/* Click / Active state */
+.white-cursor-wrapper.cursor-active {
+  transform: scale(0.9) translate(1px, 1px);
+}
+
+/* Flat Solid White Text I-Beam Mode */
+.white-text-beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 20px;
+  background: #ffffff;
+  border-radius: 1.5px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.white-text-beam::before,
+.white-text-beam::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 8px;
+  height: 2px;
+  background: #ffffff;
+  transform: translateX(-50%);
+  border-radius: 1px;
+}
+
+.white-text-beam::before {
+  top: 0;
+}
+
+.white-text-beam::after {
+  bottom: 0;
+}

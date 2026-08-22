@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Outfit, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
+import CustomCursor from '@/components/CustomCursor/CustomCursor';
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -51,7 +52,11 @@ export default function RootLayout({
       lang="en"
       className={`${outfit.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <CustomCursor />
+        {children}
+      </body>
     </html>
   );
 }
+
